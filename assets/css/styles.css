@@ -1,9 +1,9 @@
 /* -------------------------------
-   Import Fonts
+  IMPORT FONTS
 ---------------------------------- */
 
 /* -------------------------------
-   CSS Variables
+   CSS VARIABLES
 ---------------------------------- */
 /* :root {
   --primary-darker: #055276;
@@ -18,7 +18,7 @@
 } */
 
 /* -------------------------------
-   General Styling
+   GENERAL STYLING
 ---------------------------------- */
 
 * {
@@ -36,7 +36,7 @@ body {
 }
 
 /* -------------------------------
-   Headings
+   HEADINGS
 ---------------------------------- */
 
  h1 {
@@ -45,20 +45,63 @@ body {
 }
 
 /* -------------------------------
-   Layout Elements
+   LAYOUT ELEMENTS
 ---------------------------------- */
 
 
 /* -------------------------------
-   Link Styling
+   LINK STYLING
+---------------------------------- */
+
+
+/* -------------------------------
+   BUTTONS
+---------------------------------- */
+
+.btn {
+  /* display: inline-block; */
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 0.375rem;
+  transition: all 0.15s ease-in-out;
+  background-color: #76c7c0; 
+  color: #fff; 
+}
+
+/* Hover State */
+.btn:hover {
+  background-color: #5fb0a9; 
+  border-color: #5fa9a3; 
+}
+
+/* Focus State */
+.btn:focus {
+  outline: none; 
+  box-shadow: 0 0 0 0.2rem rgba(118, 199, 192, 0.5); 
+  /* Focus glow adapted from https://stackoverflow.com/questions/59502714/add-soft-glow-on-focus-to-input */
+}
+
+/* Active State */
+.btn:active {
+  background-color: #4e9c95; 
+  border-color: #478e88; 
+  box-shadow: none; /* No focus glow */
+}
+
+
+
+/* -------------------------------
+   UTILITY CLASSES
 ---------------------------------- */
 
 /* -------------------------------
-   Utility Classes
----------------------------------- */
-
-/* -------------------------------
-   Navigation
+   NAVIGATION
 ---------------------------------- */
 nav {
   position: sticky;
@@ -91,7 +134,7 @@ nav li {
 
 
 /* -------------------------------
-  Task Heading Styling
+  TASKS HEADING
 ---------------------------------- */
 
 #task-heading-container {
@@ -118,7 +161,7 @@ nav li {
   transition: width 0.5s ease-in-out;
 }
 
-.btn-custom {
+.btn-round {
   border-radius: 50%;
 }
 
@@ -126,7 +169,7 @@ nav li {
 
 
 /* -------------------------------
-   Media Queries - Tablet (min-width: 768px)
+  MEDIA QUERY - TABLET (min-width: 768px)
 ---------------------------------- */
 
 @media screen and (min-width: 768px) {
@@ -135,7 +178,7 @@ nav li {
 }
 
 /* -------------------------------
-   Media Queries - Large Screens (min-width: 992px)
+   MEDIA QUERY - LARGE SCREEN (min-width: 992px)
 ---------------------------------- */
 
 @media screen and (min-width: 992px) {
@@ -143,7 +186,7 @@ nav li {
 }
 
 /* -------------------------------
-   Media Queries - XL Screens (min-width: 1200px)
+   MEDIA QUERY - XL SCREEN (min-width: 1200px)
 ---------------------------------- */
 
 @media screen and (min-width: 1200px) {
