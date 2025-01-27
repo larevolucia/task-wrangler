@@ -94,7 +94,7 @@ nav li {
   Task Heading Styling
 ---------------------------------- */
 
-.task-heading-container {
+#task-heading-container {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -102,8 +102,20 @@ nav li {
   padding: 1rem;
 }
 
-.progress-bar-custom {
+#progress-container {
   flex: 1;
+  width: 100%;
+  height: 20px;
+  background-color: #e0e0e0;
+  border-radius: 15px;
+}
+
+#progress-bar {
+  width: 0%; 
+  height: 100%;
+  background-color: #76c7c0;
+  border-radius: 15px 0 0 15px;
+  transition: width 0.5s ease-in-out;
 }
 
 .btn-custom {
