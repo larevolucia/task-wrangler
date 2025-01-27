@@ -1,20 +1,139 @@
+/* -------------------------------
+   Import Fonts
+---------------------------------- */
+
+/* -------------------------------
+   CSS Variables
+---------------------------------- */
+/* :root {
+  --primary-darker: #055276;
+  --primary-normal: #077bb0;
+  --primary-light: #b3e5fc;
+  --seconday-darker: #19381b;
+  --secondary-normal: #337136;
+  --secondary-light: #81c784;
+  --primary-font: "Lexend", Arial, sans-serif;
+  --secondary-font: "Roboto Slab", Georgia, serif;
+  --text-color: #4f4f4f;
+} */
+
+/* -------------------------------
+   General Styling
+---------------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-size: large;
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+}
+
+/* -------------------------------
+   Headings
+---------------------------------- */
+
+ h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+/* -------------------------------
+   Layout Elements
+---------------------------------- */
+
+
+/* -------------------------------
+   Link Styling
+---------------------------------- */
+
+/* -------------------------------
+   Utility Classes
+---------------------------------- */
+
+/* -------------------------------
+   Navigation
+---------------------------------- */
+nav {
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 99;
+  height: 60px;
+  width: 100%;
+  padding: 0 10px;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+nav a {
+  text-decoration: none;
+  color: inherit;
+}
+nav > ul {
+  list-style-type: none; 
+  padding: 0;
+  margin: 0;
+}
+nav li {
+  display: inline; /* Makes list items inline elements */
+  margin-right: 10px; 
+}
+
+
+/* -------------------------------
+  Task Heading Styling
+---------------------------------- */
+
 .task-heading-container {
-    display: flex; 
-    align-items: center;
-    gap: 1rem; 
-    width: 100%; 
-    padding: 1rem;    
-  }
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem;
+}
 
-  h1 {
-    margin: 0; 
-    font-size: 1.8rem;
-  }
+.progress-bar-custom {
+  flex: 1;
+}
 
-  .progress-bar-custom {
-    flex: 1;
-  }
+.btn-custom {
+  border-radius: 50%;
+}
 
-  .btn-custom {
-    border-radius: 50%;
-  }
+
+
+
+/* -------------------------------
+   Media Queries - Tablet (min-width: 768px)
+---------------------------------- */
+
+@media screen and (min-width: 768px) {
+ 
+
+}
+
+/* -------------------------------
+   Media Queries - Large Screens (min-width: 992px)
+---------------------------------- */
+
+@media screen and (min-width: 992px) {
+
+}
+
+/* -------------------------------
+   Media Queries - XL Screens (min-width: 1200px)
+---------------------------------- */
+
+@media screen and (min-width: 1200px) {
+
+}
