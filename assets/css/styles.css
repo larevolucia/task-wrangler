@@ -1,21 +1,22 @@
 /* -------------------------------
   IMPORT FONTS
 ---------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 /* -------------------------------
    CSS VARIABLES
 ---------------------------------- */
-/* :root {
-  --primary-darker: #055276;
-  --primary-normal: #077bb0;
-  --primary-light: #b3e5fc;
-  --seconday-darker: #19381b;
-  --secondary-normal: #337136;
-  --secondary-light: #81c784;
-  --primary-font: "Lexend", Arial, sans-serif;
-  --secondary-font: "Roboto Slab", Georgia, serif;
-  --text-color: #4f4f4f;
-} */
+:root {
+  --primary-color: #1359A0; /* Lapis Lazuli */
+  --secondary-color: #1976D2; /* French Blue */
+  --success-color: #4CAF50; /* Pigment Green */
+  --attention-color: #FFC107; /* Amber */
+  --danger-color: #F44336; /* Vermillion */
+  --background-color: #F5F5F5; /* Light Gray */
+  --text-color: #212121;  /* Dark Gray */
+  --primary-font: "Inter", serif;
+  --secondary-font: "Roboto", serif;
+}
 
 /* -------------------------------
    GENERAL STYLING
@@ -26,6 +27,8 @@
 }
 
 body {
+  font-family: var(--primary-font);
+  color: var(--text-color);
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
@@ -52,46 +55,95 @@ body {
 /* -------------------------------
    LINK STYLING
 ---------------------------------- */
+a {
+  text-decoration: none;
+  font-weight: 500;
+  color: var(--primary-color); 
+  transition: all 0.3s ease;
+}
 
+/*Active State*/
+a:active {
+  color: var(--success-color); 
+  border-bottom: 2px solid var(--success-color);
+}
+
+/*Hover State*/
+a:hover {
+  color: var(--secondary-color); 
+  border-bottom: 2px solid var(--secondary-color); 
+}
+
+/*Focus State*/
+a:focus {
+  outline: 3px dashed var(--attention-color); /* Highlight focus with dashed outline */
+  outline-offset: 3px; /* Add spacing between text and outline */
+}
 
 /* -------------------------------
    BUTTONS
 ---------------------------------- */
 
-.btn {
-  /* display: inline-block; */
-  font-family: Arial, sans-serif;
-  font-size: 16px;
+button {
+  font-size: 1rem;
   line-height: 1.5;
+  font-weight: 500;
   text-align: center;
-  text-decoration: none;
   cursor: pointer;
-  padding: 0.375rem 0.75rem;
   border: 1px solid transparent;
   border-radius: 0.375rem;
-  transition: all 0.15s ease-in-out;
-  background-color: #76c7c0; 
-  color: #fff; 
+  padding: 0.375rem 0.75rem;
+  transition: all 0.2s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Hover State */
-.btn:hover {
-  background-color: #5fb0a9; 
-  border-color: #5fa9a3; 
+.btn-primary {
+  color: white;
+  background-color: var(--primary-color); 
 }
 
-/* Focus State */
-.btn:focus {
+/* Hover States */
+
+button:hover {
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.btn-primary:hover {
+  background-color: var(--secondary-color);
+}
+
+/* Focus States */
+
+button:focus {
   outline: none; 
-  box-shadow: 0 0 0 0.2rem rgba(118, 199, 192, 0.5); 
-  /* Focus glow adapted from https://stackoverflow.com/questions/59502714/add-soft-glow-on-focus-to-input */
+  transform: translateY(-1px); 
 }
 
-/* Active State */
-.btn:active {
-  background-color: #4e9c95; 
-  border-color: #478e88; 
-  box-shadow: none; /* No focus glow */
+.btn-primary:focus {
+  box-shadow: 0 0 10px 4px rgba(25, 118, 210, 0.5); 
+  /* Glow effect inspired by https://stackoverflow.com/questions/59502714/add-soft-glow-on-focus-to-input */
+}
+
+/* Active States */
+
+button:active{
+  transform: scale(0.98);
+  box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:active {
+  background-color: var(--success-color);
+}
+
+/* Disabled States */
+
+.btn-primary:disabled {
+  background-color: #BDBDBD; 
+  color: #FFFFFF; 
+  cursor: not-allowed; 
+  box-shadow: none; 
+  opacity: 0.6; 
 }
 
 
@@ -118,20 +170,32 @@ nav {
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.2);
 }
 
-nav a {
-  text-decoration: none;
-  color: inherit;
-}
 nav > ul {
   list-style-type: none; 
   padding: 0;
   margin: 0;
 }
+
 nav li {
   display: inline; /* Makes list items inline elements */
   margin-right: 10px; 
 }
 
+.navbar-branding {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* Nav Links */
+nav a {
+  color: var(--text-color);
+  text-decoration: none;
+  padding: 15px 15px;
+  border-radius: 2rem;
+}
+nav a:hover {
+border-bottom: none;
+}
 
 /* -------------------------------
   TASKS HEADING
@@ -156,7 +220,7 @@ nav li {
 #progress-bar {
   width: 0%; 
   height: 100%;
-  background-color: #76c7c0;
+  background-color: var(--primary-color);
   border-radius: 15px 0 0 15px;
   transition: width 0.5s ease-in-out;
 }
