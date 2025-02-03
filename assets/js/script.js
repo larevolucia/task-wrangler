@@ -117,11 +117,8 @@ taskElement.innerHTML = `
           <span class="task-due-date-text">${task.dueDate}</span>
         </span>`: ''}
         <div class="task-options">
-        
-           
                 <button class="edit-task btn-round" data-id="${task.id}"><i class="fa-solid fa-pen"></i></button>
                 <button class="delete-task btn-round" data-id="${task.id}"><i class="fa-solid fa-trash"></i></button>
-       
         </div>
       </div>
     </div>`;
@@ -129,10 +126,25 @@ taskElement.innerHTML = `
  taskList.appendChild(taskElement);
 
 }
-
 );
+ // Add event listeners for delete buttons
+ document.querySelectorAll(".delete-task").forEach(button => {
+    button.addEventListener("click", function () {
+        deleteTask(this.dataset.id);
+    });
+});
 
+}
 
+function deleteTask(taskId) {
+    // retrieve stored tasks, if there is no tasks default to empty array
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    // create new array filtering out the task with given taskId
+    tasks = tasks.filter(task => task.id != taskId);
+    // save updated task lists to localStorage
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    // Refresh task list on page
+    loadTasks();  
 }
 
 
