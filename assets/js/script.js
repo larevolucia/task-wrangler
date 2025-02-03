@@ -24,6 +24,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const createTaskButton = document.getElementById("create-task");
     const contentContainer = document.getElementById("content-container");
 
+    
+
     function showTaskForm () {
    
     //  Check if form already exists
@@ -60,12 +62,37 @@ document.addEventListener("DOMContentLoaded", () => {
         formContainer.classList.remove("show");
         setTimeout(() => formContainer.remove(), 300); // Remove from DOM after fade out
     }
-    
+
     // Close modal function 
     // Save task
     function saveTask(event) {
         event.preventDefault(); 
-        alert("Task Saved");
+        const title = document.getElementById("task-title").value;
+        const dueDate = document.getElementById("task-date").value;
+
+        if (!title) {
+            alert("Please fill in all required fields.");
+            return;
+        }
+
+        // Retrieve existing tasks or initialize empty array
+        // Use JSON.parse to convert string to array
+        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+        // Create new task object
+        const task = {
+            id: Date.now(),
+            title,
+            dueDate
+        };
+
+        // Save to localStorage
+        tasks.push(task);
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+
+        alert("Task added successfully!"); // Feedback to user
+        closeModal();
+        document.getElementById("task-form").reset();
     }
 
 
