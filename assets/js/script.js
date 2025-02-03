@@ -1,21 +1,31 @@
-// Wrapping on DOMContentLoaded to Ensure that elements exists before manipulation
-// https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
-// https://csswizardry.com/2023/07/in-defence-of-domcontentloaded
+const createTaskButton = document.getElementById("create-task");
+const contentContainer = document.getElementById("content-container");
+
+let formContainer; // store formContainer globally
+
 document.addEventListener("DOMContentLoaded", () => {
+    // Wrapping on DOMContentLoaded to Ensure that elements exists before manipulation
+    // https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
+    // https://csswizardry.com/2023/07/in-defence-of-domcontentloaded
     // Show Progress Bar
     const progressBar = document.getElementById("progress-bar");
     progressBar.style.width = "25%";
 
-    const createTaskButton = document.getElementById("create-task");
-    const contentContainer = document.getElementById("content-container");
+    
+   
 
-    let formContainer; // store formContainer
+ // Add event listener to the create-task button
+ createTaskButton.addEventListener("click", showTaskForm);
+ loadTasks();
+});
 
-    function showTaskForm () {
+
+function showTaskForm () {
    
     //  Check if form already exists
      if (formContainer) {
-        formContainer.style.display = "flex"; // Show existing modal
+        formContainer.classList.toggle("show"); 
+        // Show existing modal
         return;
     }
 
@@ -45,53 +55,48 @@ document.addEventListener("DOMContentLoaded", () => {
      
      
     }
-    
-    function closeModal() {
-        formContainer.classList.remove("show");
-        setTimeout(() => formContainer.remove(), 300); // Remove from DOM after fade out
+
+ // Close modal function 
+ function closeModal() {
+    formContainer.classList.remove("show");
+   //  setTimeout(() => formContainer.remove(), 300); Remove from DOM after fade out
+}
+
+// Save task
+function saveTask(event) {
+    event.preventDefault(); 
+    const title = document.getElementById("task-title").value;
+    const dueDate = document.getElementById("task-date").value;
+
+    if (!title) {
+        alert("Please fill in all required fields.");
+        return;
     }
 
-    // Close modal function 
-    // Save task
-    function saveTask(event) {
-        event.preventDefault(); 
-        const title = document.getElementById("task-title").value;
-        const dueDate = document.getElementById("task-date").value;
+    // Retrieve existing tasks or initialize empty array
+    // Use JSON.parse to convert string to array
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-        if (!title) {
-            alert("Please fill in all required fields.");
-            return;
-        }
+    // Create new task object
+    const task = {
+        id: Date.now(),
+        title,
+        dueDate,
+        status: "to-do" // Default status
+    };
 
-        // Retrieve existing tasks or initialize empty array
-        // Use JSON.parse to convert string to array
-        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    // Save to localStorage
+    tasks.push(task);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
 
-        // Create new task object
-        const task = {
-            id: Date.now(),
-            title,
-            dueDate,
-            status: "to-do" // Default status
-        };
+    alert("Task added successfully!"); // Feedback to user
+    closeModal();
+    document.getElementById("task-form").reset();
 
-        // Save to localStorage
-        tasks.push(task);
-        localStorage.setItem("tasks", JSON.stringify(tasks));
+     // Immediately update the task list
+    loadTasks(); 
+}
 
-        alert("Task added successfully!"); // Feedback to user
-        closeModal();
-        document.getElementById("task-form").reset();
-
-         // Immediately update the task list
-        loadTasks(); 
-    }
-
-
- // Add event listener to the create-task button
- createTaskButton.addEventListener("click", showTaskForm);
- loadTasks();
-});
 
 // Show Task List function
 function loadTasks(){
@@ -127,6 +132,13 @@ taskElement.innerHTML = `
 
 }
 );
+// Add event listeners for edit buttons
+document.querySelectorAll(".edit-task").forEach(button => {
+    button.addEventListener("click", function () {
+        editTask(this.dataset.id);
+    });
+});
+
  // Add event listeners for delete buttons
  document.querySelectorAll(".delete-task").forEach(button => {
     button.addEventListener("click", function () {
@@ -148,3 +160,6 @@ function deleteTask(taskId) {
 }
 
 
+function editTask(taskId) {
+    
+}
