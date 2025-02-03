@@ -169,6 +169,9 @@ button:active{
    UTILITY CLASSES
 ---------------------------------- */
 
+.hidden {
+  display: none;
+}
 
 /* -------------------------------
    NAVIGATION
@@ -257,7 +260,7 @@ border-bottom: none;
   background-color: #22272B;
   color: var(--background-color);
   font-size: medium;
-  padding:  1.35rem 0.75rem;
+  padding:  1rem 0.85rem;
   border-radius: 0.75rem;
   margin: 0.5rem;
 }
@@ -298,10 +301,16 @@ border-bottom: none;
 }
 
 .task-options {
-  cursor: pointer;
   padding: 0.5rem;
   transition: opacity 0.2s ease-in-out;
   margin-left: auto; /* Pushes it to the far right */
+  display: flex;
+  gap: 0.85rem;
+}
+
+.delete-task{
+  background-color: var(--danger-color);
+  opacity: 0.8;
 }
 
 /* -------------------------------

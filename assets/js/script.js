@@ -117,7 +117,11 @@ taskElement.innerHTML = `
           <span class="task-due-date-text">${task.dueDate}</span>
         </span>`: ''}
         <div class="task-options">
-        <i class="fa-solid fa-ellipsis-vertical" data-id="${task.id}"></i>
+        
+           
+                <button class="edit-task btn-round" data-id="${task.id}"><i class="fa-solid fa-pen"></i></button>
+                <button class="delete-task btn-round" data-id="${task.id}"><i class="fa-solid fa-trash"></i></button>
+       
         </div>
       </div>
     </div>`;
@@ -126,7 +130,9 @@ taskElement.innerHTML = `
 
 }
 
-)
+);
+
+
 }
 
 
