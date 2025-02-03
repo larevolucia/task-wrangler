@@ -24,15 +24,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const createTaskButton = document.getElementById("create-task");
     const contentContainer = document.getElementById("content-container");
 
-    
+    let formContainer; // store formContainer
 
     function showTaskForm () {
    
     //  Check if form already exists
-     if (document.getElementById("task-form-container")) return;
+     if (formContainer) {
+        formContainer.style.display = "flex"; // Show existing modal
+        return;
+    }
 
      // Create a form container div
-     const formContainer = document.createElement("div");
+     formContainer = document.createElement("div");
      formContainer.id = "task-form-container";
      formContainer.classList.add("show");
      formContainer.innerHTML = `
