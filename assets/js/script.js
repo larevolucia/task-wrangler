@@ -109,13 +109,13 @@ taskElement.innerHTML = `
 <div class="task-card">
       <div class="task-header">
         <div class="task-info">
-          <span class="task-status to-do">${task.status}</span>
+          <span class="task-status to-do">${task.status || "N/A"}</span>
           <span class="task-title">${task.title}</span>
         </div>
-        <span class="task-due-date">
+        ${task.dueDate ? `<span class="task-due-date">
           <i class="fa-regular fa-calendar"></i>
           <span class="task-due-date-text">${task.dueDate}</span>
-        </span>
+        </span>`: ''}
         <div class="task-options">
         <i class="fa-solid fa-ellipsis-vertical" data-id="${task.id}"></i>
         </div>
