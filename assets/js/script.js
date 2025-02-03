@@ -82,6 +82,9 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Task added successfully!"); // Feedback to user
         closeModal();
         document.getElementById("task-form").reset();
+
+         // Immediately update the task list
+        loadTasks(); 
     }
 
 
@@ -106,7 +109,7 @@ taskElement.innerHTML = `
 <div class="task-card">
       <div class="task-header">
         <div class="task-info">
-          <span class="task-status to-do">To Do</span>
+          <span class="task-status to-do">${task.status}</span>
           <span class="task-title">${task.title}</span>
         </div>
         <span class="task-due-date">
