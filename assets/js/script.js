@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
      // Create a form container div
      const formContainer = document.createElement("div");
      formContainer.id = "task-form-container";
-    //  formContainer.classList.add("show");
+     formContainer.classList.add("show");
      formContainer.innerHTML = `
          <form id="task-form">
              <button type="button" id="close-form">&times;</button>
@@ -46,15 +46,18 @@ document.addEventListener("DOMContentLoaded", () => {
          </form>
      `;
 
-     
-
      // Add form at the top of content-container
      contentContainer.appendChild(formContainer);
 
-     // Add event listener for closing the form
-     document.getElementById("close-form").addEventListener("click", function () {
-         formContainer.remove();
-     });
+     // Close modal when clicking close buttons
+     document.getElementById("close-form").addEventListener("click", closeModal);
+     document.getElementById("close-modal").addEventListener("click", closeModal);
+     
+    // Close modal function
+     function closeModal() {
+        formContainer.classList.remove("show");
+        setTimeout(() => formContainer.remove(), 300); // Remove from DOM after fade out
+    }
  }
 
  // Add event listener to the create-task button
