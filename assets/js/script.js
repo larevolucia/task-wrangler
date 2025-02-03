@@ -32,17 +32,21 @@ document.addEventListener("DOMContentLoaded", () => {
      // Create a form container div
      const formContainer = document.createElement("div");
      formContainer.id = "task-form-container";
-     
+    //  formContainer.classList.add("show");
      formContainer.innerHTML = `
          <form id="task-form">
+             <button type="button" id="close-form">&times;</button>
+             <h2>Add Task</h2>
              <input type="text" id="task-title" placeholder="Task Title" required>
              <input type="date" id="task-date">
              <div id="form-buttons">
              <button type="submit" class="btn-primary">Add Task</button>
-             <button type="button" id="close-form" class="btn-secondary">Cancel</button>
+             <button type="button" id="close-modal" class="btn-secondary">Cancel</button>
              </div>
          </form>
      `;
+
+     
 
      // Add form at the top of content-container
      contentContainer.appendChild(formContainer);

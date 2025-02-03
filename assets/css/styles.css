@@ -44,11 +44,18 @@ body {
    HEADINGS
 ---------------------------------- */
 
- h1 {
+h1, h2 {
   margin: 0;
-  font-size: 1.3rem;
   font-family: var(--secondary-font);
   letter-spacing: 0;
+}
+
+ h1 {
+  font-size: 1.3rem;
+}
+
+h2 {
+  font-size: 1.15rem;
 }
 
 /* -------------------------------
@@ -161,6 +168,7 @@ button:active{
 /* -------------------------------
    UTILITY CLASSES
 ---------------------------------- */
+
 
 /* -------------------------------
    NAVIGATION
@@ -311,7 +319,16 @@ FORM MODAL
   align-items: center;
   z-index: 1;
   transition: opacity 0.3s ease, visibility 0.3s ease;
+  /* initially hidden */
+  /* opacity: 0;
+  visibility: hidden; */
 }
+
+#task-form-container.show {
+  opacity: 1;
+  visibility: visible;
+}
+
 
 #task-form {
   background: white;
@@ -326,9 +343,42 @@ FORM MODAL
   gap: 1rem;
 }
 
-#form-buttons {
-  margin: 0 auto;
+/* Form input styles */
+
+#task-form input, #task-form select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
+
+
+/* Form Buttons */
+
+#form-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+#close-form {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #555;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  cursor: pointer;
+  box-shadow: none;
+  margin: 0;
+
+}
+
+#close-form:hover {
+  color: #000;
+}
+
 
 /* -------------------------------
   MEDIA QUERY - TABLET (min-width: 768px)
