@@ -1,3 +1,6 @@
+// Wrapping on DOMContentLoaded to Ensure that elements exists before manipulation
+// https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
+// https://csswizardry.com/2023/07/in-defence-of-domcontentloaded
 document.addEventListener("DOMContentLoaded", () => {
     // Show Progress Bar
     const progressBar = document.getElementById("progress-bar");
@@ -17,5 +20,39 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="task-options"><i class="fa-solid fa-ellipsis-vertical"></i></div>
       </div>
     </div>`
-});
 
+    const createTaskButton = document.getElementById("create-task");
+    const contentContainer = document.getElementById("content-container");
+
+    function showTaskForm () {
+   
+
+     // Create a form container div
+     const formContainer = document.createElement("div");
+     formContainer.id = "task-form-container";
+     formContainer.innerHTML = `
+         <form id="task-form">
+             <input type="text" id="task-title" placeholder="Task Title" required>
+             <input type="date" id="task-date" required>
+             <select id="task-status">
+                 <option value="to-do">To Do</option>
+                 <option value="in-progress">In Progress</option>
+                 <option value="done">Done</option>
+             </select>
+             <button type="submit" class="btn-primary">Add Task</button>
+             <button type="button" id="close-form" class="btn-secondary">Cancel</button>
+         </form>
+     `;
+
+     // Add form at the top of content-container
+     contentContainer.prepend(formContainer);
+
+     // Add event listener for closing the form
+     document.getElementById("close-form").addEventListener("click", function () {
+         formContainer.remove();
+     });
+ }
+
+ // Add event listener to the create-task button
+ createTaskButton.addEventListener("click", showTaskForm);
+});

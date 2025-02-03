@@ -295,30 +295,10 @@ border-bottom: none;
   margin-left: auto; /* Pushes it to the far right */
 }
 
+/* -------------------------------
+FORM 
+---------------------------------- */
 
-
-/* Task header: Holds status, title, and due date */
-/* .task-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem; 
-  flex-grow: 1; 
-}
-
-
-
-.task-due-date {
-  display: flex;
-  gap: 0.25rem;
-  align-items: center;
-  font-size: smaller;
-}
-
-.task-options {
-  cursor: pointer;
-  padding: 0.5rem;
-  transition: opacity 0.2s ease-in-out;
-} */
 
 
 
