@@ -26,26 +26,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showTaskForm () {
    
+    //  Check if form already exists
+     if (document.getElementById("task-form-container")) return;
 
      // Create a form container div
      const formContainer = document.createElement("div");
      formContainer.id = "task-form-container";
+     
      formContainer.innerHTML = `
          <form id="task-form">
              <input type="text" id="task-title" placeholder="Task Title" required>
-             <input type="date" id="task-date" required>
-             <select id="task-status">
-                 <option value="to-do">To Do</option>
-                 <option value="in-progress">In Progress</option>
-                 <option value="done">Done</option>
-             </select>
+             <input type="date" id="task-date">
+             <div id="form-buttons">
              <button type="submit" class="btn-primary">Add Task</button>
              <button type="button" id="close-form" class="btn-secondary">Cancel</button>
+             </div>
          </form>
      `;
 
      // Add form at the top of content-container
-     contentContainer.prepend(formContainer);
+     contentContainer.appendChild(formContainer);
 
      // Add event listener for closing the form
      document.getElementById("close-form").addEventListener("click", function () {
