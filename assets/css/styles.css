@@ -12,8 +12,8 @@
   --success-color: #4CAF50; /* Pigment Green */
   --attention-color: #FFC107; /* Amber */
   --danger-color: #F44336; /* Vermillion */
-  --background-color: #F5F5F5; /* Light Gray */
-  --text-color: #212121;  /* Dark Gray */
+  --background-color: #F5F5F5; /* White Smoke */
+  --text-color: #212121;  /* Eerie Black */
   --primary-font: "Inter", serif;
   --secondary-font: "Roboto", serif;
 }
@@ -35,8 +35,10 @@ body {
   flex-direction: column;
   font-size: large;
   line-height: 1.5;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.1rem;
 }
+
+
 
 /* -------------------------------
    HEADINGS
@@ -44,7 +46,9 @@ body {
 
  h1 {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: 1.3rem;
+  font-family: var(--secondary-font);
+  letter-spacing: 0;
 }
 
 /* -------------------------------
@@ -125,6 +129,11 @@ button:focus {
   /* Glow effect inspired by https://stackoverflow.com/questions/59502714/add-soft-glow-on-focus-to-input */
 }
 
+.btn-round {
+  border-radius: 50%;
+  font-size: smaller;
+}
+
 /* Active States */
 
 button:active{
@@ -168,6 +177,8 @@ nav {
   justify-content: space-between;
   align-items: center;
   box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.2);
+  font-weight: 700;
+  font-family: var(--secondary-font);
 }
 
 nav > ul {
@@ -182,8 +193,9 @@ nav li {
 }
 
 .navbar-branding {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1.3rem;
+  letter-spacing: 0;
+  font-weight: 800;
 }
 
 /* Nav Links */
@@ -204,10 +216,13 @@ border-bottom: none;
 #task-heading-container {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1rem;
   width: 100%;
   padding: 1rem;
+  margin-top: 1.5rem;
 }
+
 
 #progress-container {
   flex: 1;
@@ -225,10 +240,85 @@ border-bottom: none;
   transition: width 0.5s ease-in-out;
 }
 
-.btn-round {
-  border-radius: 50%;
+/* -------------------------------
+  TASKS CARD
+---------------------------------- */
+
+.task-card {
+  background-color: #22272B;
+  color: var(--background-color);
+  font-size: medium;
+  padding:  1.35rem 0.75rem;
+  border-radius: 0.75rem;
+  margin: 0.5rem;
 }
 
+
+.task-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.task-info {
+  /* Wrap Status and Title */
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0; 
+}
+
+.task-status {
+  text-transform: uppercase;
+  font-size: small;
+  font-weight: 700;
+  padding:  0.35rem 0.75rem;
+  border-radius: 0.75rem;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+
+.task-due-date {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex: 1; /* Takes up available space */
+  justify-content: right; 
+}
+
+.task-options {
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: opacity 0.2s ease-in-out;
+  margin-left: auto; /* Pushes it to the far right */
+}
+
+
+
+/* Task header: Holds status, title, and due date */
+/* .task-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem; 
+  flex-grow: 1; 
+}
+
+
+
+.task-due-date {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  font-size: smaller;
+}
+
+.task-options {
+  cursor: pointer;
+  padding: 0.5rem;
+  transition: opacity 0.2s ease-in-out;
+} */
 
 
 
@@ -237,7 +327,9 @@ border-bottom: none;
 ---------------------------------- */
 
 @media screen and (min-width: 768px) {
- 
+  #content-container {
+    margin: 0 10%;
+  }
 
 }
 
@@ -246,7 +338,9 @@ border-bottom: none;
 ---------------------------------- */
 
 @media screen and (min-width: 992px) {
-
+  #content-container {
+    margin: 0 15%;
+  }
 }
 
 /* -------------------------------
