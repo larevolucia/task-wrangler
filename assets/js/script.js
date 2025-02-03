@@ -71,7 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const task = {
             id: Date.now(),
             title,
-            dueDate
+            dueDate,
+            status: "to-do" // Default status
         };
 
         // Save to localStorage
