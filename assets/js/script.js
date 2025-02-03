@@ -89,22 +89,40 @@ document.addEventListener("DOMContentLoaded", () => {
  loadTasks();
 });
 
+// Show Task List function
 function loadTasks(){
-// Show Task List
-const taskList = document.getElementById("task-list");
-taskList.innerHTML = `<div class="task-card">
-  <div class="task-header">
-    <div class="task-info">
-      <span class="task-status to-do">To Do</span>
-      <span class="task-title">Some Title</span>
-    </div>
-    <span class="task-due-date">
-      <i class="fa-regular fa-calendar"></i>
-      <span class="task-due-date-text">Feb 2</span>
-    </span>
-    <div class="task-options"><i class="fa-solid fa-ellipsis-vertical"></i></div>
-  </div>
-</div>`
+const taskList = document.getElementById("tasks-container");
+taskList.innerHTML = ``;
+
+//retrieve the list from localStorage
+
+const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+tasks.forEach(task => {
+const taskElement = document.createElement("div");
+taskElement.classList.add("task-list");
+taskElement.innerHTML = `
+<div class="task-card">
+      <div class="task-header">
+        <div class="task-info">
+          <span class="task-status to-do">To Do</span>
+          <span class="task-title">${task.title}</span>
+        </div>
+        <span class="task-due-date">
+          <i class="fa-regular fa-calendar"></i>
+          <span class="task-due-date-text">${task.dueDate}</span>
+        </span>
+        <div class="task-options">
+        <i class="fa-solid fa-ellipsis-vertical" data-id="${task.id}"></i>
+        </div>
+      </div>
+    </div>`;
+
+ taskList.appendChild(taskElement);
+
+}
+
+)
 }
 
 
