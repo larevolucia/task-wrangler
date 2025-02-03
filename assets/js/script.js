@@ -49,16 +49,25 @@ document.addEventListener("DOMContentLoaded", () => {
      // Add form at the top of content-container
      contentContainer.appendChild(formContainer);
 
-     // Close modal when clicking close buttons
      document.getElementById("close-form").addEventListener("click", closeModal);
      document.getElementById("close-modal").addEventListener("click", closeModal);
+     document.getElementById("task-form").addEventListener("submit", saveTask);
      
-    // Close modal function
-     function closeModal() {
+     
+    }
+    
+    function closeModal() {
         formContainer.classList.remove("show");
         setTimeout(() => formContainer.remove(), 300); // Remove from DOM after fade out
     }
- }
+    
+    // Close modal function 
+    // Save task
+    function saveTask(event) {
+        event.preventDefault(); 
+        alert("Task Saved");
+    }
+
 
  // Add event listener to the create-task button
  createTaskButton.addEventListener("click", showTaskForm);
