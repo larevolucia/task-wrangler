@@ -57,13 +57,18 @@ function showCreateTaskForm () {
 
  // Close modal function 
  function closeModal() {
+    // Check and remove the create task form if it exists
     if (createTaskFormContainer) {
         createTaskFormContainer.classList.remove("show");
+        createTaskFormContainer.remove(); 
+        createTaskFormContainer = null; 
     }
-    
+
     if (editTaskFormContainer) {
         editTaskFormContainer.classList.remove("show");
-    }
+        editTaskFormContainer.remove(); 
+        editTaskFormContainer = null; 
+}
 }
 
 
