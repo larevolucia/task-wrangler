@@ -102,7 +102,6 @@ function saveTask(event) {
 
     alert("Task added successfully!"); // Feedback to user
     closeModal();
-    document.getElementById("create-task-form").reset();
 
      // Immediately update the task list
     loadTasks(); 
@@ -111,6 +110,7 @@ function saveTask(event) {
 
 // Show Task List function
 function loadTasks(){
+    console.log("List refresh")
 const taskList = document.getElementById("tasks-container");
 taskList.innerHTML = ``;
 
@@ -206,7 +206,6 @@ function editTask(event) {
     
     alert("Task edited successfully!"); // Feedback to user
     closeModal();
-    document.getElementById("edit-task-form").reset();
     
     // Refresh task list on page
     loadTasks();  
