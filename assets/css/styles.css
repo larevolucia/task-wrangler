@@ -256,6 +256,8 @@ border-bottom: none;
   TASKS CARD
 ---------------------------------- */
 
+
+
 .task-card {
   background-color: #22272B;
   color: var(--background-color);
@@ -263,23 +265,14 @@ border-bottom: none;
   padding:  1rem 0.85rem;
   border-radius: 0.75rem;
   margin: 0.5rem;
+  /* grid style */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
-
-.task-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-}
-
-.task-info {
-  /* Wrap Status and Title */
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  flex-shrink: 0; 
-}
 
 .task-status {
   text-transform: uppercase;
@@ -289,6 +282,9 @@ border-bottom: none;
   border-radius: 0.75rem;
   background-color: var(--background-color);
   color: var(--text-color);
+  /* grid style */
+  grid-column: 1;
+  grid-row: 1;
 }
 
 
@@ -298,19 +294,50 @@ border-bottom: none;
   gap: 0.25rem;
   flex: 1; /* Takes up available space */
   justify-content: right; 
+  /* grid style */
+  grid-column: 2;
+  grid-row: 1;
 }
 
-.task-options {
-  padding: 0.5rem;
-  transition: opacity 0.2s ease-in-out;
-  margin-left: auto; /* Pushes it to the far right */
-  display: flex;
-  gap: 0.85rem;
+.task-title{
+  /* grid style */
+  grid-column: 1 / span 2;
+  grid-row: 2;
+
+}
+
+.task-due-date-text {
+  display: none; /* Initially hide the date */
+  background: var(--background-color); /* Optional: Background for visibility */
+  color: var(--text-color);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.task-due-date:hover .task-due-date-text {
+  display: inline; /* Show when hovering over the calendar icon */
+}
+
+
+.edit-task, .delete-task {
+  font-size: smaller;
+  
+}
+.edit-task{
+  /* grid style */
+  grid-column: 1;
+  grid-row: 3;
+
 }
 
 .delete-task{
   background-color: var(--danger-color);
   opacity: 0.8;
+  /* grid style */
+  grid-column: 2;
+  grid-row: 3;
 }
 
 /* -------------------------------

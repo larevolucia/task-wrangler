@@ -7,16 +7,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // Wrapping on DOMContentLoaded to Ensure that elements exists before manipulation
     // https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
     // https://csswizardry.com/2023/07/in-defence-of-domcontentloaded
+
     // Show Progress Bar
     const progressBar = document.getElementById("progress-bar");
     progressBar.style.width = "25%";
 
-    
-   
-
- // Add event listener to the create-task button
- createTaskButton.addEventListener("click", showTaskForm);
- loadTasks();
+    // Add event listener to the create-task button
+    createTaskButton.addEventListener("click", showTaskForm);
+    loadTasks();
 });
 
 
@@ -25,7 +23,6 @@ function showTaskForm () {
     //  Check if form already exists
      if (formContainer) {
         formContainer.classList.toggle("show"); 
-        // Show existing modal
         return;
     }
 
@@ -59,7 +56,6 @@ function showTaskForm () {
  // Close modal function 
  function closeModal() {
     formContainer.classList.remove("show");
-   //  setTimeout(() => formContainer.remove(), 300); Remove from DOM after fade out
 }
 
 // Save task
@@ -109,24 +105,22 @@ const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 tasks.forEach(task => {
 const taskElement = document.createElement("div");
-taskElement.classList.add("task-list");
+taskElement.classList.add("task-card");
 taskElement.innerHTML = `
-<div class="task-card">
-      <div class="task-header">
-        <div class="task-info">
-          <span class="task-status to-do">${task.status || "N/A"}</span>
-          <span class="task-title">${task.title}</span>
+
+  
+        <div class="task-status">
+          ${task.status || "N/A"}
         </div>
-        ${task.dueDate ? `<span class="task-due-date">
+           ${task.dueDate ? `<div class="task-due-date">
           <i class="fa-regular fa-calendar"></i>
           <span class="task-due-date-text">${task.dueDate}</span>
-        </span>`: ''}
-        <div class="task-options">
-                <button class="edit-task btn-round" data-id="${task.id}"><i class="fa-solid fa-pen"></i></button>
-                <button class="delete-task btn-round" data-id="${task.id}"><i class="fa-solid fa-trash"></i></button>
-        </div>
-      </div>
-    </div>`;
+        </div>`: '<div></div>'}
+        <div class="task-title">${task.title}</div>
+        <button class="edit-task" data-id="${task.id}"><i class="fa-solid fa-pen"></i></button>
+        <button class="delete-task" data-id="${task.id}"><i class="fa-solid fa-trash"></i></button>
+      
+   `;
 
  taskList.appendChild(taskElement);
 
