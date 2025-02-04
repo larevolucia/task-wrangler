@@ -331,7 +331,7 @@ border-bottom: none;
 /* -------------------------------
 FORM MODAL
 ---------------------------------- */
-#task-form-container {
+#create-task-form-container, #edit-task-form-container {
   position: fixed; /* Full-screen overlay */
   top: 0;
   left: 0;
@@ -348,13 +348,13 @@ FORM MODAL
   visibility: hidden;
 }
 
-#task-form-container.show {
+#create-task-form-container.show, #edit-task-form-container.show {
   opacity: 1;
   visibility: visible;
 }
 
 
-#task-form {
+#create-task-form, #edit-task-form {
   background: white;
   padding: 1.5rem;
   border-radius: 8px;
@@ -369,7 +369,7 @@ FORM MODAL
 
 /* Form input styles */
 
-#task-form input, #task-form select {
+#create-task-form input, #create-task-form select, #edit-task-form input, #edit-task-form select {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid #ccc;
@@ -379,13 +379,13 @@ FORM MODAL
 
 /* Form Buttons */
 
-#form-buttons {
+.form-buttons {
   display: flex;
   gap: 1rem;
   justify-content: flex-end;
 }
 
-#close-form {
+#close-create-form, #close-edit-form {
   background: none;
   border: none;
   font-size: 1.5rem;
@@ -399,7 +399,7 @@ FORM MODAL
 
 }
 
-#close-form:hover {
+#close-create-form:hover, #close-edit-form{
   color: #000;
 }
 

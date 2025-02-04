@@ -1,7 +1,9 @@
 const createTaskButton = document.getElementById("create-task");
 const contentContainer = document.getElementById("content-container");
 
-let formContainer; // store formContainer globally
+// store formContainer globally
+let createTaskFormContainer;
+let editTaskFormContainer; 
 
 document.addEventListener("DOMContentLoaded", () => {
     // Wrapping on DOMContentLoaded to Ensure that elements exists before manipulation
@@ -13,54 +15,62 @@ document.addEventListener("DOMContentLoaded", () => {
     progressBar.style.width = "25%";
 
     // Add event listener to the create-task button
-    createTaskButton.addEventListener("click", showTaskForm);
+    createTaskButton.addEventListener("click", showCreateTaskForm);
     loadTasks();
 });
 
 
-function showTaskForm () {
+function showCreateTaskForm () {
    
     //  Check if form already exists
-     if (formContainer) {
-        formContainer.classList.toggle("show"); 
+     if (createTaskFormContainer) {
+        createTaskFormContainer.classList.toggle("show"); 
         return;
     }
 
      // Create a form container div
-     formContainer = document.createElement("div");
-     formContainer.id = "task-form-container";
-     formContainer.classList.add("show");
-     formContainer.innerHTML = `
-         <form id="task-form">
-             <button type="button" id="close-form">&times;</button>
+     createTaskFormContainer = document.createElement("div");
+     createTaskFormContainer.id = "create-task-form-container";
+     createTaskFormContainer.classList.add("show");
+     createTaskFormContainer.innerHTML = `
+         <form id="create-task-form">
+             <button type="button" id="close-create-form">&times;</button>
              <h2>Add Task</h2>
              <input type="text" id="task-title" placeholder="Task Title" required>
              <input type="date" id="task-date">
-             <div id="form-buttons">
+             <div class="form-buttons">
              <button type="submit" class="btn-primary">Add Task</button>
-             <button type="button" id="close-modal" class="btn-secondary">Cancel</button>
+             <button type="button" id="close-create-modal" class="btn-secondary">Cancel</button>
              </div>
          </form>
      `;
 
      // Add form at the top of content-container
-     contentContainer.appendChild(formContainer);
+     contentContainer.appendChild(createTaskFormContainer);
 
-     document.getElementById("close-form").addEventListener("click", closeModal);
-     document.getElementById("close-modal").addEventListener("click", closeModal);
-     document.getElementById("task-form").addEventListener("submit", saveTask);
+     document.getElementById("close-create-form").addEventListener("click", closeModal);
+     document.getElementById("close-create-modal").addEventListener("click", closeModal);
+     document.getElementById("create-task-form").addEventListener("submit", saveTask);
      
      
     }
 
  // Close modal function 
  function closeModal() {
-    formContainer.classList.remove("show");
+    if (createTaskFormContainer) {
+        createTaskFormContainer.classList.remove("show");
+    }
+    
+    if (editTaskFormContainer) {
+        editTaskFormContainer.classList.remove("show");
+    }
 }
+
 
 // Save task
 function saveTask(event) {
     event.preventDefault(); 
+    console.log(event);
     const title = document.getElementById("task-title").value;
     const dueDate = document.getElementById("task-date").value;
 
@@ -87,7 +97,7 @@ function saveTask(event) {
 
     alert("Task added successfully!"); // Feedback to user
     closeModal();
-    document.getElementById("task-form").reset();
+    document.getElementById("create-task-form").reset();
 
      // Immediately update the task list
     loadTasks(); 
@@ -141,7 +151,7 @@ taskElement.innerHTML = `
 // Add event listeners for edit buttons
 document.querySelectorAll(".edit-task").forEach(button => {
     button.addEventListener("click", function () {
-        editTask(this.dataset.id);
+        showEditTaskForm(this.dataset.id);
     });
 });
 
@@ -166,21 +176,82 @@ function deleteTask(taskId) {
 }
 
 
-function editTask(taskId) {
-    // retrieve stored tasks, if there is no tasks default to empty array
-    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+function editTask(event) {
+
+    event.preventDefault();
+
+    const taskId = event.target.dataset.id;
+    const title = document.getElementById("new-task-title").value;
+    const dueDate = document.getElementById("new-task-date").value;
+    const status = document.getElementById("new-status").value;
+
+    // retrieve stored tasks
+    let tasks = JSON.parse(localStorage.getItem("tasks"));
     
-    // console.log(tasks)
+    // Find the index of the task to edit
+    const taskIndex = tasks.findIndex(task => task.id === Number(taskId));
     
+    // Update the task object
+    tasks[taskIndex].title = title;
+    tasks[taskIndex].dueDate = dueDate;
+    tasks[taskIndex].status = status;
+    
+    // Save updated tasks array back to localStorage
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    
+    alert("Task edited successfully!"); // Feedback to user
+    closeModal();
+    document.getElementById("edit-task-form").reset();
+    
+    // Refresh task list on page
+    loadTasks();  
+
+}
+
+
+function showEditTaskForm(taskId){
+
+    // retrieve stored tasks
+    let tasks = JSON.parse(localStorage.getItem("tasks"));
+    
+    // create new array filtering only the task with given taskId
     let currentTask = tasks.filter(task => task.id === Number(taskId));
     
-    console.log(tasks)
-    console.log(currentTask)
 
-    // JSON.parse(localStorage.getItem('tasks')).id
+    // define possible status
+    const statusOptions = ["to-do", "in progress", "done"];
 
-    
+    const statusSelectOptions = statusOptions.map(status => `
+        <option value="${status}" ${currentTask[0].status === status ? "selected" : ""}>${status}</option>
+    `).join("");
+
+    // Create a form container div
+    editTaskFormContainer = document.createElement("div");
+    editTaskFormContainer.id = "edit-task-form-container";
+    editTaskFormContainer.classList.add("show");
+    editTaskFormContainer.innerHTML = `
+        <form id="edit-task-form" data-id="${taskId}">
+            <button type="button" id="close-edit-form">&times;</button>
+            <h2>Edit Task</h2>
+            <input type="text" id="new-task-title" placeholder="Task Title" value="${currentTask[0].title}" required>
+            <input type="date" id="new-task-date" value="${currentTask[0].dueDate}" >
+            <select id="new-status" name="status">
+                ${statusSelectOptions}
+            </select>
+            <div id="form-buttons">
+            <button type="submit" class="btn-primary">Save Task</button>
+            <button type="button" id="close-edit-modal" class="btn-secondary">Cancel</button>
+            </div>
+        </form>
+    `;
+     // Add form at the top of content-container
+     contentContainer.appendChild(editTaskFormContainer);
+
+     document.getElementById("close-edit-form").addEventListener("click", closeModal);
+     document.getElementById("close-edit-modal").addEventListener("click", closeModal);
+     document.getElementById("edit-task-form").addEventListener("submit", editTask);
 }
+
 
 
 function formatDate(dateString) {
