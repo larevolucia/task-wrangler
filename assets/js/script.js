@@ -104,21 +104,33 @@ taskList.innerHTML = ``;
 const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 tasks.forEach(task => {
+const newDate = formatDate(task.dueDate);
 const taskElement = document.createElement("div");
 taskElement.classList.add("task-card");
 taskElement.innerHTML = `
 
   
-        <div class="task-status">
+        <div class="status-box">
+          <span class="task-status">
           ${task.status || "N/A"}
+          </span>
         </div>
-           ${task.dueDate ? `<div class="task-due-date">
-          <i class="fa-regular fa-calendar"></i>
-          <span class="task-due-date-text">${task.dueDate}</span>
-        </div>`: '<div></div>'}
-        <div class="task-title">${task.title}</div>
-        <button class="edit-task" data-id="${task.id}"><i class="fa-solid fa-pen"></i></button>
-        <button class="delete-task" data-id="${task.id}"><i class="fa-solid fa-trash"></i></button>
+        ${task.dueDate ? 
+         `<div class="task-due-date date-box">
+             <i class="fa-regular fa-calendar"></i>
+             <span class="task-due-date-text">${newDate}</span>
+          </div>`:
+          `<div class="date-box"></div>`
+        }
+        <div class="title-box">
+          <span class="task-title">${task.title}</span>
+        </div>
+        <div class="edit-box">
+          <button class="edit-task" data-id="${task.id}"><i class="fa-solid fa-pen"></i></button>
+        </div>
+        <div class="delete-box">
+          <button class="delete-task" data-id="${task.id}"><i class="fa-solid fa-trash"></i></button>
+        </div>
       
    `;
 
@@ -156,4 +168,11 @@ function deleteTask(taskId) {
 
 function editTask(taskId) {
     
+}
+
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const options = { month: 'short', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
 }

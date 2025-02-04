@@ -267,8 +267,8 @@ border-bottom: none;
   margin: 0.5rem;
   /* grid style */
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto auto;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto auto;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
 }
@@ -282,9 +282,6 @@ border-bottom: none;
   border-radius: 0.75rem;
   background-color: var(--background-color);
   color: var(--text-color);
-  /* grid style */
-  grid-column: 1;
-  grid-row: 1;
 }
 
 
@@ -294,50 +291,41 @@ border-bottom: none;
   gap: 0.25rem;
   flex: 1; /* Takes up available space */
   justify-content: right; 
-  /* grid style */
-  grid-column: 2;
-  grid-row: 1;
-}
-
-.task-title{
-  /* grid style */
-  grid-column: 1 / span 2;
-  grid-row: 2;
-
-}
-
-.task-due-date-text {
-  display: none; /* Initially hide the date */
-  background: var(--background-color); /* Optional: Background for visibility */
-  color: var(--text-color);
-  padding: 0.2rem 0.4rem;
-  border-radius: 4px;
-  font-size: 0.9rem;
-  white-space: nowrap;
-}
-
-.task-due-date:hover .task-due-date-text {
-  display: inline; /* Show when hovering over the calendar icon */
 }
 
 
 .edit-task, .delete-task {
   font-size: smaller;
-  
-}
-.edit-task{
-  /* grid style */
-  grid-column: 1;
-  grid-row: 3;
-
 }
 
 .delete-task{
   background-color: var(--danger-color);
   opacity: 0.8;
-  /* grid style */
+}
+
+/* Grid item styles */
+
+.status-box {
+  grid-column: 1;
+  grid-row: 1;
+}
+.date-box {
   grid-column: 2;
-  grid-row: 3;
+  grid-row: 1;
+}
+.title-box{
+  grid-column: 1 / span 2;
+  grid-row: 2;
+}
+.edit-box {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: right;
+}
+.delete-box {
+  grid-column: 3;
+  grid-row: 2;
+  justify-self: right;
 }
 
 /* -------------------------------
@@ -424,6 +412,42 @@ FORM MODAL
   #content-container {
     margin: 0 10%;
   }
+
+  /* Task Card Grid */
+  /* .task-card {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+  
+  
+  .status-box {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  
+  
+  .date-box {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  
+  .title-box{
+    grid-column: 1 / span 2;
+    grid-row: 2;
+  
+  }
+    
+  .edit-box{
+    grid-column:3;
+    grid-row: 1;
+  
+  }
+  
+  .delete-box{
+    grid-column: 3;
+    grid-row: 2;
+  } */
+  
 
 }
 
