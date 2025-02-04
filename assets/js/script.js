@@ -75,13 +75,13 @@ function saveTask(event) {
 
     // Create new task object
     const task = {
-        id: Date.now(),
+        id: Date.now(), // timestamp used as id
         title,
         dueDate,
         status: "to-do" // Default status
     };
 
-    // Save to localStorage
+    // Add task to the end of array and save to localStorage
     tasks.push(task);
     localStorage.setItem("tasks", JSON.stringify(tasks));
 
@@ -167,6 +167,18 @@ function deleteTask(taskId) {
 
 
 function editTask(taskId) {
+    // retrieve stored tasks, if there is no tasks default to empty array
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    
+    // console.log(tasks)
+    
+    let currentTask = tasks.filter(task => task.id === Number(taskId));
+    
+    console.log(tasks)
+    console.log(currentTask)
+
+    // JSON.parse(localStorage.getItem('tasks')).id
+
     
 }
 
