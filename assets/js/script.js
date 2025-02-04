@@ -37,7 +37,7 @@ function showCreateTaskForm () {
              <button type="button" id="close-create-form">&times;</button>
              <h2>Add Task</h2>
              <input type="text" id="task-title" placeholder="Task Title" required>
-             <input type="date" id="task-date">
+             <input type="date" id="task-date" min="${getTodayDate()}">
              <div class="form-buttons">
              <button type="submit" class="btn-primary">Add Task</button>
              <button type="button" id="close-create-modal" class="btn-secondary">Cancel</button>
@@ -234,7 +234,7 @@ function showEditTaskForm(taskId){
             <button type="button" id="close-edit-form">&times;</button>
             <h2>Edit Task</h2>
             <input type="text" id="new-task-title" placeholder="Task Title" value="${currentTask[0].title}" required>
-            <input type="date" id="new-task-date" value="${currentTask[0].dueDate}" >
+            <input type="date" id="new-task-date" value="${currentTask[0].dueDate}" min="${getTodayDate()}">
             <select id="new-status" name="status">
                 ${statusSelectOptions}
             </select>
@@ -254,8 +254,14 @@ function showEditTaskForm(taskId){
 
 
 
+// utility functions
+
 function formatDate(dateString) {
     const date = new Date(dateString);
     const options = { month: 'short', day: 'numeric' };
     return date.toLocaleDateString('en-US', options);
+}
+
+function getTodayDate() {
+    return new Date().toISOString().split('T')[0];
 }
