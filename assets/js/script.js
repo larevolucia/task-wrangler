@@ -45,7 +45,7 @@ function showCreateTaskForm () {
          <form id="create-task-form">
              <button type="button" id="close-create-form">&times;</button>
              <h2>Add Task</h2>
-             <input type="text" id="task-title" placeholder="Task Title" required>
+             <input type="text" id="task-title" placeholder="Task Title">
              <textarea id="task-description"></textarea>
              <input type="date" id="task-date" min="${getTodayDate()}">
              <div class="form-buttons">
@@ -97,7 +97,8 @@ function saveTask(event) {
     const description = document.getElementById("task-description").value;
 
     if (!title) {
-        alert("Please fill in all required fields.");
+        showToast("Please fill in all required fields.", "warning", 4000);
+        markField("task-title");
         return;
     }
 
@@ -118,7 +119,7 @@ function saveTask(event) {
     tasks.push(task);
     localStorage.setItem("tasks", JSON.stringify(tasks));
 
-    alert("Task added successfully!"); // Feedback to user
+    showToast("Task added successfully!", "success", 4000); // Feedback to user
     closeModal();
 
      // Immediately update the task list
@@ -237,6 +238,8 @@ function deleteTask(taskId) {
     tasks = tasks.filter(task => task.id != taskId);
     // save updated task lists to localStorage
     localStorage.setItem("tasks", JSON.stringify(tasks));
+    // Feedback to user
+    showToast("Task deleted successfully!", "success", 4000)
     // Refresh task list on page
     loadTasks();  
 }
@@ -267,7 +270,7 @@ function editTask(event) {
     // Save updated tasks array back to localStorage
     localStorage.setItem("tasks", JSON.stringify(tasks));
     
-    alert("Task edited successfully!"); // Feedback to user
+    showToast("Task edited successfully!", "success", 4000); // Feedback to user
     closeModal();
     
     // Refresh task list on page
@@ -353,4 +356,72 @@ function formatDate(dateString) {
 
 function getTodayDate() {
     return new Date().toISOString().split('T')[0];
+}
+
+function markField(fieldId){
+
+    let field = document.getElementById(fieldId);
+
+    field.classList.add("error-border");
+    
+    // Remove error class when user starts typing
+   field.addEventListener("input", () => {
+        field.classList.remove("error-border");
+    }, { once: true }); 
+}
+
+// Toast icons
+let toastIcon = {
+    success:
+    '<i class="fa-solid fa-check"></i>',
+    danger:
+    '<i class="fa-solid fa-xmark"></i>',
+    info:
+    '<i class="fa-solid fa-info"></i>',
+    warning:
+    '<i class="fa-solid fa-triangle-exclamation"></i>'
+};
+
+// Toast Elements
+let success = 
+    document.querySelector(".custom-toast.success-toast");
+let information = 
+    document.querySelector(".custom-toast.info-toast");
+let failed = 
+    document.querySelector(".custom-toast.danger-toast");
+let warn = 
+    document.querySelector(".custom-toast.warning-toast");
+
+// Create a Toast notification
+function showToast(message, toastType, duration) {
+    // Code from: https://www.geeksforgeeks.org/how-to-make-a-toast-notification-in-html-css-and-javascript/
+
+    // Create toaster element
+    let toastContainer = document.createElement('div');
+    toastContainer.classList.add(
+        "toast", `toast-${toastType}`);
+    toastContainer.innerHTML = ` <div class="toast-content-wrapper">
+    <div class="toast-icon">
+    ${toastIcon[toastType]}
+    </div>
+    <div class="toast-message">${message}</div>
+    <div class="toast-progress"></div>
+    </div>`;
+    
+    // Fallback for animation duration
+    duration = duration || 5000;
+    // Convert animation duration to seconds 
+    toastContainer.querySelector(".toast-progress").style.animationDuration =
+        `${duration / 1000}s`;
+
+
+    // Remove existing toast
+    let toastAlready = 
+        document.body.querySelector(".toast");
+    if (toastAlready) {
+        toastAlready.remove();
+    }
+
+    document.body.appendChild(toastContainer)
+
 }
