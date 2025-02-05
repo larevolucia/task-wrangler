@@ -303,8 +303,21 @@ border-bottom: none;
 
 .delete-task{
   background-color: var(--danger-color);
-  opacity: 0.8;
 }
+
+/* Task Overdue styles */
+
+.overdue {
+  background-color: var(--danger-color) !important;
+  color: f0f0f0 !important; 
+  border-left: 5px solid darkred; 
+}
+
+.overdue .delete-task {
+  background-color: #f0f0f0 !important; 
+  color: var(--danger-color) !important; 
+}
+
 
 /* Grid item styles */
 

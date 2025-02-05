@@ -129,14 +129,25 @@ function loadTasks(){
 const taskList = document.getElementById("tasks-container");
 taskList.innerHTML = ``;
 
+// get today date for overdue task styling
+const today = getTodayDate();
+
 //retrieve the list from localStorage
 
 const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 tasks.forEach(task => {
+
 const newDate = formatDate(task.dueDate);
+const isOverdue = task.dueDate && task.dueDate < today;
+
 const taskElement = document.createElement("div");
 taskElement.classList.add("task-card");
+
+if (isOverdue) {
+    taskElement.classList.add("overdue");
+}
+
 taskElement.innerHTML = `
 
   
