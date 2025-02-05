@@ -284,6 +284,9 @@ border-bottom: none;
   color: var(--text-color);
 }
 
+.task-description-icon {
+  padding-left: 10px;
+}
 
 .task-due-date {
   display: flex;
@@ -369,7 +372,7 @@ FORM MODAL
 
 /* Form input styles */
 
-#create-task-form input, #create-task-form select, #edit-task-form input, #edit-task-form select {
+#create-task-form input, #create-task-form select, #create-task-form textarea,#edit-task-form input, #edit-task-form select, #edit-task-form textarea {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid #ccc;

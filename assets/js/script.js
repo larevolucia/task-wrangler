@@ -10,15 +10,20 @@ document.addEventListener("DOMContentLoaded", () => {
     // https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
     // https://csswizardry.com/2023/07/in-defence-of-domcontentloaded
 
+    
+    // Add event listener to the create-task button
+    createTaskButton.addEventListener("click", showCreateTaskForm);
+    console.log("DOM loaded")
+    showProgressBar();
+    loadTasks();
+});
+function showProgressBar(){
     // Show Progress Bar
     const progressBar = document.getElementById("progress-bar");
     progressBar.style.width = "25%";
 
-    // Add event listener to the create-task button
-    createTaskButton.addEventListener("click", showCreateTaskForm);
-    loadTasks();
-});
 
+}
 
 function showCreateTaskForm () {
    
@@ -37,6 +42,7 @@ function showCreateTaskForm () {
              <button type="button" id="close-create-form">&times;</button>
              <h2>Add Task</h2>
              <input type="text" id="task-title" placeholder="Task Title" required>
+             <textarea id="task-description"></textarea>
              <input type="date" id="task-date" min="${getTodayDate()}">
              <div class="form-buttons">
              <button type="submit" class="btn-primary">Add Task</button>
@@ -76,8 +82,10 @@ function showCreateTaskForm () {
 function saveTask(event) {
     event.preventDefault(); 
     console.log(event);
+
     const title = document.getElementById("task-title").value;
     const dueDate = document.getElementById("task-date").value;
+    const description = document.getElementById("task-description").value;
 
     if (!title) {
         alert("Please fill in all required fields.");
@@ -93,6 +101,7 @@ function saveTask(event) {
         id: Date.now(), // timestamp used as id
         title,
         dueDate,
+        description,
         status: "to-do" // Default status
     };
 
@@ -139,6 +148,8 @@ taskElement.innerHTML = `
         }
         <div class="title-box">
           <span class="task-title">${task.title}</span>
+          ${task.description ? `<span class="task-description-icon"><i class="fa-solid fa-align-left"></i>
+            </span>` : ''}
         </div>
         <div class="edit-box">
           <button class="edit-task" data-id="${task.id}"><i class="fa-solid fa-pen"></i></button>
@@ -189,6 +200,7 @@ function editTask(event) {
     const title = document.getElementById("new-task-title").value;
     const dueDate = document.getElementById("new-task-date").value;
     const status = document.getElementById("new-status").value;
+    const description = document.getElementById("new-task-description").value;
 
     // retrieve stored tasks
     let tasks = JSON.parse(localStorage.getItem("tasks"));
@@ -200,6 +212,7 @@ function editTask(event) {
     tasks[taskIndex].title = title;
     tasks[taskIndex].dueDate = dueDate;
     tasks[taskIndex].status = status;
+    tasks[taskIndex].description = description;
     
     // Save updated tasks array back to localStorage
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -242,6 +255,7 @@ function showEditTaskForm(taskId){
             <select id="new-status" name="status">
                 ${statusSelectOptions}
             </select>
+            <textarea id="new-task-description">${currentTask[0].description ? currentTask[0].description : ""}</textarea>
             <div id="form-buttons">
             <button type="submit" class="btn-primary">Save Task</button>
             <button type="button" id="close-edit-modal" class="btn-secondary">Cancel</button>
