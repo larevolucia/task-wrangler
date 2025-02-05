@@ -38,7 +38,7 @@ body {
   letter-spacing: 0.1rem;
 }
 
-
+p {margin:0;}
 
 /* -------------------------------
    HEADINGS
@@ -51,11 +51,11 @@ h1, h2 {
 }
 
  h1 {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
 }
 
 h2 {
-  font-size: 1.15rem;
+  font-size: 1.3rem;
 }
 
 /* -------------------------------
@@ -332,9 +332,9 @@ border-bottom: none;
 }
 
 /* -------------------------------
-FORM MODAL
+MODALS
 ---------------------------------- */
-#create-task-form-container, #edit-task-form-container {
+#create-task-form-container, #edit-task-form-container, #task-details-container {
   position: fixed; /* Full-screen overlay */
   top: 0;
   left: 0;
@@ -351,7 +351,7 @@ FORM MODAL
   visibility: hidden;
 }
 
-#create-task-form-container.show, #edit-task-form-container.show {
+#create-task-form-container.show, #edit-task-form-container.show, #task-details-container.show {
   opacity: 1;
   visibility: visible;
 }
@@ -399,13 +399,43 @@ FORM MODAL
   cursor: pointer;
   box-shadow: none;
   margin: 0;
-
+  
 }
 
-#close-create-form:hover, #close-edit-form{
+#close-create-form:hover, #close-edit-form:hover, #close-details-modal:hover{
   color: #000;
 }
 
+/* Details Modal */
+
+#details-modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  font-size: 1rem;
+  text-align: left;
+  animation: fadeIn 0.3s ease-out;
+}
+
+#close-details-modal {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #555;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  box-shadow: none;
+}
 
 /* -------------------------------
   MEDIA QUERY - TABLET (min-width: 768px)

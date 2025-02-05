@@ -4,7 +4,7 @@ const contentContainer = document.getElementById("content-container");
 // store formContainer globally
 let createTaskFormContainer;
 let editTaskFormContainer; 
-let taskDetailsModal; 
+let taskDetailsContainer; 
 
 document.addEventListener("DOMContentLoaded", () => {
     // Wrapping on DOMContentLoaded to Ensure that elements exists before manipulation
@@ -76,10 +76,10 @@ function showCreateTaskForm () {
         editTaskFormContainer.remove(); 
         editTaskFormContainer = null; 
     }
-    if(taskDetailsModal) {
-       taskDetailsModal.classList.remove("show");
-       taskDetailsModal.remove();
-       taskDetailsModal = null;
+    if(taskDetailsContainer) {
+       taskDetailsContainer.classList.remove("show");
+       taskDetailsContainer.remove();
+       taskDetailsContainer = null;
     }
 }
 
@@ -196,24 +196,24 @@ document.querySelectorAll(".edit-task").forEach(button => {
 function showTaskDetails(task){
 
     // Create modal container
-    taskDetailsModal = document.createElement("div");
-    taskDetailsModal.id = "task-details-modal";
-    taskDetailsModal.classList.add("details-modal");
-    taskDetailsModal.classList.add("show");
-    taskDetailsModal.innerHTML = `
-        <div class="modal-content">
-            <button class="close-details-modal">&times;</button>
+    taskDetailsContainer = document.createElement("div");
+    taskDetailsContainer.id = "task-details-container";
+    taskDetailsContainer.classList.add("details-modal");
+    taskDetailsContainer.classList.add("show");
+    taskDetailsContainer.innerHTML = `
+        <div id="details-modal-content">
+            <button id="close-details-modal">&times;</button>
             <h2>${task.title}</h2>
-            <p class="task-status">${task.status}</p>
+            <p><span class="task-status">${task.status}</span></p>
             ${task.dueDate ? `<p><strong>Due Date:</strong> ${formatDate(task.dueDate)}</p>` : ""}
             <p><strong>Description:</strong></p>
             <p>${task.description ? task.description : "No description available."}</p>
         </div>
     `;
 
-    contentContainer.appendChild(taskDetailsModal);
+    contentContainer.appendChild(taskDetailsContainer);
 
-    taskDetailsModal.querySelector(".close-details-modal").addEventListener("click", closeModal);
+    document.getElementById("close-details-modal").addEventListener("click", closeModal);
 
 }
 
