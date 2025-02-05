@@ -38,7 +38,10 @@ body {
   letter-spacing: 0.1rem;
 }
 
-p {margin:0;}
+p {
+  margin:0;
+  font-size: medium;
+}
 
 /* -------------------------------
    HEADINGS
@@ -57,10 +60,6 @@ h1, h2 {
 h2 {
   font-size: 1.3rem;
 }
-
-/* -------------------------------
-   LAYOUT ELEMENTS
----------------------------------- */
 
 
 /* -------------------------------
@@ -174,7 +173,7 @@ button:active{
 }
 
 /* -------------------------------
-   NAVIGATION
+NAVIGATION
 ---------------------------------- */
 nav {
   position: sticky;
@@ -218,11 +217,11 @@ nav a {
   border-radius: 2rem;
 }
 nav a:hover {
-border-bottom: none;
+  border-bottom: none;
 }
 
 /* -------------------------------
-  TASKS HEADING
+TASKS HEADING
 ---------------------------------- */
 
 #task-heading-container {
@@ -251,9 +250,19 @@ border-bottom: none;
   border-radius: 15px 0 0 15px;
   transition: width 0.5s ease-in-out;
 }
-
 /* -------------------------------
-  TASKS CARD
+   EMPTY STATE
+---------------------------------- */
+.empty-message {
+  color: var(--primary-color);
+  font-size: large;
+  text-align: center;
+  margin: 25% auto;
+  width: 80%;
+  max-width: 400px;
+}
+/* -------------------------------
+TASKS CARD
 ---------------------------------- */
 
 
@@ -424,6 +433,9 @@ input, select, textarea {
 
 label {
   font-size: 0.9rem;
+}
+textarea {
+  height: 100px;
 }
 
 /* Error border for required fields */

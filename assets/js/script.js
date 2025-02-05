@@ -70,7 +70,7 @@ function showCreateTaskForm () {
 
      document.getElementById("close-create-form").addEventListener("click", closeModal);
      document.getElementById("close-create-modal").addEventListener("click", closeModal);
-     document.getElementById("create-task-form").addEventListener("submit", saveTask);
+     document.getElementById("create-task-form").addEventListener("submit", createTask);
      
      
     }
@@ -98,7 +98,7 @@ function showCreateTaskForm () {
 
 
 // Save task
-function saveTask(event) {
+function createTask(event) {
     event.preventDefault(); 
     console.log(event);
 
@@ -127,26 +127,46 @@ function saveTask(event) {
 
     // Add task to the end of array and save to localStorage
     tasks.push(task);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
 
-    showToast("Task added successfully!", "success", 4000); // Feedback to user
-    closeModal();
+    try {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        showToast("Task added successfully!", "success", 4000); // Feedback to user
+        closeModal();
+        
+        // Immediately update the task list
+        loadTasks(); 
+    } catch (error) {
+        showToast("Failed to save task. Please try again.", "danger", 4000);
+    }
 
-     // Immediately update the task list
-    loadTasks(); 
 }
 
 
 // Show Task List function
 function loadTasks(){
-    console.log("List refresh")
+
+
 const taskList = document.getElementById("tasks-container");
 taskList.innerHTML = ``;
 
+let tasks = [];
+
+
+
+
 //retrieve the list from localStorage
+try {
+    tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+} catch (error) {
+    showToast("Failed to load tasks. Resetting task list.", "danger", 4000);
+    localStorage.removeItem("tasks"); // Clear corrupted data
+    tasks = []; // Reset tasks to prevent further errors
+}
 
-const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
+if (tasks.length === 0) {
+    taskList.innerHTML = `<p id="no-tasks-message" class="empty-message">No tasks yet! Create a task to get started.</p>`;
+    return; // Stop function here since there's nothing to display
+}
 tasks.forEach(task => {
 
 const newDate = formatDate(task.dueDate);
@@ -161,9 +181,8 @@ if (isOverdue) {
 
 const statusClass = getStatusClass(task.status);
 
-taskElement.innerHTML = `
 
-  
+taskElement.innerHTML = `
         <div class="status-box">
           <span class="task-status ${statusClass}">
           ${task.status || "N/A"}
@@ -219,6 +238,8 @@ document.querySelectorAll(".edit-task").forEach(button => {
 
 function showTaskDetails(task){
 
+    const statusClass = getStatusClass(task.status);
+
     // Create modal container
     taskDetailsContainer = document.createElement("div");
     taskDetailsContainer.id = "task-details-container";
@@ -227,11 +248,12 @@ function showTaskDetails(task){
     taskDetailsContainer.innerHTML = `
         <div id="details-modal-content">
             <button id="close-details-modal">&times;</button>
-            <h2>${task.title}</h2>
-            <p><span class="task-status">${task.status}</span></p>
-            ${task.dueDate ? `<p><strong>Due Date:</strong> ${formatDate(task.dueDate)}</p>` : ""}
-            <p><strong>Description:</strong></p>
-            <p>${task.description ? task.description : "No description available."}</p>
+            <div>
+            <span class="task-status ${statusClass}">${task.status}</span>
+            </div>
+            <h2>${task.title}</h2>           
+               ${task.description ? `<div><p><strong>Description</strong></p><p>${task.description}</p></div>`: ""}
+               ${task.dueDate ? `<div><p><strong>Due Date</strong></p> <p>${formatDate(task.dueDate)}</p></div>` : ""}    
         </div>
     `;
 
@@ -242,6 +264,8 @@ function showTaskDetails(task){
 }
 
 function deleteTask(taskId) {
+
+    try {
     // retrieve stored tasks, if there is no tasks default to empty array
     let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
     // create new array filtering out the task with given taskId
@@ -251,7 +275,9 @@ function deleteTask(taskId) {
     // Feedback to user
     showToast("Task deleted successfully!", "success", 4000)
     // Refresh task list on page
-    loadTasks();  
+    loadTasks();  } catch(error) {
+        showToast("Failed to delete task. Please try again.", "danger", 4000);
+    }
 }
 
 
@@ -270,6 +296,7 @@ function editTask(event) {
         markField("new-task-title");
         return;
     }
+    try {
     // retrieve stored tasks
     let tasks = JSON.parse(localStorage.getItem("tasks"));
     
@@ -289,7 +316,10 @@ function editTask(event) {
     closeModal();
     
     // Refresh task list on page
-    loadTasks();  
+    loadTasks();  }catch(error){
+    showToast("Failed to edit task. Please try again.", "danger", 4000); 
+
+    }
 
 }
 
@@ -359,33 +389,7 @@ function showEditTaskForm(taskId){
 
 
 
-// utility functions
 
-function getStatusClass(status){
-   
-        switch (status.toLowerCase()) {
-            case "to-do":
-                return "status-todo";
-            case "in progress":
-                return "status-in-progress";
-            case "done":
-                return "status-done";
-            default:
-                return "status-unknown"; 
-        }
-    
-}
-
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    const options = { month: 'short', day: 'numeric' };
-    return date.toLocaleDateString('en-US', options);
-}
-
-
-function getTodayDate() {
-    return new Date().toISOString().split('T')[0];
-}
 
 // Add class to required field for highligth
 function markField(fieldId){
@@ -457,4 +461,32 @@ function showToast(message, toastType, duration) {
 
     document.body.appendChild(toastContainer)
 
+}
+
+
+// utility functions
+
+function getStatusClass(status){
+   
+    switch (status.toLowerCase()) {
+        case "to-do":
+            return "status-todo";
+        case "in progress":
+            return "status-in-progress";
+        case "done":
+            return "status-done";
+        default:
+            return "status-unknown"; 
+    }
+
+}
+
+function formatDate(dateString) {
+const date = new Date(dateString);
+const options = { month: 'short', day: 'numeric' };
+return date.toLocaleDateString('en-US', options);
+}
+
+function getTodayDate() {
+return new Date().toISOString().split('T')[0];
 }
