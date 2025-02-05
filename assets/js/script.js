@@ -164,7 +164,8 @@ taskElement.innerHTML = `
 
  // Add event listeners for task details
   taskElement.addEventListener("click", function (event) {
-         showTaskDetails(task);
+   
+         if(!event.target.closest(".edit-task") && !event.target.closest(".delete-task")){showTaskDetails(task);}
  
  });
 }
@@ -187,8 +188,6 @@ document.querySelectorAll(".edit-task").forEach(button => {
 }
 
 function showTaskDetails(task){
-    //https://codepen.io/patrickhlauke/pen/vpQNgJ
-    //https://stackoverflow.com/questions/70068954/make-entire-card-clickable-by-targeting-a-inside-of-it
 
     console.log(task);
 }
