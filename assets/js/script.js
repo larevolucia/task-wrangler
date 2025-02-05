@@ -148,11 +148,13 @@ if (isOverdue) {
     taskElement.classList.add("overdue");
 }
 
+const statusClass = getStatusClass(task.status);
+
 taskElement.innerHTML = `
 
   
         <div class="status-box">
-          <span class="task-status">
+          <span class="task-status ${statusClass}">
           ${task.status || "N/A"}
           </span>
         </div>
@@ -322,11 +324,27 @@ function showEditTaskForm(taskId){
 
 // utility functions
 
+function getStatusClass(status){
+   
+        switch (status.toLowerCase()) {
+            case "to-do":
+                return "status-todo";
+            case "in progress":
+                return "status-in-progress";
+            case "done":
+                return "status-done";
+            default:
+                return "status-unknown"; 
+        }
+    
+}
+
 function formatDate(dateString) {
     const date = new Date(dateString);
     const options = { month: 'short', day: 'numeric' };
     return date.toLocaleDateString('en-US', options);
 }
+
 
 function getTodayDate() {
     return new Date().toISOString().split('T')[0];

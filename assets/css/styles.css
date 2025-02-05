@@ -280,8 +280,7 @@ border-bottom: none;
   font-weight: 700;
   padding:  0.35rem 0.75rem;
   border-radius: 0.75rem;
-  background-color: var(--background-color);
-  color: var(--text-color);
+  display: inline-block;
 }
 
 .task-description-icon {
@@ -343,6 +342,31 @@ border-bottom: none;
   grid-row: 2;
   justify-self: right;
 }
+
+
+/* status classes */
+
+.status-todo {
+  background-color: var(--attention-color); /* Amber */
+  color: var(--text-color);
+}
+
+.status-in-progress {
+  background-color: var(--primary-color); /* Lapis Lazuli */
+  color: white;
+}
+
+.status-done {
+  background-color: var(--success-color); /* Green */
+  color: white;
+}
+
+.status-unknown {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+
 
 /* -------------------------------
 MODALS
