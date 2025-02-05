@@ -6,6 +6,9 @@ let createTaskFormContainer;
 let editTaskFormContainer; 
 let taskDetailsContainer; 
 
+// get today date for overdue task styling
+const today = getTodayDate();
+
 document.addEventListener("DOMContentLoaded", () => {
     // Wrapping on DOMContentLoaded to Ensure that elements exists before manipulation
     // https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
@@ -128,9 +131,6 @@ function loadTasks(){
     console.log("List refresh")
 const taskList = document.getElementById("tasks-container");
 taskList.innerHTML = ``;
-
-// get today date for overdue task styling
-const today = getTodayDate();
 
 //retrieve the list from localStorage
 
@@ -292,6 +292,11 @@ function showEditTaskForm(taskId){
         <option value="${status}" ${currentTask[0].status === status ? "selected" : ""}>${status}</option>
     `).join("");
 
+    
+    // Allow past dates if the task is overdue, otherwise set min date to today
+    const isOverdue = currentTask[0].dueDate && currentTask[0].dueDate < today;
+    const minDate = isOverdue ? `min=${currentTask[0].dueDate}` : `min="${today}"`;
+
     // Create a form container div
     editTaskFormContainer = document.createElement("div");
     editTaskFormContainer.id = "edit-task-form-container";
@@ -301,7 +306,7 @@ function showEditTaskForm(taskId){
             <button type="button" id="close-edit-form">&times;</button>
             <h2>Edit Task</h2>
             <input type="text" id="new-task-title" placeholder="Task Title" value="${currentTask[0].title}" required>
-            <input type="date" id="new-task-date" value="${currentTask[0].dueDate}" min="${getTodayDate()}">
+            <input type="date" id="new-task-date" value="${currentTask[0].dueDate}" ${minDate}>
             <select id="new-status" name="status">
                 ${statusSelectOptions}
             </select>
