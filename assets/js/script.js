@@ -1,26 +1,25 @@
+
+
 const createTaskButton = document.getElementById("create-task");
 const contentContainer = document.getElementById("content-container");
 
-// store formContainer globally
+document.addEventListener("DOMContentLoaded", () => {
+    // Add event listener to the create-task button
+    createTaskButton.addEventListener("click", showCreateTaskForm);
+    showProgressBar();
+    loadTasks();
+});
+
+// Store containers globally
 let createTaskFormContainer;
 let editTaskFormContainer; 
 let taskDetailsContainer; 
 
-// get today date for overdue task styling
+// Store today's date
 const today = getTodayDate();
 
-document.addEventListener("DOMContentLoaded", () => {
-    // Wrapping on DOMContentLoaded to Ensure that elements exists before manipulation
-    // https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event
-    // https://csswizardry.com/2023/07/in-defence-of-domcontentloaded
 
-    
-    // Add event listener to the create-task button
-    createTaskButton.addEventListener("click", showCreateTaskForm);
-    console.log("DOM loaded")
-    showProgressBar();
-    loadTasks();
-});
+// Populate Progress Bar
 function showProgressBar(){
     // Show Progress Bar
     const progressBar = document.getElementById("progress-bar");
@@ -29,6 +28,7 @@ function showProgressBar(){
 
 }
 
+// Create form for task creation
 function showCreateTaskForm () {
    
     //  Check if form already exists
@@ -75,7 +75,7 @@ function showCreateTaskForm () {
      
     }
 
- // Close modal function 
+ // Close forms & details modals 
  function closeModal() {
     // Check and remove the create task form if it exists
     if (createTaskFormContainer) {
@@ -96,8 +96,7 @@ function showCreateTaskForm () {
     }
 }
 
-
-// Save task
+// Save task to localStorage
 function createTask(event) {
     event.preventDefault(); 
     console.log(event);
@@ -141,8 +140,7 @@ function createTask(event) {
 
 }
 
-
-// Show Task List function
+// Retrieve task list from localStorage
 function loadTasks(){
 
 
@@ -150,9 +148,6 @@ const taskList = document.getElementById("tasks-container");
 taskList.innerHTML = ``;
 
 let tasks = [];
-
-
-
 
 //retrieve the list from localStorage
 try {
@@ -229,13 +224,14 @@ document.querySelectorAll(".edit-task").forEach(button => {
  // Add event listeners for delete buttons
  document.querySelectorAll(".delete-task").forEach(button => {
     button.addEventListener("click", function () {
-        deleteTask(this.dataset.id);
+        confirmDelete(this.dataset.id);
     });
 });
 
 
 }
 
+// Retrieve details of specific task from localStorage
 function showTaskDetails(task){
 
     const statusClass = getStatusClass(task.status);
@@ -263,6 +259,7 @@ function showTaskDetails(task){
 
 }
 
+// Delete task from localStorage
 function deleteTask(taskId) {
 
     try {
@@ -280,7 +277,7 @@ function deleteTask(taskId) {
     }
 }
 
-
+// Remove task from localStorage and replace it with modified version
 function editTask(event) {
 
     event.preventDefault();
@@ -323,7 +320,7 @@ function editTask(event) {
 
 }
 
-
+// Preloads task information into form for manipulation
 function showEditTaskForm(taskId){
 
     // retrieve stored tasks
@@ -387,8 +384,12 @@ function showEditTaskForm(taskId){
      document.getElementById("edit-task-form").addEventListener("submit", editTask);
 }
 
-
-
+// Alert 
+function confirmDelete(taskId) {
+    if (window.confirm("Are you sure you want to delete this task?")) {
+        deleteTask(taskId);
+    }
+}
 
 
 // Add class to required field for highligth
@@ -429,7 +430,7 @@ let failed =
 let warn = 
     document.querySelector(".custom-toast.warning-toast");
 
-// Create a Toast notification
+// Display Toast notification according to context given in parameters
 function showToast(message, toastType, duration) {
     // Code from: https://www.geeksforgeeks.org/how-to-make-a-toast-notification-in-html-css-and-javascript/
 
@@ -464,7 +465,7 @@ function showToast(message, toastType, duration) {
 }
 
 
-// utility functions
+// Utility functions
 
 function getStatusClass(status){
    
