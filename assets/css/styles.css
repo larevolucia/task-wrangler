@@ -422,10 +422,21 @@ input, select, textarea {
   border-radius: 4px;
 }
 
+label {
+  font-size: 0.9rem;
+}
+
 /* Error border for required fields */
 .error-border {
   border-left: 4px solid var(--danger-color);
   background-color: #efaca5;
+}
+
+.error-message {
+  color: var(--danger-color);
+  font-size: small;
+  margin: 0;
+  display: block;
 }
 
 

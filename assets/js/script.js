@@ -45,9 +45,19 @@ function showCreateTaskForm () {
          <form id="create-task-form">
              <button type="button" id="close-create-form">&times;</button>
              <h2>Add Task</h2>
-             <input type="text" id="task-title" placeholder="Task Title">
+             <div>
+             <label for="task-title">Title<small>*</small></label>
+             <input type="text" id="task-title">
+             <span id="task-title-error" class="error-message"></span>
+             </div>
+             <div>
+             <label for="task-description">Description</label>
              <textarea id="task-description"></textarea>
+             </div>
+             <div>
+             <label for="task-date">Due Date</label>
              <input type="date" id="task-date" min="${getTodayDate()}">
+             </div>
              <div class="form-buttons">
              <button type="submit" class="btn-primary">Add Task</button>
              <button type="button" id="close-create-modal" class="btn-secondary">Cancel</button>
@@ -254,7 +264,12 @@ function editTask(event) {
     const dueDate = document.getElementById("new-task-date").value;
     const status = document.getElementById("new-status").value;
     const description = document.getElementById("new-task-description").value;
-
+   
+    if (!title) {
+        showToast("Please fill in all required fields.", "warning", 4000);
+        markField("new-task-title");
+        return;
+    }
     // retrieve stored tasks
     let tasks = JSON.parse(localStorage.getItem("tasks"));
     
@@ -308,12 +323,26 @@ function showEditTaskForm(taskId){
         <form id="edit-task-form" data-id="${taskId}">
             <button type="button" id="close-edit-form">&times;</button>
             <h2>Edit Task</h2>
-            <input type="text" id="new-task-title" placeholder="Task Title" value="${currentTask[0].title}" required>
-            <input type="date" id="new-task-date" value="${currentTask[0].dueDate}" ${minDate}>
-            <select id="new-status" name="status">
+            <div>
+               <label for="new-status">Status</label>
+               <select id="new-status" name="status">
                 ${statusSelectOptions}
-            </select>
-            <textarea id="new-task-description">${currentTask[0].description ? currentTask[0].description : ""}</textarea>
+               </select>
+            </div>
+             <div>
+               <label for="new-task-title">Title<small>*</small></label>
+               <input type="text" id="new-task-title" placeholder="Task Title" value="${currentTask[0].title}">
+               <span id="task-title-error" class="error-message"></span>
+            </div>
+            <div>
+                <label for="new-task-description">Description</label>
+                <textarea id="new-task-description">${currentTask[0].description ? currentTask[0].description : ""}</textarea>
+            </div>
+            <div>
+               <label for="new-task-date">Due Date</label>
+               <input type="date" id="new-task-date" value="${currentTask[0].dueDate}" ${minDate}>
+            </div>
+
             <div id="form-buttons">
             <button type="submit" class="btn-primary">Save Task</button>
             <button type="button" id="close-edit-modal" class="btn-secondary">Cancel</button>
@@ -358,15 +387,19 @@ function getTodayDate() {
     return new Date().toISOString().split('T')[0];
 }
 
+// Add class to required field for highligth
 function markField(fieldId){
 
     let field = document.getElementById(fieldId);
+    let message = document.getElementById(`${fieldId}-error`)
 
     field.classList.add("error-border");
-    
+    message.innerHTML = "Required field";
+
     // Remove error class when user starts typing
    field.addEventListener("input", () => {
         field.classList.remove("error-border");
+        document.getElementById(`${fieldId}-error`).textContent = "";
     }, { once: true }); 
 }
 
