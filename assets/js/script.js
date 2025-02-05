@@ -4,6 +4,7 @@ const contentContainer = document.getElementById("content-container");
 // store formContainer globally
 let createTaskFormContainer;
 let editTaskFormContainer; 
+let taskDetailsModal; 
 
 document.addEventListener("DOMContentLoaded", () => {
     // Wrapping on DOMContentLoaded to Ensure that elements exists before manipulation
@@ -74,7 +75,12 @@ function showCreateTaskForm () {
         editTaskFormContainer.classList.remove("show");
         editTaskFormContainer.remove(); 
         editTaskFormContainer = null; 
-}
+    }
+    if(taskDetailsModal) {
+       taskDetailsModal.classList.remove("show");
+       taskDetailsModal.remove();
+       taskDetailsModal = null;
+    }
 }
 
 
@@ -189,7 +195,26 @@ document.querySelectorAll(".edit-task").forEach(button => {
 
 function showTaskDetails(task){
 
-    console.log(task);
+    // Create modal container
+    taskDetailsModal = document.createElement("div");
+    taskDetailsModal.id = "task-details-modal";
+    taskDetailsModal.classList.add("details-modal");
+    taskDetailsModal.classList.add("show");
+    taskDetailsModal.innerHTML = `
+        <div class="modal-content">
+            <button class="close-details-modal">&times;</button>
+            <h2>${task.title}</h2>
+            <p class="task-status">${task.status}</p>
+            ${task.dueDate ? `<p><strong>Due Date:</strong> ${formatDate(task.dueDate)}</p>` : ""}
+            <p><strong>Description:</strong></p>
+            <p>${task.description ? task.description : "No description available."}</p>
+        </div>
+    `;
+
+    contentContainer.appendChild(taskDetailsModal);
+
+    taskDetailsModal.querySelector(".close-details-modal").addEventListener("click", closeModal);
+
 }
 
 function deleteTask(taskId) {
