@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
 let createTaskFormContainer;
 let editTaskFormContainer; 
 let taskDetailsContainer; 
+let confirmationModal; 
 
 // Store today's date
 const today = getTodayDate();
@@ -60,7 +61,7 @@ function showCreateTaskForm () {
              </div>
              <div class="form-buttons">
              <button type="submit" class="btn-primary">Add Task</button>
-             <button type="button" id="close-create-modal" class="btn-secondary">Cancel</button>
+             <button type="button" id="close-create-modal">Cancel</button>
              </div>
          </form>
      `;
@@ -93,6 +94,11 @@ function showCreateTaskForm () {
        taskDetailsContainer.classList.remove("show");
        taskDetailsContainer.remove();
        taskDetailsContainer = null;
+    }
+    if(confirmationModal) {
+       confirmationModal.classList.remove("show");
+       confirmationModal.remove();
+       confirmationModal = null;
     }
 }
 
@@ -224,7 +230,7 @@ document.querySelectorAll(".edit-task").forEach(button => {
  // Add event listeners for delete buttons
  document.querySelectorAll(".delete-task").forEach(button => {
     button.addEventListener("click", function () {
-        confirmDelete(this.dataset.id);
+        confirmDelete("delete", "Delete confirmation", "Are you sure you want to delete this task?", this.dataset.id);
     });
 });
 
@@ -372,7 +378,7 @@ function showEditTaskForm(taskId){
 
             <div id="form-buttons">
             <button type="submit" class="btn-primary">Save Task</button>
-            <button type="button" id="close-edit-modal" class="btn-secondary">Cancel</button>
+            <button type="button" id="close-edit-modal">Cancel</button>
             </div>
         </form>
     `;
@@ -385,10 +391,45 @@ function showEditTaskForm(taskId){
 }
 
 // Alert 
-function confirmDelete(taskId) {
-    if (window.confirm("Are you sure you want to delete this task?")) {
+function confirmDelete(action, title, message, taskId) {
+    // if (window.confirm("Are you sure you want to delete this task?")) {
+    //     deleteTask(taskId);
+    // }
+
+    confirmationModal = document.createElement('div');
+    confirmationModal.id = `${action}-confirmation-modal`;
+    confirmationModal.classList.add("confirmation-modal");
+    confirmationModal.classList.add("show");
+    confirmationModal.innerHTML = `
+    <div class="confirm-modal-content">
+    <div class="modal-header">
+    <h2>${title}</h2>
+    </div>
+    <div class="modal-body">
+       <p>${message}</p>
+    </div>
+    <div class="modal-footer">
+        <button id="cancel-delete">Cancel</button>
+        <button id="confirm-delete" class="btn-danger">Yes, Delete</button>
+    </div>
+    </div>`
+    console.log(confirmationModal);
+    contentContainer.appendChild(confirmationModal);
+
+
+    // Close modal if "Cancel" is clicked
+    document.getElementById("cancel-delete").addEventListener("click", closeModal);
+
+    // Confirm delete when "Yes" is clicked
+    document.getElementById("confirm-delete").addEventListener("click", () => {
+    if (taskId !== null) {
         deleteTask(taskId);
+        closeModal();
+        taskId = null; // Reset
     }
+    });
+
+
 }
 
 

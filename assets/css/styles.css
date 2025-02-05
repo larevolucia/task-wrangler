@@ -112,6 +112,11 @@ button {
   background-color: var(--primary-color); 
 }
 
+.btn-danger {
+  color: white;
+  background-color: var(--danger-color); 
+}
+
 /* Hover States */
 
 button:hover {
@@ -385,7 +390,7 @@ TASKS CARD
 /* -------------------------------
 MODALS
 ---------------------------------- */
-#create-task-form-container, #edit-task-form-container, #task-details-container {
+#create-task-form-container, #edit-task-form-container, #task-details-container, .confirmation-modal {
   position: fixed; /* Full-screen overlay */
   top: 0;
   left: 0;
@@ -402,7 +407,7 @@ MODALS
   visibility: hidden;
 }
 
-#create-task-form-container.show, #edit-task-form-container.show, #task-details-container.show {
+#create-task-form-container.show, #edit-task-form-container.show, #task-details-container.show, .confirmation-modal.show {
   opacity: 1;
   visibility: visible;
 }
@@ -480,7 +485,7 @@ textarea {
 
 /* Details Modal */
 
-#details-modal-content {
+#details-modal-content  {
   background: white;
   padding: 2rem;
   border-radius: 8px;
@@ -509,7 +514,40 @@ textarea {
   box-shadow: none;
 }
 
+/* -------------------------------
+CONFIRMATION MODAL
+---------------------------------- */
 
+
+.confirm-modal-content {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  font-size: 1rem;
+  text-align: left;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-header, .modal-body {
+  padding: 1rem;
+  border-bottom:  1px solid #ccc;;
+}
+
+.modal-body {
+  min-height: 100px;
+}
+
+.modal-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  gap: 1rem;
+  padding: 1rem;
+}
 
 /* -------------------------------
 TOAST NOTIFICATION
