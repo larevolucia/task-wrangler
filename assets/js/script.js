@@ -23,8 +23,11 @@ const today = getTodayDate();
 // Populate Progress Bar
 function showProgressBar(){
     // Show Progress Bar
+    const progressContainer = document.getElementById("progress-container");
+    progressContainer.ariaValueNow = "25%";
     const progressBar = document.getElementById("progress-bar");
     progressBar.style.width = "25%";
+
 }
 
 // Create form for task creation
@@ -177,6 +180,7 @@ const isOverdue = task.dueDate && task.dueDate < today;
 
 const taskElement = document.createElement("div");
 taskElement.classList.add("task-card");
+taskElement.role = "listitem";
 
 if (isOverdue) {
     taskElement.classList.add("overdue");

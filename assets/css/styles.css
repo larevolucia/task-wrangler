@@ -225,9 +225,19 @@ nav a:hover {
   border-bottom: none;
 }
 
+
+/* -------------------------------
+FOOTER
+---------------------------------- */
+footer p {
+  text-align: center;
+  padding: 2rem 0;
+}
+
 /* -------------------------------
 TASKS HEADING
 ---------------------------------- */
+
 
 #task-heading-container {
   display: flex;
