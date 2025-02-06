@@ -1,17 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Add event listener to the create-task button
     console.log("DOM loaded");
-    console.log("CreateTask event listener added");
     showProgressBar();
-    document.addEventListener("click", (event) => {
-        if (event.target.id === "create-task") {
-            showCreateTaskForm();
-        }
-    });
     loadTasks();
 });
 
 const contentContainer = document.getElementById("content-container");
+const createTaskButton = document.getElementById("create-task");
+
+// Add event listener to the create-task button
+createTaskButton.addEventListener("click", showCreateTaskForm);
+
 // Store containers globally
 let createTaskFormContainer;
 let editTaskFormContainer; 
@@ -27,23 +25,17 @@ function showProgressBar(){
     // Show Progress Bar
     const progressBar = document.getElementById("progress-bar");
     progressBar.style.width = "25%";
-
-
 }
 
 // Create form for task creation
 function showCreateTaskForm () {
-    console.log("CreateTask triggered");
     
     //  Check if form already exists
     if (createTaskFormContainer) {
-        console.log("CreateTask container already exists");
         createTaskFormContainer.classList.toggle("show"); 
-        console.log("CreateTask container hide");
         return;
     }
     
-    console.log("CreateTask container doesnt exists");
     // Create a form container div
     createTaskFormContainer = document.createElement("div");
     createTaskFormContainer.id = "create-task-form-container";
@@ -77,9 +69,7 @@ function showCreateTaskForm () {
     `;
     
     // Add form at the top of content-container
-    console.log("CreateTask container created");
     contentContainer.appendChild(createTaskFormContainer);
-    console.log("CreateTask container appended");
     
     document.getElementById("close-create-form").addEventListener("click", closeModal);
     document.getElementById("close-create-modal").addEventListener("click", closeModal);
@@ -214,10 +204,10 @@ taskElement.innerHTML = `
             </span>` : ''}
         </div>
         <div class="edit-box">
-          <button class="edit-task" data-id="${task.id}"><i class="fa-solid fa-pen"></i></button>
+          <button class="edit-task" title="Edit Task" data-id="${task.id}"><i class="fa-solid fa-pen"></i></button>
         </div>
         <div class="delete-box">
-          <button class="delete-task" data-id="${task.id}"><i class="fa-solid fa-trash"></i></button>
+          <button class="delete-task" title="Delete Task" data-id="${task.id}"><i class="fa-solid fa-trash"></i></button>
         </div>
       
    `;
