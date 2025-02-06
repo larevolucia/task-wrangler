@@ -415,15 +415,13 @@ MODALS
 
 #create-task-form, #edit-task-form {
   background: white;
-  padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
   width: 90%;
-  max-width: 400px;
+  max-width: 500px;
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
 }
 
 
@@ -439,8 +437,15 @@ input, select, textarea {
 label {
   font-size: 0.9rem;
 }
+
 textarea {
   height: 100px;
+}
+
+
+
+.form-item {
+  padding: 0.3rem 1rem;
 }
 
 /* Error border for required fields */
@@ -459,13 +464,8 @@ textarea {
 
 /* Form Buttons */
 
-.form-buttons {
-  display: flex;
-  gap: 1rem;
-  justify-content: flex-end;
-}
 
-#close-create-form, #close-edit-form {
+#close-create-form, #close-edit-form, #close-confirm-modal {
   background: none;
   border: none;
   font-size: 1.5rem;
@@ -479,7 +479,7 @@ textarea {
   
 }
 
-#close-create-form:hover, #close-edit-form:hover, #close-details-modal:hover{
+#close-create-form:hover, #close-edit-form:hover, #close-details-modal:hover, #close-confirm-modal:hover{
   color: #000;
 }
 

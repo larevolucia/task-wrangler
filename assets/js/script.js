@@ -1,15 +1,17 @@
-
-
-const createTaskButton = document.getElementById("create-task");
-const contentContainer = document.getElementById("content-container");
-
 document.addEventListener("DOMContentLoaded", () => {
     // Add event listener to the create-task button
-    createTaskButton.addEventListener("click", showCreateTaskForm);
+    console.log("DOM loaded");
+    console.log("CreateTask event listener added");
     showProgressBar();
+    document.addEventListener("click", (event) => {
+        if (event.target.id === "create-task") {
+            showCreateTaskForm();
+        }
+    });
     loadTasks();
 });
 
+const contentContainer = document.getElementById("content-container");
 // Store containers globally
 let createTaskFormContainer;
 let editTaskFormContainer; 
@@ -31,47 +33,57 @@ function showProgressBar(){
 
 // Create form for task creation
 function showCreateTaskForm () {
-   
+    console.log("CreateTask triggered");
+    
     //  Check if form already exists
-     if (createTaskFormContainer) {
+    if (createTaskFormContainer) {
+        console.log("CreateTask container already exists");
         createTaskFormContainer.classList.toggle("show"); 
+        console.log("CreateTask container hide");
         return;
     }
-
-     // Create a form container div
-     createTaskFormContainer = document.createElement("div");
-     createTaskFormContainer.id = "create-task-form-container";
-     createTaskFormContainer.classList.add("show");
-     createTaskFormContainer.innerHTML = `
-         <form id="create-task-form">
-             <button type="button" id="close-create-form">&times;</button>
-             <h2>Add Task</h2>
-             <div>
-             <label for="task-title">Title<small>*</small></label>
-             <input type="text" id="task-title">
-             <span id="task-title-error" class="error-message"></span>
-             </div>
-             <div>
-             <label for="task-description">Description</label>
-             <textarea id="task-description"></textarea>
-             </div>
-             <div>
-             <label for="task-date">Due Date</label>
-             <input type="date" id="task-date" min="${getTodayDate()}">
-             </div>
-             <div class="form-buttons">
-             <button type="submit" class="btn-primary">Add Task</button>
-             <button type="button" id="close-create-modal">Cancel</button>
-             </div>
-         </form>
-     `;
-
-     // Add form at the top of content-container
-     contentContainer.appendChild(createTaskFormContainer);
-
-     document.getElementById("close-create-form").addEventListener("click", closeModal);
-     document.getElementById("close-create-modal").addEventListener("click", closeModal);
-     document.getElementById("create-task-form").addEventListener("submit", createTask);
+    
+    console.log("CreateTask container doesnt exists");
+    // Create a form container div
+    createTaskFormContainer = document.createElement("div");
+    createTaskFormContainer.id = "create-task-form-container";
+    createTaskFormContainer.classList.add("show");
+    createTaskFormContainer.innerHTML = `
+    <form id="create-task-form">
+    <div class="modal-header">
+    <button type="button" id="close-create-form">&times;</button>
+    <h2>Add Task</h2>
+    </div>
+    <div class="modal-body">
+    <div class="form-item">
+    <label for="task-title">Title<small>*</small></label>
+    <input type="text" id="task-title">
+    <span id="task-title-error" class="error-message"></span>
+    </div>
+    <div class="form-item">
+    <label for="task-description">Description</label>
+    <textarea id="task-description"></textarea>
+    </div>
+    <div class="form-item">
+    <label for="task-date">Due Date</label>
+    <input type="date" id="task-date" min="${getTodayDate()}">
+    </div>
+    </div>
+    <div class="modal-footer">
+    <button type="button" id="close-create-modal">Cancel</button>
+    <button type="submit" class="btn-primary">Create Task</button>
+    </div>
+    </form>
+    `;
+    
+    // Add form at the top of content-container
+    console.log("CreateTask container created");
+    contentContainer.appendChild(createTaskFormContainer);
+    console.log("CreateTask container appended");
+    
+    document.getElementById("close-create-form").addEventListener("click", closeModal);
+    document.getElementById("close-create-modal").addEventListener("click", closeModal);
+    document.getElementById("create-task-form").addEventListener("submit", createTask);
      
      
     }
@@ -354,31 +366,34 @@ function showEditTaskForm(taskId){
     editTaskFormContainer.classList.add("show");
     editTaskFormContainer.innerHTML = `
         <form id="edit-task-form" data-id="${taskId}">
-            <button type="button" id="close-edit-form">&times;</button>
-            <h2>Edit Task</h2>
-            <div>
-               <label for="new-status">Status</label>
-               <select id="new-status" name="status">
-                ${statusSelectOptions}
-               </select>
+        <div class="modal-header">
+                <button type="button" id="close-edit-form">&times;</button>
+                <h2>Edit Task</h2>
             </div>
-             <div>
-               <label for="new-task-title">Title<small>*</small></label>
-               <input type="text" id="new-task-title" placeholder="Task Title" value="${currentTask[0].title}">
-               <span id="task-title-error" class="error-message"></span>
+            <div class="modal-body">
+                <div class="form-item">
+                    <label for="new-status">Status</label>
+                    <select id="new-status" name="status">
+                    ${statusSelectOptions}
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label for="new-task-title">Title<small>*</small></label>
+                    <input type="text" id="new-task-title" placeholder="Task Title" value="${currentTask[0].title}">
+                    <span id="task-title-error" class="error-message"></span>
+                </div>
+                <div class="form-item">
+                    <label for="new-task-description">Description</label>
+                    <textarea id="new-task-description">${currentTask[0].description ? currentTask[0].description : ""}</textarea>
+                </div>
+                <div class="form-item">
+                    <label for="new-task-date">Due Date</label>
+                    <input type="date" id="new-task-date" value="${currentTask[0].dueDate}" ${minDate}>
+                </div>
             </div>
-            <div>
-                <label for="new-task-description">Description</label>
-                <textarea id="new-task-description">${currentTask[0].description ? currentTask[0].description : ""}</textarea>
-            </div>
-            <div>
-               <label for="new-task-date">Due Date</label>
-               <input type="date" id="new-task-date" value="${currentTask[0].dueDate}" ${minDate}>
-            </div>
-
-            <div id="form-buttons">
-            <button type="submit" class="btn-primary">Save Task</button>
-            <button type="button" id="close-edit-modal">Cancel</button>
+            <div class="modal-footer">
+                <button type="button" id="close-edit-modal">Discard Changes</button>
+                <button type="submit" class="btn-primary">Save Changes</button>
             </div>
         </form>
     `;
@@ -402,6 +417,7 @@ function confirmDelete(action, title, message, taskId) {
     confirmationModal.classList.add("show");
     confirmationModal.innerHTML = `
     <div class="confirm-modal-content">
+    <button type="button" id="close-confirm-modal">&times;</button>
     <div class="modal-header">
     <h2>${title}</h2>
     </div>
@@ -419,6 +435,7 @@ function confirmDelete(action, title, message, taskId) {
 
     // Close modal if "Cancel" is clicked
     document.getElementById("cancel-delete").addEventListener("click", closeModal);
+    document.getElementById("close-confirm-modal").addEventListener("click", closeModal);
 
     // Confirm delete when "Yes" is clicked
     document.getElementById("confirm-delete").addEventListener("click", () => {
