@@ -24,7 +24,7 @@ const today = getTodayDate();
 function showProgressBar(){
     // Show Progress Bar
     const progressContainer = document.getElementById("progress-container");
-    progressContainer.ariaValueNow = "25%";
+    progressContainer.ariaValueNow = "25";
     const progressBar = document.getElementById("progress-bar");
     progressBar.style.width = "25%";
 
@@ -152,96 +152,98 @@ function createTask(event) {
 }
 
 // Retrieve task list from localStorage
-function loadTasks(){
-
-
-const taskList = document.getElementById("tasks-container");
-taskList.innerHTML = ``;
-
-let tasks = [];
-
-//retrieve the list from localStorage
-try {
-    tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-} catch (error) {
-    showToast("Failed to load tasks. Resetting task list.", "danger", 4000);
-    localStorage.removeItem("tasks"); // Clear corrupted data
-    tasks = []; // Reset tasks to prevent further errors
-}
-
-if (tasks.length === 0) {
-    taskList.innerHTML = `<p id="no-tasks-message" class="empty-message">No tasks yet! Create a task to get started.</p>`;
-    return; // Stop function here since there's nothing to display
-}
-tasks.forEach(task => {
-
-const newDate = formatDate(task.dueDate);
-const isOverdue = task.dueDate && task.dueDate < today;
-
-const taskElement = document.createElement("div");
-taskElement.classList.add("task-card");
-taskElement.role = "listitem";
-
-if (isOverdue) {
-    taskElement.classList.add("overdue");
-}
-
-const statusClass = getStatusClass(task.status);
-
-
-taskElement.innerHTML = `
-        <div class="status-box">
-          <span class="task-status ${statusClass}">
-          ${task.status || "N/A"}
-          </span>
-        </div>
-        ${task.dueDate ? 
-         `<div class="task-due-date date-box">
-             <i class="fa-regular fa-calendar"></i>
-             <span class="task-due-date-text">${newDate}</span>
-          </div>`:
-          `<div class="date-box"></div>`
+function loadTasks() {
+    const taskList = document.getElementById("tasks-container");
+    taskList.innerHTML = ``;
+    
+    let tasks = [];
+    
+    // Retrieve the list from localStorage
+    try {
+        tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    } catch (error) {
+        showToast("Failed to load tasks. Resetting task list.", "danger", 4000);
+        localStorage.removeItem("tasks");
+        tasks = [];
+    }
+    
+    if (tasks.length === 0) {
+        taskList.innerHTML = `<p id="no-tasks-message" class="empty-message">No tasks yet! Create a task to get started.</p>`;
+        taskList.removeAttribute("role"); // Remove role="list" if no tasks exists
+        return;
+    }
+    
+    taskList.setAttribute("role", "list"); // Add role="list" if there are items
+    
+    tasks.forEach((task, index) => {
+        const newDate = formatDate(task.dueDate);
+        const isOverdue = task.dueDate && task.dueDate < today;
+        const taskTitleId = `task-title-${index}`;
+        const taskElement = document.createElement("div");
+        
+        taskElement.classList.add("task-card");
+        taskElement.setAttribute("role", "listitem");
+        taskElement.setAttribute("id", `task-${task.id}`);
+        taskElement.setAttribute("aria-labelledby", taskTitleId);
+        
+        if (isOverdue) {
+            taskElement.classList.add("overdue");
         }
-        <div class="title-box">
-          <span class="task-title">${task.title}</span>
-          ${task.description ? `<span class="task-description-icon"><i class="fa-solid fa-align-left"></i>
-            </span>` : ''}
-        </div>
-        <div class="edit-box">
-          <button class="edit-task" title="Edit Task" data-id="${task.id}"><i class="fa-solid fa-pen"></i></button>
-        </div>
-        <div class="delete-box">
-          <button class="delete-task" title="Delete Task" data-id="${task.id}"><i class="fa-solid fa-trash"></i></button>
-        </div>
-      
-   `;
-
- taskList.appendChild(taskElement);
-
- // Add event listeners for task details
-  taskElement.addEventListener("click", function (event) {
-   
-         if(!event.target.closest(".edit-task") && !event.target.closest(".delete-task")){showTaskDetails(task);}
- 
- });
-}
-);
-// Add event listeners for edit buttons
-document.querySelectorAll(".edit-task").forEach(button => {
-    button.addEventListener("click", function () {
-        showEditTaskForm(this.dataset.id);
+        
+        const statusClass = getStatusClass(task.status);
+        
+        taskElement.innerHTML = `
+            <div class="status-box">
+              <span class="task-status ${statusClass}">
+              ${task.status || "N/A"}
+              </span>
+            </div>
+            ${task.dueDate ? 
+             `<div class="task-due-date date-box">
+                 <i class="fa-regular fa-calendar"></i>
+                 <span class="task-due-date-text">${newDate}</span>
+              </div>`:
+              `<div class="date-box"></div>`
+            }
+            <div class="title-box">
+              <span class="task-title" id="${taskTitleId}">${task.title}</span>
+              ${task.description ? `<span class="task-description-icon"><i class="fa-solid fa-align-left"></i>
+                </span>` : ''}
+            </div>
+            <div class="edit-box">
+              <button class="edit-task" title="Edit Task" data-id="${task.id}" aria-label="Edit ${task.title}"><i class="fa-solid fa-pen"></i></button>
+            </div>
+            <div class="delete-box">
+              <button class="delete-task" title="Delete Task" data-id="${task.id}" aria-label="Delete ${task.title}"><i class="fa-solid fa-trash"></i></button>
+            </div>
+        `;
+        
+        taskList.appendChild(taskElement);
+        
+        taskElement.addEventListener("click", function (event) {
+            if (!event.target.closest(".edit-task") && !event.target.closest(".delete-task")) {
+                showTaskDetails(task);
+            }
+        });
     });
-});
 
- // Add event listeners for delete buttons
- document.querySelectorAll(".delete-task").forEach(button => {
-    button.addEventListener("click", function () {
-        confirmDelete("delete", "Delete confirmation", "Are you sure you want to delete this task?", this.dataset.id);
+    // No need for `aria-owns`
+    
+    // Add event listeners for edit buttons
+    document.querySelectorAll(".edit-task").forEach(button => {
+        button.addEventListener("click", function () {
+            showEditTaskForm(this.dataset.id);
+        });
     });
-});
 
-
+    // Add event listeners for delete buttons
+    document.querySelectorAll(".delete-task").forEach(button => {
+        button.addEventListener("click", function () {
+            confirmDelete("delete", "Delete confirmation", "Are you sure you want to delete this task?", this.dataset.id);
+        });
+    });
 }
+
 
 // Retrieve details of specific task from localStorage
 function showTaskDetails(task){
