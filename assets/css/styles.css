@@ -9,7 +9,8 @@
 :root {
   --primary-color: #1359A0; /* Lapis Lazuli */
   --secondary-color: #1976D2; /* French Blue */
-  --success-color: #4CAF50; /* Pigment Green */
+  /*--success-color: #4CAF50;  Pigment Green */
+  --success-color: #388E3C; /* Pigment Green */
   --attention-color: #FFC107; /* Amber */
   /* --danger-color: #F44336;  Vermillion */
    --danger-color: #D32F2F;
