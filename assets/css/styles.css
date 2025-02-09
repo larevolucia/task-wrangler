@@ -11,7 +11,8 @@
   --secondary-color: #1976D2; /* French Blue */
   --success-color: #4CAF50; /* Pigment Green */
   --attention-color: #FFC107; /* Amber */
-  --danger-color: #F44336; /* Vermillion */
+  /* --danger-color: #F44336;  Vermillion */
+   --danger-color: #D32F2F;
   --background-color: #F5F5F5; /* White Smoke */
   --text-color: #212121;  /* Eerie Black */
   --primary-font: "Inter", serif;
