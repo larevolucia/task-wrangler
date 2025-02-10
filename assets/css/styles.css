@@ -89,9 +89,10 @@ a:hover {
 
 /*Focus State*/
 a:focus {
-  outline: 3px dashed var(--attention-color); /* Highlight focus with dashed outline */
-  outline-offset: 3px; /* Add spacing between text and outline */
+  outline: 3px dashed var(--attention-color); 
+  outline-offset: 3px; 
 }
+
 
 /* -------------------------------
    BUTTONS
@@ -127,20 +128,27 @@ button:hover {
   transform: translateY(-2px);
 }
 
+
 .btn-primary:hover {
   background-color: var(--secondary-color);
 }
 
+
 /* Focus States */
 
-button:focus {
-  outline: none; 
-  transform: translateY(-1px); 
+button:focus, .btn-primary:focus {
+  outline: 3px dashed var(--attention-color);  
+  outline-offset: 3px; 
+  transform: translateY(-2px); 
 }
+
 
 .btn-round {
   border-radius: 50%;
   font-size: smaller;
+}
+.btn-primary:focus {
+  background-color: var(--secondary-color);
 }
 
 /* Active States */
@@ -294,6 +302,10 @@ TASKS CARD
   grid-row-gap: 10px;
 }
 
+.task-card:focus {
+    outline: 3px dashed var(--attention-color); 
+    outline-offset: 3px; 
+}
 
 .task-status {
   text-transform: uppercase;
@@ -329,17 +341,32 @@ TASKS CARD
   background-color: var(--danger-color);
 }
 
+/* Specific focus states for edit & delete buttons */
+.edit-task:focus {
+  outline: 3px dashed var(--primary-color);
+  box-shadow: 0 0 10px rgba(21, 101, 192, 0.5);
+}
+
+.delete-task:focus {
+  outline: 3px dashed var(--danger-color);
+  box-shadow: 0 0 10px rgba(211, 47, 47, 0.5);
+}
+
 /* Task Overdue styles */
 
 .overdue {
   background-color: var(--danger-color) !important;
   color: f0f0f0 !important; 
-  border-left: 5px solid darkred; 
+  border-left: 5px solid #8b0000; 
 }
 
 .overdue .delete-task {
   background-color: #f0f0f0 !important; 
   color: var(--danger-color) !important; 
+}
+.overdue .delete-task:focus {
+  outline: 3px dashed var(--text-color);
+  box-shadow: 0 0 10px rgba(211, 47, 47, 0.5);
 }
 
 

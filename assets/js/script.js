@@ -227,27 +227,52 @@ function loadTasks() {
                 showTaskDetails(task);
             }
         });
-        // Add event listeners for edit buttons
+
+        // Add event listeners for edit button
         const editButton = document.getElementById(`edit-${task.id}`);
+        if (editButton) {
+            editButton.addEventListener("click", function () {
+                showEditTaskForm(this.dataset.id);
+            });
+
+            // Add Enter key support
+            editButton.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    showEditTaskForm(this.dataset.id);
+                }
+            });
+        }
         
-        editButton.addEventListener("click", function () {
-            showEditTaskForm(this.dataset.id);
-        });
+
         
+        // Add event listeners for delete buttons
+        const deleteButton = document.getElementById(`delete-${task.id}`);
+        if (deleteButton) {
+            deleteButton.addEventListener("click", function () {
+                confirmDelete(
+                    "delete", 
+                    "Delete confirmation", 
+                    `Are you sure you want to delete this <em><strong>${this.dataset.title}</strong></em>?`, 
+                    this.dataset.id
+                );
+            });
+            // Add Enter key support
+            deleteButton.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    confirmDelete(
+                        "delete", 
+                        "Delete confirmation", 
+                        `Are you sure you want to delete this <em><strong>${this.dataset.title}</strong></em>?`, 
+                        this.dataset.id
+                    );
+                }
+            });
+
+        }
     });
     
-    // Add event listeners for delete buttons
-    const deleteButton = document.getElementById(`dekete-${task.id}`);
-    if (deleteButton) {
-        deleteButton.addEventListener("click", function () {
-            confirmDelete(
-                "delete", 
-                "Delete confirmation", 
-                `Are you sure you want to delete this <em><strong>${this.dataset.title}</strong></em>?`, 
-                this.dataset.id
-            );
-        });
-    }
 }
 
 
