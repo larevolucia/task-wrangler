@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
     console.log("DOM loaded");
-    showProgressBar();
     loadTasks();
 });
 
@@ -18,17 +17,6 @@ let confirmationModal;
 
 // Store today's date
 const today = getTodayDate();
-
-
-// Populate Progress Bar
-function showProgressBar(){
-    // Show Progress Bar
-    const progressContainer = document.getElementById("progress-container");
-    progressContainer.ariaValueNow = "25";
-    const progressBar = document.getElementById("progress-bar");
-    progressBar.style.width = "25%";
-
-}
 
 // Create form for task creation
 function showCreateTaskForm () {
@@ -186,11 +174,12 @@ function loadTasks() {
         taskElement.setAttribute("id", `task-${task.id}`);
         taskElement.setAttribute("aria-labelledby", taskTitleId);
         
-        if (isOverdue) {
+        const statusClass = getStatusClass(task.status);
+
+        if (task.status !== "done" && isOverdue) {
             taskElement.classList.add("overdue");
         }
         
-        const statusClass = getStatusClass(task.status);
         
         taskElement.innerHTML = `
             <div class="status-box">
@@ -199,10 +188,15 @@ function loadTasks() {
               </span>
             </div>
             ${task.dueDate ? 
-             `<div class="task-due-date date-box">
-                 <i class="fa-regular fa-calendar"></i>
-                 <span class="task-due-date-text">${newDate}</span>
-              </div>`:
+              (task.status !== "done" &&isOverdue ? `<div class="task-due-date date-box">
+                <i class="fa-solid fa-triangle-exclamation"></i> 
+                <i class="fa-solid fa-calendar-days"></i>
+                <span class="task-due-date-text">${newDate}</span>
+              </div>`: `<div class="task-due-date date-box">
+                 
+              <i class="fa-regular fa-calendar-days"></i>
+              <span class="task-due-date-text">${newDate}</span>
+              </div>`) :
               `<div class="date-box"></div>`
             }
             <div class="title-box">
