@@ -87,7 +87,7 @@ a:hover {
 }
 
 /*Focus State*/
-a:focus {
+a:focus-visible {
   outline: 3px dashed var(--attention-color); 
   outline-offset: 3px; 
 }
@@ -135,9 +135,12 @@ button:hover {
 
 /* Focus States */
 
-button:focus, .btn-primary:focus {
+button:focus-visible, .btn-primary:focus-visible {
   outline: 3px dashed var(--attention-color);  
   outline-offset: 3px; 
+  transform: translateY(-2px); 
+}
+button:focus, .btn-primary:focus {
   transform: translateY(-2px); 
 }
 
@@ -301,7 +304,7 @@ TASKS CARD
   grid-row-gap: 10px;
 }
 
-.task-card:focus {
+.task-card:focus-visible {
     outline: 3px dashed var(--attention-color); 
     outline-offset: 3px; 
 }
@@ -341,12 +344,12 @@ TASKS CARD
 }
 
 /* Specific focus states for edit & delete buttons */
-.edit-task:focus {
+.edit-task:focus-visible {
   outline: 3px dashed var(--primary-color);
   box-shadow: 0 0 10px rgba(21, 101, 192, 0.5);
 }
 
-.delete-task:focus {
+.delete-task:focus-visible {
   outline: 3px dashed var(--danger-color);
   box-shadow: 0 0 10px rgba(211, 47, 47, 0.5);
 }
@@ -481,6 +484,10 @@ textarea {
 input:focus, select:focus, textarea:focus {
   border-color: var(--primary-color);
   box-shadow: 0 0 8px rgba(25, 118, 210, 0.3);
+}
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 3px dashed var(--attention-color);
+  outline-offset: 2px;
 }
 
 /* Error border for required fields */

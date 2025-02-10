@@ -39,8 +39,8 @@ function showCreateTaskForm() {
     <div class="modal-body">
     <div class="form-item">
     <label for="task-title">Title<small>*</small></label>
-    <input type="text" id="task-title">
-    <span id="task-title-error" class="error-message"></span>
+    <input type="text" id="task-title" aria-required="true">
+    <span id="task-title-error" class="error-message" aria-live="assertive"></span>
     </div>
     <div class="form-item">
     <label for="task-description">Description</label>
@@ -501,8 +501,8 @@ function showEditTaskForm(taskId) {
                     <label for="new-task-title">Title<small>*</small></label>
                     <input type="text" id="new-task-title" placeholder="Task Title" value="${
                       currentTask[0].title
-                    }">
-                    <span id="task-title-error" class="error-message"></span>
+                    }" aria-required="true">
+                    <span id="task-title-error" class="error-message" aria-live="assertive"></span>
                 </div>
                 <div class="form-item">
                     <label for="new-task-description">Description</label>
@@ -640,6 +640,7 @@ function showToast(message, toastType, duration = 5000) {
   let toastContainer = document.createElement("div");
   toastContainer.setAttribute("tabindex", "0");
   toastContainer.setAttribute("role", "alert");
+  toastContainer.setAttribute("aria-live", "polite");
   toastContainer.classList.add("toast", `toast-${toastType}`);
   toastContainer.innerHTML = ` <div class="toast-content-wrapper">
     <div class="toast-icon">
