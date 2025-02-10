@@ -148,7 +148,7 @@ function loadTasks() {
     
     let tasks = [];
     
-    // Retrieve the list from localStorage
+    // Retrieve tasks from localStorage
     try {
         tasks = JSON.parse(localStorage.getItem("tasks")) || [];
     } catch (error) {
@@ -159,7 +159,7 @@ function loadTasks() {
     
     if (tasks.length === 0) {
         taskList.innerHTML = `<p id="no-tasks-message" class="empty-message">No tasks yet! Create a task to get started.</p>`;
-        taskList.removeAttribute("role"); // Remove role="list" if no tasks exists
+        taskList.removeAttribute("role"); // Remove role="list" if no tasks exist
         return;
     }
     
@@ -167,21 +167,21 @@ function loadTasks() {
     
     tasks.forEach((task, index) => {
         const newDate = formatDate(task.dueDate);
-        const isOverdue = task.dueDate && task.dueDate < today;
+        const isOverdue = task.dueDate && new Date(task.dueDate) < new Date(today);
         const taskTitleId = `task-title-${index}`;
         const taskElement = document.createElement("div");
         
         taskElement.classList.add("task-card");
         taskElement.setAttribute("role", "listitem");
+        taskElement.setAttribute("tabindex", "0"); 
         taskElement.setAttribute("id", `task-${task.id}`);
         taskElement.setAttribute("aria-labelledby", taskTitleId);
         
-        const statusClass = getStatusClass(task.status);
+        const statusClass = getStatusClass(task.status || "unknown");
 
         if (task.status !== "done" && isOverdue) {
             taskElement.classList.add("overdue");
         }
-        
         
         taskElement.innerHTML = `
             <div class="status-box">
@@ -190,52 +190,64 @@ function loadTasks() {
               </span>
             </div>
             ${task.dueDate ? 
-              (task.status !== "done" &&isOverdue ? `<div class="task-due-date date-box">
+              (task.status !== "done" && isOverdue ? `<div class="task-due-date date-box">
                 <i class="fa-solid fa-triangle-exclamation"></i> 
                 <i class="fa-solid fa-calendar-days"></i>
                 <span class="task-due-date-text">${newDate}</span>
               </div>`: `<div class="task-due-date date-box">
-                 
               <i class="fa-regular fa-calendar-days"></i>
               <span class="task-due-date-text">${newDate}</span>
               </div>`) :
-              `<div class="date-box"></div>`
-            }
+              `<div class="date-box"></div>`}
             <div class="title-box">
               <span class="task-title" id="${taskTitleId}">${task.title}</span>
-              ${task.description ? `<span class="task-description-icon"><i class="fa-solid fa-align-left"></i>
-                </span>` : ''}
+              ${task.description ? `<span class="task-description-icon"><i class="fa-solid fa-align-left"></i></span>` : ''}
             </div>
             <div class="edit-box">
-              <button class="edit-task" title="Edit Task" data-id="${task.id}" aria-label="Edit ${task.title}"><i class="fa-solid fa-pen"></i></button>
+              <button class="edit-task" id="edit-${task.id}" title="Edit Task" data-id="${task.id}" aria-label="Edit ${task.title}"><i class="fa-solid fa-pen"></i></button>
             </div>
             <div class="delete-box">
-              <button class="delete-task" title="Delete Task" data-id="${task.id}" data-title="${task.title}" aria-label="Delete ${task.title}"><i class="fa-solid fa-trash"></i></button>
+              <button class="delete-task"id="delete-${task.id}" title="Delete Task" data-id="${task.id}" data-title="${task.title}" aria-label="Delete ${task.title}"><i class="fa-solid fa-trash"></i></button>
             </div>
         `;
         
         taskList.appendChild(taskElement);
-        
+
+        // Click listener for opening task details
         taskElement.addEventListener("click", function (event) {
             if (!event.target.closest(".edit-task") && !event.target.closest(".delete-task")) {
                 showTaskDetails(task);
             }
         });
-    });
 
-    // Add event listeners for edit buttons
-    document.querySelectorAll(".edit-task").forEach(button => {
-        button.addEventListener("click", function () {
+        // Keyboard listener for opening task details
+        taskElement.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                showTaskDetails(task);
+            }
+        });
+        // Add event listeners for edit buttons
+        const editButton = document.getElementById(`edit-${task.id}`);
+        
+        editButton.addEventListener("click", function () {
             showEditTaskForm(this.dataset.id);
         });
+        
     });
-
+    
     // Add event listeners for delete buttons
-    document.querySelectorAll(".delete-task").forEach(button => {
-        button.addEventListener("click", function () {
-            confirmDelete("delete", "Delete confirmation", `Are you sure you want to delete this <em><strong>${this.dataset.title}</strong></em>?`, this.dataset.id);
+    const deleteButton = document.getElementById(`dekete-${task.id}`);
+    if (deleteButton) {
+        deleteButton.addEventListener("click", function () {
+            confirmDelete(
+                "delete", 
+                "Delete confirmation", 
+                `Are you sure you want to delete this <em><strong>${this.dataset.title}</strong></em>?`, 
+                this.dataset.id
+            );
         });
-    });
+    }
 }
 
 
