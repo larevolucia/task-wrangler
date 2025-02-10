@@ -165,8 +165,6 @@ button:active{
 }
 
 
-
-
 /* -------------------------------
    UTILITY CLASSES
 ---------------------------------- */
@@ -493,6 +491,7 @@ input:focus, select:focus, textarea:focus {
 #close-create-form:hover, #close-edit-form:hover, #close-details-modal:hover, #close-confirm-modal:hover{
   color: #000;
 }
+
 #close-create-form:focus, #close-edit-form:focus, #close-details-modal:focus, #close-confirm-modal:focus{
   outline: 3px dashed var(--attention-color); 
   outline-offset: 3px; 
@@ -643,6 +642,15 @@ Code from: https://www.geeksforgeeks.org/how-to-make-a-toast-notification-in-htm
 
 .toast.toast-warning .toast-progress {
   background-color: var(--attention-color);
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #555;
+  cursor: pointer;
+  box-shadow: none;
 }
 
 @keyframes slideInRight {

@@ -500,11 +500,13 @@ let warn =
     document.querySelector(".custom-toast.warning-toast");
 
 // Display Toast notification according to context given in parameters
-function showToast(message, toastType, duration) {
+function showToast(message, toastType, duration = 5000) {
     // Code from: https://www.geeksforgeeks.org/how-to-make-a-toast-notification-in-html-css-and-javascript/
 
     // Create toaster element
     let toastContainer = document.createElement('div');
+    toastContainer.setAttribute("tabindex", "0");
+    toastContainer.setAttribute("role", "alert");
     toastContainer.classList.add(
         "toast", `toast-${toastType}`);
     toastContainer.innerHTML = ` <div class="toast-content-wrapper">
@@ -512,11 +514,11 @@ function showToast(message, toastType, duration) {
     ${toastIcon[toastType]}
     </div>
     <div class="toast-message">${message}</div>
+    <button class="toast-close" aria-label="Close Notification">&times;</button>
     <div class="toast-progress"></div>
     </div>`;
     
-    // Fallback for animation duration
-    duration = duration || 5000;
+
     // Convert animation duration to seconds 
     toastContainer.querySelector(".toast-progress").style.animationDuration =
         `${duration / 1000}s`;
@@ -530,8 +532,24 @@ function showToast(message, toastType, duration) {
     }
 
     document.body.appendChild(toastContainer)
+    toastContainer.focus();
+
+    
+    // Close on Escape
+    toastContainer.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+            toastContainer.remove();
+        }
+    });
+
+    // Close button functionality
+    toastContainer.querySelector(".toast-close").addEventListener("click", () => {
+        toastContainer.remove();
+    });
+
 
 }
+
 
 
 // Utility functions
