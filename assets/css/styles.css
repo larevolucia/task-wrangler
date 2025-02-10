@@ -138,11 +138,6 @@ button:focus {
   transform: translateY(-1px); 
 }
 
-.btn-primary:focus {
-  box-shadow: 0 0 10px 4px rgba(25, 118, 210, 0.5); 
-  /* Glow effect inspired by https://stackoverflow.com/questions/59502714/add-soft-glow-on-focus-to-input */
-}
-
 .btn-round {
   border-radius: 50%;
   font-size: smaller;
@@ -414,7 +409,7 @@ MODALS
   justify-content: center;
   align-items: center;
   z-index: 1;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
   /* initially hidden */
   opacity: 0;
   visibility: hidden;
@@ -429,7 +424,7 @@ MODALS
 #create-task-form, #edit-task-form, #details-modal-content {
   background: white;
   border-radius: 8px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.3);
   width: 90%;
   max-width: 500px;
   position: relative;
@@ -457,6 +452,11 @@ textarea {
 
 .form-item, .details-item {
   padding: 0.3rem 1rem;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px rgba(25, 118, 210, 0.3);
 }
 
 /* Error border for required fields */
@@ -493,24 +493,12 @@ textarea {
 #close-create-form:hover, #close-edit-form:hover, #close-details-modal:hover, #close-confirm-modal:hover{
   color: #000;
 }
+#close-create-form:focus, #close-edit-form:focus, #close-details-modal:focus, #close-confirm-modal:focus{
+  outline: 3px dashed var(--attention-color); 
+  outline-offset: 3px; 
+}
 
 /* Details Modal */
-
-/* #details-modal-content  {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-  width: 90%;
-  max-width: 500px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  font-size: 1rem;
-  text-align: left;
-  animation: fadeIn 0.3s ease-out;
-} */
 
 #close-details-modal {
   position: absolute;
@@ -714,6 +702,13 @@ Code from: https://www.geeksforgeeks.org/how-to-make-a-toast-notification-in-htm
   #content-container {
     width: 700px;
     margin: 0 auto;
+  }
+
+  /*Modal*/
+  #create-task-form, #edit-task-form, #details-modal-content, .confirm-modal-content {
+    width: 95%;
+    max-width: 400px;
+    padding: 1.2rem;
   }
   
   /* Task Card  */

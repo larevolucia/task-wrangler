@@ -62,6 +62,8 @@ function showCreateTaskForm () {
     // Add form at the top of content-container
     contentContainer.appendChild(createTaskFormContainer);
     
+    document.getElementById("task-title").focus();
+    
     document.getElementById("close-create-form").addEventListener("click", closeModal);
     document.getElementById("close-create-modal").addEventListener("click", closeModal);
     document.getElementById("create-task-form").addEventListener("submit", createTask);
@@ -208,7 +210,7 @@ function loadTasks() {
               <button class="edit-task" title="Edit Task" data-id="${task.id}" aria-label="Edit ${task.title}"><i class="fa-solid fa-pen"></i></button>
             </div>
             <div class="delete-box">
-              <button class="delete-task" title="Delete Task" data-id="${task.id}" aria-label="Delete ${task.title}"><i class="fa-solid fa-trash"></i></button>
+              <button class="delete-task" title="Delete Task" data-id="${task.id}" data-title="${task.title}" aria-label="Delete ${task.title}"><i class="fa-solid fa-trash"></i></button>
             </div>
         `;
         
@@ -231,7 +233,7 @@ function loadTasks() {
     // Add event listeners for delete buttons
     document.querySelectorAll(".delete-task").forEach(button => {
         button.addEventListener("click", function () {
-            confirmDelete("delete", "Delete confirmation", "Are you sure you want to delete this task?", this.dataset.id);
+            confirmDelete("delete", "Delete confirmation", `Are you sure you want to delete this <em><strong>${this.dataset.title}</strong></em>?`, this.dataset.id);
         });
     });
 }
@@ -260,13 +262,25 @@ function showTaskDetails(task){
                ${task.dueDate ? (task.status !== "done" && isOverdue ? `<div class="details-item"><p><i class="fa-solid fa-triangle-exclamation"></i> <strong>Due Date</strong></p> <p>${formatDate(task.dueDate)}</p></div>` : `<div class="details-item"><p><strong>Due Date</strong></p> <p>${formatDate(task.dueDate)}</p></div>`) : ""}    
             </div>
             <div class="modal-footer">
-                <button class="btn-danger" title="Delete Task" data-id="${task.id}" aria-label="Delete ${task.title}"><i class="fa-solid fa-trash" aria-hidden="true"></i> Delete Task</button>
-                <button class="btn-primary" title="Edit Task" data-id="${task.id}" aria-label="Edit ${task.title}"><i class="fa-solid fa-pen" aria-hidden="true"></i> Edit Task</button>
+                <button class="btn-primary" id="edit-task-${task.id}" title="Edit Task" data-id="${task.id}" aria-label="Edit "><i class="fa-solid fa-pen" aria-hidden="true"></i> Edit Task</button>
+                <button class="btn-danger" id="delete-task-${task.id}" title="Delete Task" data-id="${task.id}" aria-label="Delete ${task.title}"><i class="fa-solid fa-trash" aria-hidden="true"></i> Delete Task</button>
             </div>
         </div>
     `;
 
     contentContainer.appendChild(taskDetailsContainer);
+
+    document.getElementById(`edit-task-${task.id}`).focus();
+
+       // Add event listeners for edit button
+       document.getElementById(`edit-task-${task.id}`).addEventListener("click", function () {
+            showEditTaskForm(this.dataset.id);
+        });
+
+    // Add event listeners for delete button
+    document.getElementById(`delete-task-${task.id}`).addEventListener("click", function () {
+            confirmDelete("delete", "Delete confirmation", `Are you sure you want to delete <em><strong>${task.title}</strong></em>?`, this.dataset.id);
+        });
 
     document.getElementById("close-details-modal").addEventListener("click", closeModal);
 
@@ -335,6 +349,7 @@ function editTask(event) {
 
 // Preloads task information into form for manipulation
 function showEditTaskForm(taskId){
+    closeModal();
 
     // retrieve stored tasks
     let tasks = JSON.parse(localStorage.getItem("tasks"));
@@ -395,6 +410,8 @@ function showEditTaskForm(taskId){
      // Add form at the top of content-container
      contentContainer.appendChild(editTaskFormContainer);
 
+     document.getElementById("new-status").focus();
+
      document.getElementById("close-edit-form").addEventListener("click", closeModal);
      document.getElementById("close-edit-modal").addEventListener("click", closeModal);
      document.getElementById("edit-task-form").addEventListener("submit", editTask);
@@ -402,9 +419,7 @@ function showEditTaskForm(taskId){
 
 // Alert 
 function confirmDelete(action, title, message, taskId) {
-    // if (window.confirm("Are you sure you want to delete this task?")) {
-    //     deleteTask(taskId);
-    // }
+    closeModal();
 
     confirmationModal = document.createElement('div');
     confirmationModal.id = `${action}-confirmation-modal`;
@@ -424,8 +439,8 @@ function confirmDelete(action, title, message, taskId) {
         <button id="confirm-delete" class="btn-danger">Yes, Delete</button>
     </div>
     </div>`
-    console.log(confirmationModal);
     contentContainer.appendChild(confirmationModal);
+    document.getElementById("cancel-delete").focus();
 
 
     // Close modal if "Cancel" is clicked
@@ -453,6 +468,7 @@ function markField(fieldId){
 
     field.classList.add("error-border");
     message.innerHTML = "Required field";
+    document.getElementById(fieldId).focus();
 
     // Remove error class when user starts typing
    field.addEventListener("input", () => {
