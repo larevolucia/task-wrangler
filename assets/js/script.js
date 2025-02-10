@@ -69,7 +69,7 @@ function showCreateTaskForm() {
   document
     .getElementById("close-create-modal")
     .addEventListener("click", closeModal);
-  createTaskFormContainer.addEventListener("keydown", (event) => {
+  document.addEventListener("keydown", (event) => {
         if (event.key === "Escape") {
           closeModal();
         }
@@ -385,7 +385,7 @@ function showTaskDetails(task) {
   document
     .getElementById("close-details-modal")
     .addEventListener("click", closeModal);
-  taskDetailsContainer.addEventListener("keydown", (event) => {
+  document.addEventListener("keydown", (event) => {
         if (event.key === "Escape") {
           closeModal();
         }
@@ -537,12 +537,12 @@ function showEditTaskForm(taskId) {
     .getElementById("close-edit-modal")
     .addEventListener("click", closeModal);
 
-  editTaskFormContainer.addEventListener("keydown", (event) => {
+  document.addEventListener("keydown", (event) => {
     if(event.key === "Escape"){
         closeModal();
     }
   });
-  
+
   document
     .getElementById("edit-task-form")
     .addEventListener("submit", editTask);
@@ -581,7 +581,7 @@ function confirmDelete(action, title, message, taskId) {
     .getElementById("close-confirm-modal")
     .addEventListener("click", closeModal);
 
-  confirmationModal.addEventListener("keydown", (event) => {
+  document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
         closeModal();
       }
@@ -665,7 +665,7 @@ function showToast(message, toastType, duration = 5000) {
   toastContainer.focus();
 
   // Close on Escape
-  toastContainer.addEventListener("keydown", (event) => {
+  document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       toastContainer.remove();
     }
