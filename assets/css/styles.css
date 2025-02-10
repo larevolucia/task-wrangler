@@ -61,7 +61,6 @@ h1, h2 {
 
 h2 {
   font-size: 1.3rem;
-  margin-top: 1rem;
 }
 
 
@@ -743,7 +742,6 @@ Code from: https://www.geeksforgeeks.org/how-to-make-a-toast-notification-in-htm
   #create-task-form, #edit-task-form, #details-modal-content, .confirm-modal-content {
     width: 95%;
     max-width: 400px;
-    padding: 1.2rem;
   }
   
   /* Task Card  */
