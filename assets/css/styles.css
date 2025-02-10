@@ -61,6 +61,7 @@ h1, h2 {
 
 h2 {
   font-size: 1.3rem;
+  margin-top: 1rem;
 }
 
 
@@ -425,7 +426,7 @@ MODALS
 }
 
 
-#create-task-form, #edit-task-form {
+#create-task-form, #edit-task-form, #details-modal-content {
   background: white;
   border-radius: 8px;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
@@ -454,9 +455,7 @@ textarea {
   height: 100px;
 }
 
-
-
-.form-item {
+.form-item, .details-item {
   padding: 0.3rem 1rem;
 }
 
@@ -497,7 +496,7 @@ textarea {
 
 /* Details Modal */
 
-#details-modal-content  {
+/* #details-modal-content  {
   background: white;
   padding: 2rem;
   border-radius: 8px;
@@ -511,7 +510,7 @@ textarea {
   font-size: 1rem;
   text-align: left;
   animation: fadeIn 0.3s ease-out;
-}
+} */
 
 #close-details-modal {
   position: absolute;
@@ -524,6 +523,16 @@ textarea {
   cursor: pointer;
   transition: color 0.3s ease;
   box-shadow: none;
+}
+
+#details-footer, .modal-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+}
+
+#details-footer > :first-child {
+  margin-right: 1rem;
 }
 
 /* -------------------------------
@@ -554,9 +563,6 @@ CONFIRMATION MODAL
 }
 
 .modal-footer {
-  display: flex;
-  flex-direction: row;
-  justify-content: right;
   gap: 1rem;
   padding: 1rem;
 }

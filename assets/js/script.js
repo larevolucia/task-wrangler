@@ -221,8 +221,6 @@ function loadTasks() {
         });
     });
 
-    // No need for `aria-owns`
-    
     // Add event listeners for edit buttons
     document.querySelectorAll(".edit-task").forEach(button => {
         button.addEventListener("click", function () {
@@ -243,6 +241,7 @@ function loadTasks() {
 function showTaskDetails(task){
 
     const statusClass = getStatusClass(task.status);
+    const isOverdue = task.dueDate && task.dueDate < today;
 
     // Create modal container
     taskDetailsContainer = document.createElement("div");
@@ -251,13 +250,19 @@ function showTaskDetails(task){
     taskDetailsContainer.classList.add("show");
     taskDetailsContainer.innerHTML = `
         <div id="details-modal-content">
-            <button id="close-details-modal">&times;</button>
-            <div>
-            <span class="task-status ${statusClass}">${task.status}</span>
+            <div class="modal-header">
+                <button id="close-details-modal">&times;</button>
+                <h2>${task.title}</h2>
             </div>
-            <h2>${task.title}</h2>           
-               ${task.description ? `<div><p><strong>Description</strong></p><p>${task.description}</p></div>`: ""}
-               ${task.dueDate ? `<div><p><strong>Due Date</strong></p> <p>${formatDate(task.dueDate)}</p></div>` : ""}    
+            <div class="modal-body">
+               <div class="details-item"><span class="task-status ${statusClass}">${task.status}</span></div>
+               ${task.description ? `<div class="details-item"><p><strong>Description</strong></p><p>${task.description}</p></div>`: ""}
+               ${task.dueDate ? (task.status !== "done" && isOverdue ? `<div class="details-item"><p><i class="fa-solid fa-triangle-exclamation"></i> <strong>Due Date</strong></p> <p>${formatDate(task.dueDate)}</p></div>` : `<div class="details-item"><p><strong>Due Date</strong></p> <p>${formatDate(task.dueDate)}</p></div>`) : ""}    
+            </div>
+            <div class="modal-footer">
+                <button class="btn-danger" title="Delete Task" data-id="${task.id}" aria-label="Delete ${task.title}"><i class="fa-solid fa-trash" aria-hidden="true"></i> Delete Task</button>
+                <button class="btn-primary" title="Edit Task" data-id="${task.id}" aria-label="Edit ${task.title}"><i class="fa-solid fa-pen" aria-hidden="true"></i> Edit Task</button>
+            </div>
         </div>
     `;
 
