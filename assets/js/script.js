@@ -25,25 +25,24 @@ function closeModal() {
       createTaskFormContainer.classList.remove("show");
       createTaskFormContainer.remove();
       createTaskFormContainer = null;
-      document.removeEventListener(`keydown`, trapFocus);
-      document.addEventListener("keydown", () => console.log("Checking if listener was removed"));
     }
-  
+    
     if (editTaskFormContainer) {
-      editTaskFormContainer.classList.remove("show");
-      editTaskFormContainer.remove();
-      editTaskFormContainer = null;
+        editTaskFormContainer.classList.remove("show");
+        editTaskFormContainer.remove();
+        editTaskFormContainer = null;
     }
     if (taskDetailsContainer) {
-      taskDetailsContainer.classList.remove("show");
-      taskDetailsContainer.remove();
-      taskDetailsContainer = null;
+        taskDetailsContainer.classList.remove("show");
+        taskDetailsContainer.remove();
+        taskDetailsContainer = null;
     }
     if (confirmationModal) {
-      confirmationModal.classList.remove("show");
-      confirmationModal.remove();
-      confirmationModal = null;
+        confirmationModal.classList.remove("show");
+        confirmationModal.remove();
+        confirmationModal = null;
     }
+    document.removeEventListener(`keydown`, trapFocus);
   }
   
 
@@ -368,6 +367,9 @@ function showTaskDetails(task) {
 
   contentContainer.appendChild(taskDetailsContainer);
 
+  // Trap focus
+  document.addEventListener("keydown", (event) => trapFocus(event, "task-details-container"));
+
   document.getElementById(`edit-task-${task.id}`).focus();
 
   // Add event listeners for edit button
@@ -536,6 +538,8 @@ function showEditTaskForm(taskId) {
   // Add form at the top of content-container
   contentContainer.appendChild(editTaskFormContainer);
 
+  // Trap focus
+  document.addEventListener("keydown", (event) => trapFocus(event, "edit-task-form-container"));
   document.getElementById("new-status").focus();
 
   document
@@ -579,6 +583,9 @@ function confirmDelete(action, title, message, taskId) {
     </div>
     </div>`;
   contentContainer.appendChild(confirmationModal);
+
+  // Trap focus
+  document.addEventListener("keydown", (event) => trapFocus(event, `${action}-confirmation-modal`));
   document.getElementById("cancel-delete").focus();
 
   // Close modal if "Cancel" is clicked or Escape key is pressed
