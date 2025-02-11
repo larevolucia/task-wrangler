@@ -90,6 +90,9 @@ function showCreateTaskForm() {
   // Add form at the top of content-container
   contentContainer.appendChild(createTaskFormContainer);
 
+  // Trap focus
+  document.addEventListener("keydown", (event) => trapFocus(event, "create-task-form-container"));
+
   document.getElementById("task-title").focus();
 
   document
@@ -415,7 +418,6 @@ function deleteTask(taskId) {
 // Remove task from localStorage and replace it with modified version
 function editTask(event) {
   event.preventDefault();
-  console.log(event);
 
    // Validate form before proceeding
    if (!validateForm("new-task-title", "new-task-date")) {
@@ -625,9 +627,8 @@ function validateForm(titleId, dateId){
 
 }
 
-
-// Add class to required field for highligth
-function markField(fieldId, message = "Required Field") {
+// Add class to validated field for highligth
+function markField(fieldId, message) {
   let field = document.getElementById(fieldId);
   let errorMessage = document.getElementById(`${fieldId}-error`);
 
@@ -644,6 +645,37 @@ function markField(fieldId, message = "Required Field") {
     },
     { once: true }
   );
+}
+
+// Trap keyboard focus to modal 
+// https://zachpatrick.com/blog/how-to-trap-focus-inside-modal-to-make-it-ada-compliant
+// https://hidde.blog/using-javascript-to-trap-focus-in-an-element/
+function trapFocus(event, modalId){
+const isTabPressed = event.key === `Tab` || event.keyCode === 9;
+
+  if (!isTabPressed) {
+    return;
+  }
+
+  const modal = document.getElementById(modalId);
+  if (!modal) return;
+
+
+  const focusableEls = modal.querySelectorAll('button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled])');
+
+  const firstFocusableEl = focusableEls[0];  
+  const lastFocusableEl = focusableEls[focusableEls.length - 1];
+
+  if (event.shiftKey) {
+    if (document.activeElement === firstFocusableEl) {
+        lastFocusableEl.focus();
+      event.preventDefault();
+    }
+  } else if (document.activeElement === lastFocusableEl) {
+    firstFocusableEl.focus();
+    event.preventDefault();
+  }
+
 }
 
 // Toast icons
