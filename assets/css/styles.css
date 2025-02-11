@@ -481,14 +481,11 @@ textarea {
   padding: 0.3rem 1rem;
 }
 
+
 input:focus, select:focus, textarea:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 8px rgba(25, 118, 210, 0.3);
+  border-color: var(--attention-color);
 }
-input:focus-visible, select:focus-visible, textarea:focus-visible {
-  outline: 3px dashed var(--attention-color);
-  outline-offset: 2px;
-}
+
 
 /* Error border for required fields */
 .error-border {

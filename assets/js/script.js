@@ -18,6 +18,33 @@ let confirmationModal;
 // Store today's date
 const today = getTodayDate();
 
+// Close forms & details modals
+function closeModal() {
+    // Check and remove the create task form if it exists
+    if (createTaskFormContainer) {
+      createTaskFormContainer.classList.remove("show");
+      createTaskFormContainer.remove();
+      createTaskFormContainer = null;
+    }
+  
+    if (editTaskFormContainer) {
+      editTaskFormContainer.classList.remove("show");
+      editTaskFormContainer.remove();
+      editTaskFormContainer = null;
+    }
+    if (taskDetailsContainer) {
+      taskDetailsContainer.classList.remove("show");
+      taskDetailsContainer.remove();
+      taskDetailsContainer = null;
+    }
+    if (confirmationModal) {
+      confirmationModal.classList.remove("show");
+      confirmationModal.remove();
+      confirmationModal = null;
+    }
+  }
+  
+
 // Create form for task creation
 function showCreateTaskForm() {
   //  Check if form already exists
@@ -31,7 +58,7 @@ function showCreateTaskForm() {
   createTaskFormContainer.id = "create-task-form-container";
   createTaskFormContainer.classList.add("show");
   createTaskFormContainer.innerHTML = `
-    <form id="create-task-form">
+    <form id="create-task-form" novalidate>
     <div class="modal-header">
     <button type="button" id="close-create-form">&times;</button>
     <h2>Add Task</h2>
@@ -49,6 +76,7 @@ function showCreateTaskForm() {
     <div class="form-item">
     <label for="task-date">Due Date</label>
     <input type="date" id="task-date" min="${getTodayDate()}">
+    <span id="task-date-error" class="error-message" aria-live="assertive"></span>
     </div>
     </div>
     <div class="modal-footer">
@@ -80,32 +108,6 @@ function showCreateTaskForm() {
     
 }
 
-// Close forms & details modals
-function closeModal() {
-  // Check and remove the create task form if it exists
-  if (createTaskFormContainer) {
-    createTaskFormContainer.classList.remove("show");
-    createTaskFormContainer.remove();
-    createTaskFormContainer = null;
-  }
-
-  if (editTaskFormContainer) {
-    editTaskFormContainer.classList.remove("show");
-    editTaskFormContainer.remove();
-    editTaskFormContainer = null;
-  }
-  if (taskDetailsContainer) {
-    taskDetailsContainer.classList.remove("show");
-    taskDetailsContainer.remove();
-    taskDetailsContainer = null;
-  }
-  if (confirmationModal) {
-    confirmationModal.classList.remove("show");
-    confirmationModal.remove();
-    confirmationModal = null;
-  }
-}
-
 // Save task to localStorage
 function createTask(event) {
   event.preventDefault();
@@ -118,6 +120,12 @@ function createTask(event) {
   if (!title) {
     showToast("Please fill in all required fields.", "warning", 4000);
     markField("task-title");
+    return;
+  }
+
+  if (dueDate && new Date(dueDate) < new Date(today)) {
+    showToast("The due date cannot be in the past.", "warning", 4000);
+    markField("task-date", "Date cannot be in the past.");
     return;
   }
 
@@ -425,6 +433,13 @@ function editTask(event) {
     markField("new-task-title");
     return;
   }
+
+  if (dueDate && new Date(dueDate) < new Date(today)) {
+    showToast("The due date cannot be in the past.", "warning", 4000);
+    markField("new-task-date", "Date cannot be in the past.");
+    return;
+  }
+
   try {
     // retrieve stored tasks
     let tasks = JSON.parse(localStorage.getItem("tasks"));
@@ -485,7 +500,7 @@ function showEditTaskForm(taskId) {
   editTaskFormContainer.id = "edit-task-form-container";
   editTaskFormContainer.classList.add("show");
   editTaskFormContainer.innerHTML = `
-        <form id="edit-task-form" data-id="${taskId}">
+        <form id="edit-task-form" data-id="${taskId}" novalidate>
         <div class="modal-header">
                 <button type="button" id="close-edit-form">&times;</button>
                 <h2>Edit Task</h2>
@@ -502,21 +517,22 @@ function showEditTaskForm(taskId) {
                     <input type="text" id="new-task-title" placeholder="Task Title" value="${
                       currentTask[0].title
                     }" aria-required="true">
-                    <span id="task-title-error" class="error-message" aria-live="assertive"></span>
-                </div>
-                <div class="form-item">
+                    <span id="new-task-title-error" class="error-message" aria-live="assertive"></span>
+                    </div>
+                    <div class="form-item">
                     <label for="new-task-description">Description</label>
                     <textarea id="new-task-description">${
-                      currentTask[0].description
+                        currentTask[0].description
                         ? currentTask[0].description
                         : ""
                     }</textarea>
-                </div>
-                <div class="form-item">
+                    </div>
+                    <div class="form-item">
                     <label for="new-task-date">Due Date</label>
                     <input type="date" id="new-task-date" value="${
-                      currentTask[0].dueDate
+                        currentTask[0].dueDate
                     }" ${minDate}>
+                    <span id="new-task-date-error" class="error-message" aria-live="assertive"></span>
                 </div>
             </div>
             <div class="modal-footer">
@@ -548,7 +564,7 @@ function showEditTaskForm(taskId) {
     .addEventListener("submit", editTask);
 }
 
-// Alert
+// Show confirmation modal for critical action
 function confirmDelete(action, title, message, taskId) {
   closeModal();
 
@@ -598,13 +614,14 @@ function confirmDelete(action, title, message, taskId) {
 
 }
 
+
 // Add class to required field for highligth
-function markField(fieldId) {
+function markField(fieldId, message = "Required Field") {
   let field = document.getElementById(fieldId);
-  let message = document.getElementById(`${fieldId}-error`);
+  let errorMessage = document.getElementById(`${fieldId}-error`);
 
   field.classList.add("error-border");
-  message.innerHTML = "Required field";
+  errorMessage.innerHTML = message;
   document.getElementById(fieldId).focus();
 
   // Remove error class when user starts typing
