@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM loaded");
   loadTasks();
+  getTasksStatistics();
 });
 
 const contentContainer = document.getElementById("content-container");
@@ -573,7 +574,7 @@ function deleteTask(taskId) {
 // Show confirmation modal for critical action
 function confirmDelete(action, title, message, taskId) {
   closeModal();
-  
+
   lastFocusedEl = document.getElementById(`delete-${taskId}`);
 
   confirmationModal = document.createElement("div");
@@ -782,4 +783,33 @@ function formatDate(dateString) {
 
 function getTodayDate() {
   return new Date().toISOString().split("T")[0];
+}
+
+//Statistics
+// https://stackoverflow.com/questions/45547504/counting-occurrences-of-particular-property-value-in-array-of-objects
+function getTasksStatistics() {
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    // const totalTasks = tasks.length;
+
+    const todoTasks = tasks.reduce((acc, task) => {
+        return task.status === "to-do" ? ++acc : acc;
+    }, 0);
+
+    const progressTasks = tasks.reduce((acc, task) => {
+        return task.status === "in progress" ? ++acc : acc;
+    }, 0);
+
+    const doneTasks = tasks.reduce((acc, task) => {
+        return task.status === "done" ? ++acc : acc;
+    }, 0);
+
+    const taskList = [
+        ["Task Status", "Count"],
+        ["To-Do", todoTasks],
+        ["In Progress", progressTasks],
+        ["Done", doneTasks],
+    ]
+
+    console.log(taskList); 
 }
