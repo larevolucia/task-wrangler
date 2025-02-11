@@ -47,6 +47,7 @@ function closeModal() {
 
 // Create form for task creation
 function showCreateTaskForm() {
+  
   //  Check if form already exists
   if (createTaskFormContainer) {
     createTaskFormContainer.classList.toggle("show");
@@ -111,23 +112,16 @@ function showCreateTaskForm() {
 // Save task to localStorage
 function createTask(event) {
   event.preventDefault();
-  console.log(event);
 
+  // Validate form before proceeding
+  if (!validateForm("task-title", "task-date")) {
+    return; // Stop form submission if validation fails
+  }
+    
   const title = document.getElementById("task-title").value;
   const dueDate = document.getElementById("task-date").value;
   const description = document.getElementById("task-description").value;
 
-  if (!title) {
-    showToast("Please fill in all required fields.", "warning", 4000);
-    markField("task-title");
-    return;
-  }
-
-  if (dueDate && new Date(dueDate) < new Date(today)) {
-    showToast("The due date cannot be in the past.", "warning", 4000);
-    markField("task-date", "Date cannot be in the past.");
-    return;
-  }
 
   // Retrieve existing tasks or initialize empty array
   // Use JSON.parse to convert string to array
@@ -421,24 +415,18 @@ function deleteTask(taskId) {
 // Remove task from localStorage and replace it with modified version
 function editTask(event) {
   event.preventDefault();
+  console.log(event);
+
+   // Validate form before proceeding
+   if (!validateForm("new-task-title", "new-task-date")) {
+    return; // Stop form submission if validation fails
+   }
 
   const taskId = event.target.dataset.id;
   const title = document.getElementById("new-task-title").value;
   const dueDate = document.getElementById("new-task-date").value;
   const status = document.getElementById("new-status").value;
   const description = document.getElementById("new-task-description").value;
-
-  if (!title) {
-    showToast("Please fill in all required fields.", "warning", 4000);
-    markField("new-task-title");
-    return;
-  }
-
-  if (dueDate && new Date(dueDate) < new Date(today)) {
-    showToast("The due date cannot be in the past.", "warning", 4000);
-    markField("new-task-date", "Date cannot be in the past.");
-    return;
-  }
 
   try {
     // retrieve stored tasks
@@ -611,6 +599,29 @@ function confirmDelete(action, title, message, taskId) {
       taskId = null; // Reset
     }
   });
+
+}
+
+// Validate forms
+function validateForm(titleId, dateId){
+    const title = document.getElementById(titleId).value.trim();
+    const dueDateInput = document.getElementById(dateId);
+    const dueDate = dueDateInput.value;
+    const minDate = dueDateInput.min;
+    
+    if (!title) {
+        showToast("Title is a required field.", "warning", 4000);
+        markField(titleId, "This field is required.");
+        return;
+      }
+    
+      if (new Date(dueDate) < new Date(minDate)) {
+        showToast("The due date cannot be in the past.", "warning", 4000);
+        markField(dateId, `Date cannot be before ${formatDate(minDate)}`);
+        return;
+      }
+    
+    return true;
 
 }
 
