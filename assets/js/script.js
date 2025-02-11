@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM loaded");
   loadTasks();
-  getTasksStatistics();
 });
 
 const contentContainer = document.getElementById("content-container");
