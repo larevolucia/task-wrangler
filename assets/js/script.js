@@ -14,6 +14,7 @@ let createTaskFormContainer;
 let editTaskFormContainer;
 let taskDetailsContainer;
 let confirmationModal;
+let lastFocusedEl = document.getElementById("home-navigation");
 
 // Store today's date
 const today = getTodayDate();
@@ -43,12 +44,14 @@ function closeModal() {
         confirmationModal = null;
     }
     document.removeEventListener(`keydown`, trapFocus);
+    lastFocusedEl.focus();
   }
   
 
 // Create form for task creation
 function showCreateTaskForm() {
   
+  lastFocusedEl = createTaskButton;
   //  Check if form already exists
   if (createTaskFormContainer) {
     createTaskFormContainer.classList.toggle("show");
@@ -313,12 +316,16 @@ function loadTasks() {
 
 // Retrieve details of specific task from localStorage
 function showTaskDetails(task) {
+
+  lastFocusedEl = document.getElementById(`task-${task.id}`);
+
   const statusClass = getStatusClass(task.status);
   const isOverdue = task.dueDate && task.dueDate < today;
 
   // Create modal container
   taskDetailsContainer = document.createElement("div");
-  taskDetailsContainer.id = "task-details-container";
+  taskDetailsContainer.id = `task-${task.id}-details-container`;
+  taskDetailsContainer.classList.add("task-details-container");
   taskDetailsContainer.classList.add("details-modal");
   taskDetailsContainer.classList.add("show");
   taskDetailsContainer.innerHTML = `
@@ -368,7 +375,7 @@ function showTaskDetails(task) {
   contentContainer.appendChild(taskDetailsContainer);
 
   // Trap focus
-  document.addEventListener("keydown", (event) => trapFocus(event, "task-details-container"));
+  document.addEventListener("keydown", (event) => trapFocus(event, `task-${task.id}-details-container`));
 
   document.getElementById(`edit-task-${task.id}`).focus();
 
@@ -401,68 +408,11 @@ function showTaskDetails(task) {
       });
 }
 
-// Delete task from localStorage
-function deleteTask(taskId) {
-  try {
-    // retrieve stored tasks, if there is no tasks default to empty array
-    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    // create new array filtering out the task with given taskId
-    tasks = tasks.filter((task) => task.id != taskId);
-    // save updated task lists to localStorage
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-    // Feedback to user
-    showToast("Task deleted successfully!", "success", 4000);
-    // Refresh task list on page
-    loadTasks();
-  } catch (error) {
-    showToast("Failed to delete task. Please try again.", "danger", 4000);
-  }
-}
-
-// Remove task from localStorage and replace it with modified version
-function editTask(event) {
-  event.preventDefault();
-
-   // Validate form before proceeding
-   if (!validateForm("new-task-title", "new-task-date")) {
-    return; // Stop form submission if validation fails
-   }
-
-  const taskId = event.target.dataset.id;
-  const title = document.getElementById("new-task-title").value;
-  const dueDate = document.getElementById("new-task-date").value;
-  const status = document.getElementById("new-status").value;
-  const description = document.getElementById("new-task-description").value;
-
-  try {
-    // retrieve stored tasks
-    let tasks = JSON.parse(localStorage.getItem("tasks"));
-
-    // Find the index of the task to edit
-    const taskIndex = tasks.findIndex((task) => task.id === Number(taskId));
-
-    // Update the task object
-    tasks[taskIndex].title = title;
-    tasks[taskIndex].dueDate = dueDate;
-    tasks[taskIndex].status = status;
-    tasks[taskIndex].description = description;
-
-    // Save updated tasks array back to localStorage
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-
-    showToast("Task edited successfully!", "success", 4000); // Feedback to user
-    closeModal();
-
-    // Refresh task list on page
-    loadTasks();
-  } catch (error) {
-    showToast("Failed to edit task. Please try again.", "danger", 4000);
-  }
-}
-
 // Preloads task information into form for manipulation
 function showEditTaskForm(taskId) {
   closeModal();
+
+  lastFocusedEl = document.getElementById(`edit-${taskId}`);
 
   // retrieve stored tasks
   let tasks = JSON.parse(localStorage.getItem("tasks"));
@@ -560,9 +510,71 @@ function showEditTaskForm(taskId) {
     .addEventListener("submit", editTask);
 }
 
+
+// Delete task from localStorage
+function deleteTask(taskId) {
+    try {
+      // retrieve stored tasks, if there is no tasks default to empty array
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      // create new array filtering out the task with given taskId
+      tasks = tasks.filter((task) => task.id != taskId);
+      // save updated task lists to localStorage
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      // Feedback to user
+      showToast("Task deleted successfully!", "success", 4000);
+      // Refresh task list on page
+      loadTasks();
+    } catch (error) {
+      showToast("Failed to delete task. Please try again.", "danger", 4000);
+    }
+  }
+  
+// Remove task from localStorage and replace it with modified version
+  function editTask(event) {
+    event.preventDefault();
+  
+     // Validate form before proceeding
+     if (!validateForm("new-task-title", "new-task-date")) {
+      return; // Stop form submission if validation fails
+     }
+  
+    const taskId = event.target.dataset.id;
+    const title = document.getElementById("new-task-title").value;
+    const dueDate = document.getElementById("new-task-date").value;
+    const status = document.getElementById("new-status").value;
+    const description = document.getElementById("new-task-description").value;
+  
+    try {
+      // retrieve stored tasks
+      let tasks = JSON.parse(localStorage.getItem("tasks"));
+  
+      // Find the index of the task to edit
+      const taskIndex = tasks.findIndex((task) => task.id === Number(taskId));
+  
+      // Update the task object
+      tasks[taskIndex].title = title;
+      tasks[taskIndex].dueDate = dueDate;
+      tasks[taskIndex].status = status;
+      tasks[taskIndex].description = description;
+  
+      // Save updated tasks array back to localStorage
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+  
+      showToast("Task edited successfully!", "success", 4000); // Feedback to user
+      closeModal();
+  
+      // Refresh task list on page
+      loadTasks();
+    } catch (error) {
+      showToast("Failed to edit task. Please try again.", "danger", 4000);
+    }
+  }
+  
 // Show confirmation modal for critical action
 function confirmDelete(action, title, message, taskId) {
   closeModal();
+  
+  lastFocusedEl = document.getElementById(`delete-${taskId}`);
 
   confirmationModal = document.createElement("div");
   confirmationModal.id = `${action}-confirmation-modal`;

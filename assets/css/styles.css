@@ -425,7 +425,7 @@ TASKS CARD
 /* -------------------------------
 MODALS
 ---------------------------------- */
-#create-task-form-container, #edit-task-form-container, #task-details-container, .confirmation-modal {
+#create-task-form-container, #edit-task-form-container, .task-details-container, .confirmation-modal {
   position: fixed; /* Full-screen overlay */
   top: 0;
   left: 0;
@@ -442,7 +442,7 @@ MODALS
   visibility: hidden;
 }
 
-#create-task-form-container.show, #edit-task-form-container.show, #task-details-container.show, .confirmation-modal.show {
+#create-task-form-container.show, #edit-task-form-container.show, .task-details-container.show, .confirmation-modal.show {
   opacity: 1;
   visibility: visible;
 }
