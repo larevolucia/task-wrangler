@@ -25,6 +25,8 @@ function closeModal() {
       createTaskFormContainer.classList.remove("show");
       createTaskFormContainer.remove();
       createTaskFormContainer = null;
+      document.removeEventListener(`keydown`, trapFocus);
+      document.addEventListener("keydown", () => console.log("Checking if listener was removed"));
     }
   
     if (editTaskFormContainer) {
