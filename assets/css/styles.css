@@ -44,7 +44,7 @@ p {
   margin:0;
   font-size: medium;
 }
-
+main {flex: 1;}
 /* -------------------------------
    HEADINGS
 ---------------------------------- */
@@ -286,12 +286,13 @@ nav a:hover, nav a.active:hover {
 /* -------------------------------
 FOOTER
 ---------------------------------- */
-footer p {
+footer  {
   text-align: center;
   padding: 2rem 0;
   position: relative;
 
 }
+
 
 /* -------------------------------
 TASKS HEADING
