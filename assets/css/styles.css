@@ -45,6 +45,7 @@ p {
   font-size: medium;
 }
 main {flex: 1;}
+
 /* -------------------------------
    HEADINGS
 ---------------------------------- */
@@ -785,12 +786,32 @@ Code from: https://www.geeksforgeeks.org/how-to-make-a-toast-notification-in-htm
   }
 }
 
+/* -------------------------------
+STATISTICS AREA
+---------------------------------- */
 
+.chart {
+  width: 100%;
+  max-width: 500px; 
+  max-height: 450px;
+}
+
+#charts-area {
+  display: grid;
+  grid-template-columns: 1fr;
+  place-items: center;
+  gap: 20px;
+}
+
+#empty-state-statistics {
+  text-align: center;
+}
 /* -------------------------------
   MEDIA QUERY - TABLET (min-width: 768px)
 ---------------------------------- */
 
 @media screen and (min-width: 768px) {
+
   /*navigation*/
   #nav-toggle-label {
     display: none; /* Hide hamburger menu */
@@ -832,6 +853,8 @@ Code from: https://www.geeksforgeeks.org/how-to-make-a-toast-notification-in-htm
   .task-status {
     font-size: 0.8rem;
   }
+
+
 }
 
 /* -------------------------------
@@ -859,7 +882,11 @@ MEDIA QUERY - LARGE SCREEN (min-width: 992px)
   .task-status {
     font-size: 1rem;
   }
-
+  
+/* statistics */
+#charts-area {
+  grid-template-columns: 1fr 1fr;
+}
 }
 
 /* -------------------------------
