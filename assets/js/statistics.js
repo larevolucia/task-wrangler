@@ -11,12 +11,16 @@ function drawCharts() {
  const tasks = JSON.parse(localStorage.getItem("tasks"));
 
  if(!tasks) {
+
+    let emptyStateMessage = document.getElementById("empty-state-statistics");
+    if (!emptyStateMessage) {
     let section = document.getElementById("statistics-content-area");
     let emptyState = document.createElement("div");
     emptyState.id = "empty-state-statistics";
-    emptyState.innerHTML = `<p id="no-tasks-message" class="empty-message">No tasks yet! Create a task to see statistics.</p>`;
+    emptyState.innerHTML = `<p id="no-tasks-message" class="empty-message">No tasks yet! <a href="index.html#create-task">Create a task</a> to see statistics.</p>`;
 
-    section.appendChild(emptyState);
+    section.appendChild(emptyState);}
+    return
  } else {
 
      drawOverdueChart();
