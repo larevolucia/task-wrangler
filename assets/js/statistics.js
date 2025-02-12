@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function drawCharts() {
  const tasks = JSON.parse(localStorage.getItem("tasks"));
 
- if(!tasks) {
+ if(!tasks || tasks.length === 0) {
 
     let emptyStateMessage = document.getElementById("empty-state-statistics");
     if (!emptyStateMessage) {
@@ -22,6 +22,10 @@ function drawCharts() {
     section.appendChild(emptyState);}
     return
  } else {
+
+    if (emptyStateMessage) {
+        emptyStateMessage.remove();
+    }
 
      drawOverdueChart();
      drawStatusChart();

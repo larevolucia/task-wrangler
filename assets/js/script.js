@@ -175,8 +175,10 @@ function loadTasks() {
   }
 
   if (tasks.length === 0) {
-    taskList.innerHTML = `<p id="no-tasks-message" class="empty-message">No tasks yet! Create a task to get started.</p>`;
+    taskList.innerHTML = `<p id="no-tasks-message" class="empty-message">No tasks yet! <span class="custom-anchor" id="create-task-trigger">Create a task</span> to get started.</p>`;
     taskList.removeAttribute("role"); // Remove role="list" if no tasks exist
+    // Add event listener to the empty state message
+    document.getElementById("create-task-trigger").addEventListener("click", showCreateTaskForm);
     return;
   }
 

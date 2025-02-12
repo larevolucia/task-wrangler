@@ -68,7 +68,7 @@ h2 {
 /* -------------------------------
    LINK STYLING
 ---------------------------------- */
-a {
+a, .custom-anchor {
   text-decoration: none;
   font-weight: 500;
   color: var(--primary-color); 
@@ -76,19 +76,19 @@ a {
 }
 
 /*Active State*/
-a:active {
+a:active, .custom-anchor:active {
   color: var(--success-color); 
   border-bottom: 2px solid var(--success-color);
 }
 
 /*Hover State*/
-a:hover {
+a:hover, a:active, .custom-anchor:hover  {
   color: var(--secondary-color); 
   border-bottom: 2px solid var(--secondary-color); 
 }
 
 /*Focus State*/
-a:focus-visible {
+a:focus-visible, .custom-focus-visible {
   outline: 3px dashed var(--attention-color); 
   outline-offset: 3px; 
 }
@@ -291,6 +291,7 @@ footer  {
   text-align: center;
   padding: 2rem 0;
   position: relative;
+  margin-bottom: 2rem;
 
 }
 
@@ -335,6 +336,7 @@ TASKS HEADING
   margin: 25% auto;
   width: 80%;
 }
+
 /* -------------------------------
 TASKS CARD
 ---------------------------------- */
