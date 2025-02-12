@@ -18,7 +18,6 @@ Live Link to access site [here](https://larevolucia.github.io/task-wrangler/)
 
 ## Design
 
-Design choices took in consideration insights from web design research done with autistic individuals. There's a minimal page structure variation and use of imagery to reduce cognitive load.
 
 
 ### Colors

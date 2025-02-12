@@ -321,10 +321,7 @@ TASKS HEADING
     justify-content: center;
    }
 
-   #tasks-container {
-    flex:1;  
-  }
-  
+
 
 /* -------------------------------
    EMPTY STATE

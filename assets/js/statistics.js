@@ -9,10 +9,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function drawCharts() {
  const tasks = JSON.parse(localStorage.getItem("tasks"));
+ let emptyStateMessage = document.getElementById("empty-state-statistics");
 
  if(!tasks || tasks.length === 0) {
 
-    let emptyStateMessage = document.getElementById("empty-state-statistics");
     if (!emptyStateMessage) {
     let section = document.getElementById("statistics-content-area");
     let emptyState = document.createElement("div");
