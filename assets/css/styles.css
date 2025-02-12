@@ -183,6 +183,16 @@ button:active{
   display: none;
 }
 
+.sr-only {
+  /* Accessible Invisible Content (WEBAIM) */
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 /* -------------------------------
 NAVIGATION
 ---------------------------------- */
@@ -203,34 +213,75 @@ nav {
   font-family: var(--secondary-font);
 }
 
-nav > ul {
-  list-style-type: none; 
-  padding: 0;
-  margin: 0;
+nav .navbar-branding {
+  font-size: 130%;
+  margin-left: 10px;
+  font-weight: bold;
+  display: none;
+  letter-spacing: 0.1em;
 }
 
-nav li {
-  display: inline; /* Makes list items inline elements */
-  margin-right: 10px; 
+nav .logo-image {
+  height: 32px;
+  width: auto;
+  float: left;
 }
 
-.navbar-branding {
-  font-size: 1.3rem;
-  letter-spacing: 0;
-  font-weight: 800;
+/* Hide the checkbox */
+#nav-toggle {
+  display: none;
 }
+
+#nav-toggle-label i{
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+#nav-toggle-label {
+  margin-right: 10px;
+}
+
+/* Show menu when the checkbox is checked */
+#nav-toggle:checked ~ .nav-menu-list {
+  display: block;
+}
+
+nav ul {
+  padding-left: 15px;
+}
+
+.nav-menu-list {
+  display: none;
+  list-style-type: none;
+  font-size: 120%;
+  position: absolute;
+  top: 32px;
+  left: 0;
+  background-color: #ffffff;
+  width: 100%;
+  box-shadow: 0px 20px 20px -15px rgba(0, 0, 0, 0.2);
+}
+
+.nav-menu-list > li {
+  margin: 1rem 0;
+}
+
 
 /* Nav Links */
 nav a {
   color: var(--text-color);
   text-decoration: none;
   padding: 15px 15px;
-  border-radius: 2rem;
-}
-nav a:hover {
-  border-bottom: none;
 }
 
+nav a.active {
+  color: var(--primary-color);
+}
+
+nav a:hover, nav a.active:hover {
+  color: var(--secondary-color);
+  border-bottom: 3px solid var(--secondary-color); 
+}
 
 /* -------------------------------
 FOOTER
@@ -238,6 +289,8 @@ FOOTER
 footer p {
   text-align: center;
   padding: 2rem 0;
+  position: relative;
+
 }
 
 /* -------------------------------
@@ -737,6 +790,26 @@ Code from: https://www.geeksforgeeks.org/how-to-make-a-toast-notification-in-htm
 ---------------------------------- */
 
 @media screen and (min-width: 768px) {
+  /*navigation*/
+  #nav-toggle-label {
+    display: none; /* Hide hamburger menu */
+}
+
+.nav-menu-list {
+    display: flex; /* Show nav items inline */
+    position: static;
+    width: auto;
+    justify-content: flex-end;
+    box-shadow: none;
+    background-color: transparent;
+}
+
+.nav-menu-list > li {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+  /*main*/
   #content-container {
     width: 700px;
     margin: 0 auto;
@@ -766,6 +839,12 @@ MEDIA QUERY - LARGE SCREEN (min-width: 992px)
 
 
 @media screen and (min-width: 992px) {
+    /* Navbar */
+    nav .navbar-branding {
+      display: inline-block;
+    }  
+  
+  /*main*/
   #content-container{
     margin: 0 auto;
   }

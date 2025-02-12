@@ -20,45 +20,50 @@
 
 <body>
 
-  <!--Start Custom Navigation-->
-  <nav aria-label="Main Navigation">
+<!--Start Custom Navigation-->
+<nav aria-label="Main Navigation">
     <a href="index.html" id="home-navigation" aria-label="Go to Home page">
+      <img class="logo-image" src="assets/favicon/android-chrome-512x512.png" alt="TaskWrangler logo" width="512"
+      height="512">
       <span class="navbar-branding">TaskWrangler</span>
-    </a>
-    <!-- To be added as App evolves -->
-    <ul class="nav-menu-list" aria-label="Main Navigation">
-       <li>
-        <a href="index.html" aria-label="Go to Tasks page">Tasks</a>
-      <li>
-        <a href="statistics.html" aria-label="Go to Analytics page">Statistics</a> 
-      </li>
-    </ul>
+  </a>
 
+  <!-- Hamburger Menu Toggle -->
+  <input type="checkbox" id="nav-toggle" class="nav-checkbox">
+  <label for="nav-toggle" id="nav-toggle-label">
+    <i class="fa-solid fa-bars" aria-hidden="true"></i>
+    <span class="sr-only">Menu</span>
+  </label>
 
-  </nav>
-  <!--End Custom Navigation-->
-  <div id="content-container">
+  <!-- Navigation Links -->
+  <ul class="nav-menu-list" aria-label="Main Navigation">
+    <li><a href="index.html" class="active"  aria-label="Go to Tasks page">Tasks</a></li>
+    <li><a href="statistics.html" aria-label="Go to Analytics page">Statistics</a></li>
+  </ul>
+</nav>
+<!--End Custom Navigation-->
+
+  <main id="content-container">
     <!-- Start Hero Quote -->
     <!-- End Hero Quote -->
     <!-- Start Heading -->
-    <div id="task-heading-container" aria-labelledby="tasks-heading">
+    <header id="task-heading-container" aria-labelledby="tasks-heading">
       <h1 id="tasks-heading">My Tasks</h1>
       
       <button title="Add Task" tabindex="0" id="create-task" class="btn-primary btn-round" aria-label="Add a new task" aria-haspopup="dialog" aria-controls="create-task-form-container"><i class="fa-solid fa-plus"></i></button>
-
-    </div>
+    </header>
     <!-- End Heading -->
     <!-- Start Tasks Cards -->
-    <div id="tasks-container" role="list" aria-live="polite">
+    <section id="tasks-container" role="list" aria-live="polite">
 
-    </div>
+    </section>
     <!-- End Tasks Cards -->
 
-  </div>
-  </div>
+  </main>
   <!-- Start Footer -->
    <footer role="contentinfo" aria-label="App Footer">
-      <p>&copy; 2025 TaskWrangler. All Rights Reserved.</p>
+      <p>&copy; 2025 TaskWrangler.</p>
+      <p>Code available at <a href="https://github.com/larevolucia/task-wrangler">Github</a>.</p>
    </footer>
   <!-- End Footer -->
 
