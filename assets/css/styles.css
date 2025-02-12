@@ -315,14 +315,14 @@ TASKS HEADING
  CONTENT AREAS
    ---------------------------------- */
 
-   #tasks-container, #statistics-content-area {
+    #statistics-content-area {
     display: flex;
     align-items: center;
     justify-content: center;
    }
 
    #tasks-container {
-    min-height: 60vh;
+    flex:1;  
   }
   
 
