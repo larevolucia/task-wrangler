@@ -503,7 +503,7 @@ function deleteTask(taskId) {
   }
   
 // Remove task from localStorage and replace it with modified version
-  function editTask(event) {
+function editTask(event) {
     event.preventDefault();
   
      // Validate form before proceeding
@@ -525,10 +525,10 @@ function deleteTask(taskId) {
       const taskIndex = tasks.findIndex((task) => task.id === Number(taskId));
   
       // Update the task object
-      tasks[taskIndex].title = title;
-      tasks[taskIndex].dueDate = dueDate;
-      tasks[taskIndex].status = status;
-      tasks[taskIndex].description = description;
+      // tasks[taskIndex].title = title;
+      // tasks[taskIndex].dueDate = dueDate;
+      // tasks[taskIndex].status = status;
+      // tasks[taskIndex].description = description;
   
       // Save updated tasks array back to localStorage if changes are made
       if (
