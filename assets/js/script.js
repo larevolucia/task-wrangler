@@ -524,12 +524,6 @@ function editTask(event) {
       // Find the index of the task to edit
       const taskIndex = tasks.findIndex((task) => task.id === Number(taskId));
   
-      // Update the task object
-      // tasks[taskIndex].title = title;
-      // tasks[taskIndex].dueDate = dueDate;
-      // tasks[taskIndex].status = status;
-      // tasks[taskIndex].description = description;
-  
       // Save updated tasks array back to localStorage if changes are made
       if (
         tasks[taskIndex].title !== title ||
@@ -585,7 +579,7 @@ function confirmDelete(action, title, message, taskId) {
   document.getElementById("cancel-delete").focus();
 
   // Close modal if "Cancel" or X is clicked
-  addEventListeners(["close-confirm-form", "close-confirm-modal"], "click", closeModal);
+  addEventListeners(["cancel-delete", "close-confirm-modal"], "click", closeModal);
 
   // Close modal when the Escape key is pressed, ensuring users can dismiss dialogs with the keyboard  
   document.addEventListener("keydown", handleEscapeKey);
