@@ -1,5 +1,6 @@
+/* jshint esversion: 6 */
+
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM loaded");
   loadTasks();
 });
 
@@ -9,44 +10,37 @@ const createTaskButton = document.getElementById("create-task");
 // Add event listener to the create-task button
 createTaskButton.addEventListener("click", showCreateTaskForm);
 
-// Store containers globally
-let createTaskFormContainer;
-let editTaskFormContainer;
-let taskDetailsContainer;
-let confirmationModal;
+// Global variables to manage modal states and prevent multiple instances  
+let createTaskFormContainer = null; // Stores the task creation form instance  
+let editTaskFormContainer = null;   // Stores the edit task form instance  
+let taskDetailsContainer = null;    // Stores the task details modal instance  
+let confirmationModal = null;       // Stores the confirmation modal instance  
+
+// Tracks the last focused element before a modal is opened, ensuring proper keyboard navigation
 let lastFocusedEl = document.getElementById("home-navigation");
 
-// Store today's date
+// Get today's date in YYYY-MM-DD format for task due date validation
 const today = getTodayDate();
 
 // Close forms & details modals
 function closeModal() {
-    // Check and remove the create task form if it exists
-    if (createTaskFormContainer) {
-      createTaskFormContainer.classList.remove("show");
-      createTaskFormContainer.remove();
-      createTaskFormContainer = null;
-    }
-    
-    if (editTaskFormContainer) {
-        editTaskFormContainer.classList.remove("show");
-        editTaskFormContainer.remove();
-        editTaskFormContainer = null;
-    }
-    if (taskDetailsContainer) {
-        taskDetailsContainer.classList.remove("show");
-        taskDetailsContainer.remove();
-        taskDetailsContainer = null;
-    }
-    if (confirmationModal) {
-        confirmationModal.classList.remove("show");
-        confirmationModal.remove();
-        confirmationModal = null;
-    }
-    document.removeEventListener(`keydown`, trapFocus);
-    lastFocusedEl.focus();
-  }
+  let allModals = [createTaskFormContainer, editTaskFormContainer, taskDetailsContainer, confirmationModal];
   
+  allModals.forEach((modal) => {
+    if (modal) {
+      modal.classList.remove("show");
+      modal.remove();
+    }
+  });
+
+  createTaskFormContainer = null;
+  editTaskFormContainer = null;
+  taskDetailsContainer = null;
+  confirmationModal = null;
+
+  document.removeEventListener("keydown", trapFocus);
+  lastFocusedEl.focus();
+}
 
 // Create form for task creation
 function showCreateTaskForm() {
@@ -99,20 +93,12 @@ function showCreateTaskForm() {
 
   document.getElementById("task-title").focus();
 
-  document
-    .getElementById("close-create-form")
-    .addEventListener("click", closeModal);
-  document
-    .getElementById("close-create-modal")
-    .addEventListener("click", closeModal);
-  document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-          closeModal();
-        }
-      });
-  document
-    .getElementById("create-task-form")
-    .addEventListener("submit", createTask);
+  // Close modal if cancel or X is clicked 
+  addEventListeners(["close-create-form", "close-create-modal"], "click", closeModal);
+  // Close modal when the Escape key is pressed, ensuring users can dismiss dialogs with the keyboard  
+  document.addEventListener("keydown", handleEscapeKey);
+  
+  addEventListeners(["create-task-form"], "submit", createTask);
     
 }
 
@@ -121,7 +107,7 @@ function createTask(event) {
   event.preventDefault();
 
   // Validate form before proceeding
-  if (!validateForm("task-title", "task-date")) {
+  if (!isFormValid("task-title", "task-date")) {
     return; // Stop form submission if validation fails
   }
     
@@ -130,9 +116,8 @@ function createTask(event) {
   const description = document.getElementById("task-description").value;
 
 
-  // Retrieve existing tasks or initialize empty array
-  // Use JSON.parse to convert string to array
-  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  // Load existing tasks from localStorage; default to an empty array if none exist  
+  let tasks = getTasksFromStorage();
 
   // Create new task object
   const task = {
@@ -147,13 +132,14 @@ function createTask(event) {
   tasks.push(task);
 
   try {
+    // Attempt to save the task list to localStorage 
     localStorage.setItem("tasks", JSON.stringify(tasks));
     showToast("Task added successfully!", "success", 4000); // Feedback to user
     closeModal();
-
     // Immediately update the task list
     loadTasks();
   } catch (error) {
+    // Handle storage errors  
     showToast("Failed to save task. Please try again.", "danger", 4000);
   }
 }
@@ -165,10 +151,11 @@ function loadTasks() {
 
   let tasks = [];
 
-  // Retrieve tasks from localStorage
   try {
-    tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    // Retrieve tasks from localStorage
+    tasks = getTasksFromStorage();
   } catch (error) {
+    // Handle storage errors 
     showToast("Failed to load tasks. Resetting task list.", "danger", 4000);
     localStorage.removeItem("tasks");
     tasks = [];
@@ -178,7 +165,8 @@ function loadTasks() {
     taskList.innerHTML = `<p id="no-tasks-message" class="empty-message">No tasks yet! <span class="custom-anchor" id="create-task-trigger">Create a task</span> to get started.</p>`;
     taskList.removeAttribute("role"); // Remove role="list" if no tasks exist
     // Add event listener to the empty state message
-    document.getElementById("create-task-trigger").addEventListener("click", showCreateTaskForm);
+    addEventListeners(["create-task-trigger"], "click", showCreateTaskForm);
+
     return;
   }
 
@@ -209,9 +197,7 @@ function loadTasks() {
               </span>
             </div>
             ${
-              task.dueDate
-                ? task.status !== "done" && isOverdue
-                  ? `<div class="task-due-date date-box">
+              task.dueDate  ? task.status !== "done" && isOverdue ? `<div class="task-due-date date-box">
                 <i class="fa-solid fa-triangle-exclamation"></i> 
                 <i class="fa-solid fa-calendar-days"></i>
                 <span class="task-due-date-text">${newDate}</span>
@@ -225,8 +211,7 @@ function loadTasks() {
             <div class="title-box">
               <span class="task-title" id="${taskTitleId}">${task.title}</span>
               ${
-                task.description
-                  ? `<span class="task-description-icon"><i class="fa-solid fa-align-left"></i></span>`
+                task.description ? `<span class="task-description-icon"><i class="fa-solid fa-align-left"></i></span>`
                   : ""
               }
             </div>
@@ -280,7 +265,7 @@ function loadTasks() {
         showEditTaskForm(this.dataset.id);
       });
 
-      // Add Enter key support
+      // Add Enter key support for edit button
       editButton.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
           event.preventDefault();
@@ -300,7 +285,7 @@ function loadTasks() {
           this.dataset.id
         );
       });
-      // Add Enter key support
+      // Add Enter key support for delete button
       deleteButton.addEventListener("keydown", function (event) {
         if (event.key === "Enter") {
           event.preventDefault();
@@ -322,7 +307,7 @@ function showTaskDetails(task) {
   lastFocusedEl = document.getElementById(`task-${task.id}`);
 
   const statusClass = getStatusClass(task.status);
-  const isOverdue = task.dueDate && task.dueDate < today;
+  const isOverdue = task.dueDate && new Date(task.dueDate) < new Date(today);
 
   // Create modal container
   taskDetailsContainer = document.createElement("div");
@@ -341,16 +326,16 @@ function showTaskDetails(task) {
     task.status
   }</span></div>
                ${
-                 task.description
-                   ? `<div class="details-item"><p><strong>Description</strong></p><p>${task.description}</p></div>`
+                 task.description ? `<div class="details-item"><p><strong>Description</strong></p><p>${task.description}</p></div>`
                    : ""
                }
                ${
-                 task.dueDate
-                   ? task.status !== "done" && isOverdue
-                     ? `<div class="details-item"><p><i class="fa-solid fa-triangle-exclamation"></i> <strong>Due Date</strong></p> <p>${formatDate(
+                 task.dueDate ? task.status !== "done" && isOverdue  ? `<div class="details-item">
+                    <p><i class="fa-solid fa-triangle-exclamation"></i> <strong>Due Date</strong></p> 
+                    <p>${formatDate(
                          task.dueDate
-                       )}</p></div>`
+                       )}</p>
+                  </div>`
                      : `<div class="details-item"><p><strong>Due Date</strong></p> <p>${formatDate(
                          task.dueDate
                        )}</p></div>`
@@ -403,11 +388,8 @@ function showTaskDetails(task) {
   document
     .getElementById("close-details-modal")
     .addEventListener("click", closeModal);
-  document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-          closeModal();
-        }
-      });
+  // Close modal when the Escape key is pressed, ensuring users can dismiss dialogs with the keyboard  
+  document.addEventListener("keydown", handleEscapeKey);
 }
 
 // Preloads task information into form for manipulation
@@ -417,7 +399,7 @@ function showEditTaskForm(taskId) {
   lastFocusedEl = document.getElementById(`edit-${taskId}`);
 
   // retrieve stored tasks
-  let tasks = JSON.parse(localStorage.getItem("tasks"));
+  let tasks = getTasksFromStorage();
 
   // create new array filtering only the task with given taskId
   let currentTask = tasks.filter((task) => task.id === Number(taskId));
@@ -437,8 +419,7 @@ function showEditTaskForm(taskId) {
 
   // Allow past dates if the task is overdue, otherwise set min date to today
   const isOverdue = currentTask[0].dueDate && currentTask[0].dueDate < today;
-  const minDate = isOverdue
-    ? `min=${currentTask[0].dueDate}`
+  const minDate = isOverdue ? `min=${currentTask[0].dueDate}`
     : `min="${today}"`;
 
   // Create a form container div
@@ -468,8 +449,7 @@ function showEditTaskForm(taskId) {
                     <div class="form-item">
                     <label for="new-task-description">Description</label>
                     <textarea id="new-task-description">${
-                        currentTask[0].description
-                        ? currentTask[0].description
+                        currentTask[0].description  ? currentTask[0].description
                         : ""
                     }</textarea>
                     </div>
@@ -494,30 +474,21 @@ function showEditTaskForm(taskId) {
   document.addEventListener("keydown", (event) => trapFocus(event, "edit-task-form-container"));
   document.getElementById("new-status").focus();
 
-  document
-    .getElementById("close-edit-form")
-    .addEventListener("click", closeModal);
-  document
-    .getElementById("close-edit-modal")
-    .addEventListener("click", closeModal);
+// Close modal on Cancel or X click
+    addEventListeners(["close-edit-form", "close-edit-modal"], "click", closeModal);
 
-  document.addEventListener("keydown", (event) => {
-    if(event.key === "Escape"){
-        closeModal();
-    }
-  });
+  // Close modal when the Escape key is pressed, ensuring users can dismiss dialogs with the keyboard  
+  document.addEventListener("keydown", handleEscapeKey);
 
-  document
-    .getElementById("edit-task-form")
-    .addEventListener("submit", editTask);
+  addEventListeners(["edit-task-form"], "submit", editTask);
+
 }
-
 
 // Delete task from localStorage
 function deleteTask(taskId) {
     try {
       // retrieve stored tasks, if there is no tasks default to empty array
-      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      let tasks = getTasksFromStorage();
       // create new array filtering out the task with given taskId
       tasks = tasks.filter((task) => task.id != taskId);
       // save updated task lists to localStorage
@@ -536,7 +507,7 @@ function deleteTask(taskId) {
     event.preventDefault();
   
      // Validate form before proceeding
-     if (!validateForm("new-task-title", "new-task-date")) {
+     if (!isFormValid("new-task-title", "new-task-date")) {
       return; // Stop form submission if validation fails
      }
   
@@ -548,7 +519,7 @@ function deleteTask(taskId) {
   
     try {
       // retrieve stored tasks
-      let tasks = JSON.parse(localStorage.getItem("tasks"));
+      let tasks = getTasksFromStorage();
   
       // Find the index of the task to edit
       const taskIndex = tasks.findIndex((task) => task.id === Number(taskId));
@@ -559,15 +530,26 @@ function deleteTask(taskId) {
       tasks[taskIndex].status = status;
       tasks[taskIndex].description = description;
   
-      // Save updated tasks array back to localStorage
-      localStorage.setItem("tasks", JSON.stringify(tasks));
+      // Save updated tasks array back to localStorage if changes are made
+      if (
+        tasks[taskIndex].title !== title ||
+        tasks[taskIndex].dueDate !== dueDate ||
+        tasks[taskIndex].status !== status ||
+        tasks[taskIndex].description !== description
+      ) {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+        showToast("Task edited successfully!", "success", 4000);
+        loadTasks();
+      } else {
+        showToast("No changes made.", "info", 4000);
+      }
   
-      showToast("Task edited successfully!", "success", 4000); // Feedback to user
       closeModal();
   
       // Refresh task list on page
       loadTasks();
     } catch (error) {
+      // Handle storage errors 
       showToast("Failed to edit task. Please try again.", "danger", 4000);
     }
   }
@@ -602,19 +584,11 @@ function confirmDelete(action, title, message, taskId) {
   document.addEventListener("keydown", (event) => trapFocus(event, `${action}-confirmation-modal`));
   document.getElementById("cancel-delete").focus();
 
-  // Close modal if "Cancel" is clicked or Escape key is pressed
-  document
-    .getElementById("cancel-delete")
-    .addEventListener("click", closeModal);
-  document
-    .getElementById("close-confirm-modal")
-    .addEventListener("click", closeModal);
+  // Close modal if "Cancel" or X is clicked
+  addEventListeners(["close-confirm-form", "close-confirm-modal"], "click", closeModal);
 
-  document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        closeModal();
-      }
-    });
+  // Close modal when the Escape key is pressed, ensuring users can dismiss dialogs with the keyboard  
+  document.addEventListener("keydown", handleEscapeKey);
 
   // Confirm delete when "Yes" is clicked
   document.getElementById("confirm-delete").addEventListener("click", () => {
@@ -627,19 +601,21 @@ function confirmDelete(action, title, message, taskId) {
 
 }
 
-// Validate forms
-function validateForm(titleId, dateId){
+// Validate form inputs for task title and due date  
+function isFormValid(titleId, dateId){
     const title = document.getElementById(titleId).value.trim();
     const dueDateInput = document.getElementById(dateId);
     const dueDate = dueDateInput.value;
     const minDate = dueDateInput.min;
     
+    // Ensure title is provided
     if (!title) {
         showToast("Title is a required field.", "warning", 4000);
         markField(titleId, "This field is required.");
         return;
       }
-    
+
+    // Ensure dueDate is not before configured earliest date
       if (new Date(dueDate) < new Date(minDate)) {
         showToast("The due date cannot be in the past.", "warning", 4000);
         markField(dateId, `Date cannot be before ${formatDate(minDate)}`);
@@ -709,11 +685,6 @@ let toastIcon = {
   warning: '<i class="fa-solid fa-triangle-exclamation"></i>',
 };
 
-// Toast Elements
-let success = document.querySelector(".custom-toast.success-toast");
-let information = document.querySelector(".custom-toast.info-toast");
-let failed = document.querySelector(".custom-toast.danger-toast");
-let warn = document.querySelector(".custom-toast.warning-toast");
 
 // Display Toast notification according to context given in parameters
 function showToast(message, toastType, duration = 5000) {
@@ -730,7 +701,7 @@ function showToast(message, toastType, duration = 5000) {
     ${toastIcon[toastType]}
     </div>
     <div class="toast-message">${message}</div>
-    <button class="toast-close" aria-label="Close Notification">&times;</button>
+    <button class="toast-close"id="toast-close-icon" aria-label="Close Notification">&times;</button>
     <div class="toast-progress"></div>
     </div>`;
 
@@ -748,17 +719,11 @@ function showToast(message, toastType, duration = 5000) {
   document.body.appendChild(toastContainer);
   toastContainer.focus();
 
-  // Close on Escape
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      toastContainer.remove();
-    }
-  });
+  // Close modal when the Escape key is pressed, ensuring users can dismiss dialogs with the keyboard  
+  document.addEventListener("keydown", handleEscapeKey);
 
   // Close button functionality
-  toastContainer.querySelector(".toast-close").addEventListener("click", () => {
-    toastContainer.remove();
-  });
+  addEventListeners(["toast-close-icon"],"click", closeModal);
 }
 
 // Utility functions
@@ -786,31 +751,24 @@ function getTodayDate() {
   return new Date().toISOString().split("T")[0];
 }
 
-//Statistics
-// https://stackoverflow.com/questions/45547504/counting-occurrences-of-particular-property-value-in-array-of-objects
-function getTasksStatistics() {
-    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+function handleEscapeKey(event) {
+  if (event.key === "Escape") closeModal();
+}
 
-    // const totalTasks = tasks.length;
+function addEventListeners(ids, event, handler) {
+  ids.forEach((id) => {
+    const element = document.getElementById(id);
+    if (element) element.addEventListener(event, handler);
+  });
+}
 
-    const todoTasks = tasks.reduce((acc, task) => {
-        return task.status === "to-do" ? ++acc : acc;
-    }, 0);
 
-    const progressTasks = tasks.reduce((acc, task) => {
-        return task.status === "in progress" ? ++acc : acc;
-    }, 0);
-
-    const doneTasks = tasks.reduce((acc, task) => {
-        return task.status === "done" ? ++acc : acc;
-    }, 0);
-
-    const taskList = [
-        ["Task Status", "Count"],
-        ["To-Do", todoTasks],
-        ["In Progress", progressTasks],
-        ["Done", doneTasks],
-    ]
-
-    console.log(taskList); 
+function getTasksFromStorage() {
+  try {
+    return JSON.parse(localStorage.getItem("tasks")) || [];
+  } catch (error) {
+    console.error("Error parsing localStorage data:", error);
+    localStorage.removeItem("tasks"); // reset tasks in case of corrupted data
+    return [];
+  }
 }
