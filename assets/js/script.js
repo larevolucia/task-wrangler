@@ -533,6 +533,13 @@ function editTask(event) {
         tasks[taskIndex].status !== status ||
         tasks[taskIndex].description !== description
       ) {
+
+        // Update task properties
+        tasks[taskIndex].title = title;
+        tasks[taskIndex].dueDate = dueDate;
+        tasks[taskIndex].status = status;
+        tasks[taskIndex].description = description;
+
         localStorage.setItem("tasks", JSON.stringify(tasks));
         showToast("Task edited successfully!", "success", 4000);
         loadTasks();
