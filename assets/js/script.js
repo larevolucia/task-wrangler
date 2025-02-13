@@ -495,6 +495,8 @@ function deleteTask(taskId) {
       localStorage.setItem("tasks", JSON.stringify(tasks));
       // Feedback to user
       showToast("Task deleted successfully!", "success", 4000);
+      // Reset focus
+       lastFocusedEl = contentContainer;
       // Refresh task list on page
       loadTasks();
     } catch (error) {
@@ -679,45 +681,58 @@ let toastIcon = {
   warning: '<i class="fa-solid fa-triangle-exclamation"></i>',
 };
 
-
 // Display Toast notification according to context given in parameters
 function showToast(message, toastType, duration = 5000) {
-  // Code from: https://www.geeksforgeeks.org/how-to-make-a-toast-notification-in-html-css-and-javascript/
 
-  // Create toaster element
+  // Remove existing toast if any
+  let existingToast = document.body.querySelector(".toast");
+  if (existingToast) {
+    existingToast.remove();
+  }
+
+  // Create toast container
   let toastContainer = document.createElement("div");
   toastContainer.setAttribute("tabindex", "0");
   toastContainer.setAttribute("role", "alert");
   toastContainer.setAttribute("aria-live", "polite");
   toastContainer.classList.add("toast", `toast-${toastType}`);
-  toastContainer.innerHTML = ` <div class="toast-content-wrapper">
-    <div class="toast-icon">
-    ${toastIcon[toastType]}
-    </div>
-    <div class="toast-message">${message}</div>
-    <button class="toast-close"id="toast-close-icon" aria-label="Close Notification">&times;</button>
-    <div class="toast-progress"></div>
+  toastContainer.innerHTML = `
+    <div class="toast-content-wrapper">
+      <div class="toast-icon">${toastIcon[toastType]}</div>
+      <div class="toast-message">${message}</div>
+      <button class="toast-close" id="toast-close-icon" aria-label="Close Notification">&times;</button>
+      <div class="toast-progress"></div>
     </div>`;
 
-  // Convert animation duration to seconds
-  toastContainer.querySelector(".toast-progress").style.animationDuration = `${
-    duration / 1000
-  }s`;
+  // Set animation duration for progress bar
+  toastContainer.querySelector(".toast-progress").style.animationDuration = `${duration / 1000}s`;
 
-  // Remove existing toast
-  let toastAlready = document.body.querySelector(".toast");
-  if (toastAlready) {
-    toastAlready.remove();
-  }
-
+  // Append toast to body
   document.body.appendChild(toastContainer);
   toastContainer.focus();
 
-  // Close modal when the Escape key is pressed, ensuring users can dismiss dialogs with the keyboard  
-  document.addEventListener("keydown", handleEscapeKey);
+  // Close toast on button click
+  document.getElementById("toast-close-icon").addEventListener("click", () => {
+    closeToast(toastContainer);
+  });
 
-  // Close button functionality
-  addEventListeners(["toast-close-icon"],"click", closeModal);
+  // Close toast when Escape key is pressed
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeToast(toastContainer);
+    }
+  });
+
+  setTimeout(() => closeToast(toastContainer,lastFocusedEl), duration);
+  
+}
+
+// Function to close the toast and restore focus
+function closeToast(toastContainer) {
+  if (toastContainer && document.body.contains(toastContainer)) {
+    toastContainer.remove();
+  }
+  contentContainer.focus();
 }
 
 // Utility functions
@@ -755,7 +770,6 @@ function addEventListeners(ids, event, handler) {
     if (element) element.addEventListener(event, handler);
   });
 }
-
 
 function getTasksFromStorage() {
   try {
