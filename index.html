@@ -44,24 +44,22 @@
 <!--End Custom Navigation-->
 
   <main id="content-container">
-    <!-- Start Hero Quote -->
-    <!-- End Hero Quote -->
     <!-- Start Heading -->
     <header id="task-heading-container" aria-labelledby="tasks-heading">
       <h1 id="tasks-heading">My Tasks</h1>
       
-      <button title="Add Task" tabindex="0" id="create-task" class="btn-primary btn-round" aria-label="Add a new task" aria-haspopup="dialog" aria-controls="create-task-form-container"><i class="fa-solid fa-plus"></i></button>
+      <button title="Add Task" tabindex="0" id="create-task" class="btn-primary btn-round" aria-label="Add a new task" aria-haspopup="dialog"><i class="fa-solid fa-plus"></i></button>
     </header>
     <!-- End Heading -->
     <!-- Start Tasks Cards -->
-    <section id="tasks-container" role="list" aria-live="polite">
-
-    </section>
+    <div id="tasks-container" role="list" aria-live="polite">
+        <h2 class="hidden">Task List</h2>
+    </div>
     <!-- End Tasks Cards -->
 
   </main>
   <!-- Start Footer -->
-   <footer role="contentinfo" aria-label="App Footer">
+   <footer aria-label="App Footer">
       <p>&copy; 2025 TaskWrangler.</p>
       <p>Open-source code available on <a href="https://github.com/larevolucia/task-wrangler">Github</a>.</p>
    </footer>
