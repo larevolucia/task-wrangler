@@ -531,9 +531,8 @@ MEDIA QUERY - LARGE SCREEN (min-width: 992px)
     font-size: 1rem;
   }
   
-/* insights */
-#charts-area {
-  grid-template-columns: 1fr 1fr;
-}
+  .date-box {
+    min-width: 110px;
+  }
 }
 
