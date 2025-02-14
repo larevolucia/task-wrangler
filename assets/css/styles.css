@@ -315,7 +315,7 @@ TASKS HEADING
  CONTENT AREAS
    ---------------------------------- */
 
-    #statistics-content-area {
+    #insights-content-area {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -784,7 +784,7 @@ Code from: https://www.geeksforgeeks.org/how-to-make-a-toast-notification-in-htm
 }
 
 /* -------------------------------
-STATISTICS AREA
+INSIGHTS AREA
 ---------------------------------- */
 
 .chart {
@@ -799,7 +799,7 @@ STATISTICS AREA
   gap: 20px;
 }
 
-#empty-state-statistics {
+#empty-state-insights {
   text-align: center;
 }
 /* -------------------------------
@@ -880,7 +880,7 @@ MEDIA QUERY - LARGE SCREEN (min-width: 992px)
     font-size: 1rem;
   }
   
-/* statistics */
+/* insights */
 #charts-area {
   grid-template-columns: 1fr 1fr;
 }

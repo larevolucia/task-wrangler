@@ -1,13 +1,16 @@
 /* jshint esversion: 6 */
+/*  TaskWrangler is a simple and motivational To-Do app built using HTML, CSS, and JavaScript. 
+    script.js stores core CRUD (create, read, update, delete) functionality  */
 
 document.addEventListener("DOMContentLoaded", () => {
   loadTasks();
 });
 
+// Global variable saved to return focus 
 const contentContainer = document.getElementById("content-container");
-const createTaskButton = document.getElementById("create-task");
 
 // Add event listener to the create-task button
+const createTaskButton = document.getElementById("create-task");
 createTaskButton.addEventListener("click", showCreateTaskForm);
 
 // Global variables to manage modal states and prevent multiple instances  
@@ -21,26 +24,6 @@ let lastFocusedEl = document.getElementById("home-navigation");
 
 // Get today's date in YYYY-MM-DD format for task due date validation
 const today = getTodayDate();
-
-// Close forms & details modals
-function closeModal() {
-  let allModals = [createTaskFormContainer, editTaskFormContainer, taskDetailsContainer, confirmationModal];
-  
-  allModals.forEach((modal) => {
-    if (modal) {
-      modal.classList.remove("show");
-      modal.remove();
-    }
-  });
-
-  createTaskFormContainer = null;
-  editTaskFormContainer = null;
-  taskDetailsContainer = null;
-  confirmationModal = null;
-
-  document.removeEventListener("keydown", trapFocus);
-  lastFocusedEl.focus();
-}
 
 // Create form for task creation
 function showCreateTaskForm() {
@@ -483,26 +466,6 @@ function showEditTaskForm(taskId) {
   addEventListeners(["edit-task-form"], "submit", editTask);
 
 }
-
-// Delete task from localStorage
-function deleteTask(taskId) {
-    try {
-      // retrieve stored tasks, if there is no tasks default to empty array
-      let tasks = getTasksFromStorage();
-      // create new array filtering out the task with given taskId
-      tasks = tasks.filter((task) => task.id != taskId);
-      // save updated task lists to localStorage
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-      // Feedback to user
-      showToast("Task deleted successfully!", "success", 4000);
-      // Reset focus
-       lastFocusedEl = contentContainer;
-      // Refresh task list on page
-      loadTasks();
-    } catch (error) {
-      showToast("Failed to delete task. Please try again.", "danger", 4000);
-    }
-  }
   
 // Remove task from localStorage and replace it with modified version
 function editTask(event) {
@@ -604,6 +567,26 @@ function confirmDelete(action, title, message, taskId) {
 
 }
 
+// Delete task from localStorage
+function deleteTask(taskId) {
+  try {
+    // retrieve stored tasks, if there is no tasks default to empty array
+    let tasks = getTasksFromStorage();
+    // create new array filtering out the task with given taskId
+    tasks = tasks.filter((task) => task.id != taskId);
+    // save updated task lists to localStorage
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    // Feedback to user
+    showToast("Task deleted successfully!", "success", 4000);
+    // Reset focus
+     lastFocusedEl = contentContainer;
+    // Refresh task list on page
+    loadTasks();
+  } catch (error) {
+    showToast("Failed to delete task. Please try again.", "danger", 4000);
+  }
+}
+
 // Validate form inputs for task title and due date  
 function isFormValid(titleId, dateId){
     const title = document.getElementById(titleId).value.trim();
@@ -647,6 +630,26 @@ function markField(fieldId, message) {
     },
     { once: true }
   );
+}
+
+// Close forms & details modals
+function closeModal() {
+  let allModals = [createTaskFormContainer, editTaskFormContainer, taskDetailsContainer, confirmationModal];
+  
+  allModals.forEach((modal) => {
+    if (modal) {
+      modal.classList.remove("show");
+      modal.remove();
+    }
+  });
+
+  createTaskFormContainer = null;
+  editTaskFormContainer = null;
+  taskDetailsContainer = null;
+  confirmationModal = null;
+
+  document.removeEventListener("keydown", trapFocus);
+  lastFocusedEl.focus();
 }
 
 // Trap keyboard focus to modal 
@@ -730,7 +733,7 @@ function showToast(message, toastType, duration = 5000) {
     }
   });
 
-  setTimeout(() => closeToast(toastContainer,lastFocusedEl), duration);
+  setTimeout(() => closeToast(toastContainer), duration);
   
 }
 

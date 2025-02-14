@@ -1,6 +1,9 @@
+/* jshint esversion: 6 */
+/*  TaskWrangler is a simple and motivational To-Do app built using HTML, CSS, and JavaScript. 
+    insights.js connects with Google Charts API to display task progress insights   */
+
 // Load the Visualization API and the corechart package
 google.charts.load("current", { packages: ["corechart"] });
-
 
 document.addEventListener("DOMContentLoaded", () => {
   // Once the API loads, check for tasks and display charts or an empty state message
@@ -10,15 +13,15 @@ document.addEventListener("DOMContentLoaded", () => {
 // Trigger specific functions to draw charts if data is available or displays empty state message
 function drawCharts() {
  const tasks = JSON.parse(localStorage.getItem("tasks"));
- let emptyStateMessage = document.getElementById("empty-state-statistics");
+ let emptyStateMessage = document.getElementById("empty-state-insights");
 
  if(!tasks || tasks.length === 0) {
 
     if (!emptyStateMessage) {
-    let section = document.getElementById("statistics-content-area");
+    let section = document.getElementById("insights-content-area");
     let emptyState = document.createElement("div");
-    emptyState.id = "empty-state-statistics";
-    emptyState.innerHTML = `<p id="no-tasks-message" class="empty-message">No tasks yet! <a href="index.html#create-task">Create a task</a> to see statistics.</p>`;
+    emptyState.id = "empty-state-insights";
+    emptyState.innerHTML = `<p id="no-tasks-message" class="empty-message">No tasks yet! <a href="index.html#create-task">Create a task</a> to see insights.</p>`;
 
     section.appendChild(emptyState);}
     return
@@ -38,7 +41,6 @@ function drawCharts() {
 window.addEventListener("resize", () => {
   drawCharts();
 });
-
 
 // Draw pie chart with tasks by their statuses
 function drawStatusChart() {
