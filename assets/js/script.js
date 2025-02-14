@@ -264,7 +264,7 @@ function loadTasks() {
         confirmDelete(
           "delete",
           "Delete confirmation",
-          `Are you sure you want to delete this <em><strong>${this.dataset.title}</strong></em>?`,
+          `Are you sure you want to delete <em><strong>${this.dataset.title}</strong></em>?`,
           this.dataset.id
         );
       });
@@ -275,7 +275,7 @@ function loadTasks() {
           confirmDelete(
             "delete",
             "Delete confirmation",
-            `Are you sure you want to delete this <em><strong>${this.dataset.title}</strong></em>?`,
+            `Are you sure you want to delete <em><strong>${this.dataset.title}</strong></em>?`,
             this.dataset.id
           );
         }
