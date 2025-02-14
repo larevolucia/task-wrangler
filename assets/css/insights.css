@@ -1,0 +1,36 @@
+/* -------------------------------
+INSIGHTS AREA
+---------------------------------- */
+
+.chart {
+    width: 100%;
+    max-width: 500px; 
+  }
+  
+  #charts-area {
+    display: grid;
+    grid-template-columns: 1fr;
+    place-items: center;
+    gap: 20px;
+  }
+  
+  #empty-state-insights {
+    text-align: center;
+  }
+
+
+  
+  /* -------------------------------
+  MEDIA QUERY - LARGE SCREEN (min-width: 992px)
+  ---------------------------------- */
+  
+  
+  @media screen and (min-width: 992px) {
+
+  /* insights */
+  #charts-area {
+    grid-template-columns: 1fr 1fr;
+  }
+  }
+  
+  
