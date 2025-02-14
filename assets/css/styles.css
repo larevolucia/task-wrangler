@@ -410,12 +410,12 @@ TASKS CARD
 
 .overdue {
   background-color: var(--danger-color) !important;
-  color: #f0f0f0 !important; 
+  color: #fff !important; 
   border-left: 5px solid #8b0000; 
 }
 
 .overdue .delete-task {
-  background-color: #f0f0f0 !important; 
+  background-color: #fff !important; 
   color: var(--danger-color) !important; 
 }
 .overdue .delete-task:focus {
