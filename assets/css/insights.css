@@ -19,6 +19,12 @@ INSIGHTS AREA
   }
 
 
+   #insights-content-area {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   }
+
   
   /* -------------------------------
   MEDIA QUERY - LARGE SCREEN (min-width: 992px)
