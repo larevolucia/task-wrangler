@@ -72,6 +72,7 @@ function drawStatusChart() {
 // Draw pie chart with overdue vs on time tasks
 function drawOverdueChart() {
   let taskList = getOverdueTasks();
+  let totalOverdue =  taskList[1][1];
   
   // Create the data table.
   const data = new google.visualization.DataTable();
@@ -79,9 +80,11 @@ function drawOverdueChart() {
   data.addColumn("number", "Tasks");
   data.addRows(taskList);
   
+  let chartTitle = totalOverdue !== 0 ? "Overdue Tasks" : "All Tasks On Track";
+
   // Configure the pie chart to display Overdue tasks
   const options = {
-    title: "Overdue Tasks",
+    title: chartTitle,
     titleTextStyle: { fontSize: 16, bold: true },
     width: "100%",
     height: 300,
