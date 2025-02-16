@@ -185,7 +185,8 @@
   }
   
   .sr-only {
-    /* Accessible Invisible Content (WEBAIM) */
+    /* Accessible Invisible Content (WEBAIM) 
+    https://webaim.org/techniques/css/invisiblecontent */
     position: absolute;
     left: -10000px;
     top: auto;
