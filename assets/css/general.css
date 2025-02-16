@@ -7,14 +7,11 @@
    CSS VARIABLES
 ---------------------------------- */
 :root {
-  --primary-color: #1565C0 ; /* Deeper blue */
-  --secondary-color: #1E88E5 ; /* Bright Sky Blue */
+  --primary-color: #1565C0 ; /* Green blue */
+  --secondary-color: #1E88E5 ; /* Bleu de France */
   --success-color: #4CAF50;  /* Pigment Green */
- /* --success-color: #388E3C; /* Pigment Green */
   --attention-color: #FFC107; /* Amber */
-  /* --danger-color: #F44336;  Vermillion */
-   --danger-color: #CE2F2F;
-   /* --danger-color: #D32F2F; */
+   --danger-color: #CE2F2F; /* Persian red */
   --background-color: #F5F5F5; /* White Smoke */
   --text-color: #212121;  /* Eerie Black */
   --primary-font: "Inter", serif;

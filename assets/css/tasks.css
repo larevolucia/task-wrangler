@@ -335,6 +335,7 @@ Code from: https://www.geeksforgeeks.org/how-to-make-a-toast-notification-in-htm
   font-size: 0.9rem;
   color: #000000;
   padding: 0.5rem;
+  font-family: var(--secondary-font);
 }
 
 .toast {
