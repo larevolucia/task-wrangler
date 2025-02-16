@@ -164,11 +164,131 @@ For TaskWrangler, [Inter](https://fonts.google.com/specimen/Inter) was selected 
 </details>
 
 ---
-## Features
+## 🚀 Features
 
-### Navigation
 
-Provides a responsive and accessible navigation bar for seamless access to site sections, improving user experience across devices. The design dynamically adapts to screen size, ensuring intuitive and space-efficient navigation on both small and large screens.
+
+### **1. Navigation**
+
+Provides a clean and accessible navigation system for seamless interaction with the app. Users can easily create tasks, view task lists, and access insights.
+
+- **Focus management:** Uses `document.activeElement` tracking to return focus to the last interacted element after closing modals.
+- **Keyboard navigation:** Supports `Tab` key navigation across buttons, links, and modals.
+- **ARIA attributes:** Ensures screen reader compatibility with `aria-labelledby`, `role="list"`, and `aria-live` for live updates.
+- **Sticky Navigation:** The header remains fixed at the top using `position: sticky`, improving accessibility.
+
+### **2. Create Tasks with Ease**
+
+Allows users to add new tasks with essential details such as **title, description, and due date**.
+
+- **Modal Form Implementation:** Task creation is handled within a dynamically generated modal.
+- **Form Validation:** 
+  - Ensures **title is required** before submission.
+  - Prevents **past due dates** using `min="${getTodayDate()}"`.
+  - Displays **error messages** using JavaScript.
+- **LocalStorage Integration:** 
+  - Tasks are stored in `localStorage` and retrieved on page load.
+- **Keyboard Shortcuts:**
+  - `Enter` key submission for faster input.
+  - `Escape` key to close the form.
+
+
+### **3. Task Management (CRUD)**
+
+#### **3.1 Task List View**
+
+Displays all tasks in **card format**, each showing **status, due date, and action buttons**.
+
+- **Dynamic HTML Generation:** Tasks are rendered dynamically using `innerHTML` within `#tasks-container`.
+- **Accessibility Features:** 
+  - Uses `role="list"` and `role="listitem"` for semantic structuring.
+  - `aria-labelledby` links task titles to their containers for screen readers.
+- **Overdue Task Highlighting:**
+  - If a task’s due date is past today’s date, the task is assigned an `overdue` class that applies a red color.
+
+#### **3.2 Read Task Details**
+
+- Clicking a task card opens a modal displaying **status, description, and due date**.
+- Implemented using a dynamically created `div` inside `#content-container`.
+- Read view also includes action buttons to minimize back and forth on the UI.
+- Uses **`trapFocus()` function** to lock focus within the modal.
+
+#### **3.3 Edit Task**
+
+- Users can **update title, description, status, and due date**.
+- **Previous values:** Pre-fills form with task current values for users convenience.
+- **Prevent Unnecessary updates:** Compares current and new values before updating `localStorage` and sends notification of use cases (edit success, no edits).
+- **Prevent Overdue Edits:** 
+  - If a task is overdue, past dates are still allowed for consistency. Earliest date is set to original due date using `min=${currentTask[0].dueDate}`.
+- **Auto-save on Submit:** Updates **localStorage** and **UI** without page reload.
+
+#### **3.4 Delete Task**
+
+- **Confirmation Modal:** Before deletion, users receive a confirmation prompt.
+- **Persistent Storage Update:** Task is removed from `localStorage`, and UI is updated dynamically.
+- **Keyboard Navigation:** Supports `Enter` key selection and `Escape` key to cancel.
+
+### **4. Smart Toast Notifications**
+
+Provides real-time feedback on task actions such as **creation, updates, and deletions**.
+
+- **Dynamic Toast Generation:** 
+  - Uses `document.createElement("div")` to create toast containers dynamically.
+- **Auto-dismissal:** 
+  - Uses `setTimeout()` to remove notifications after 5 seconds.
+- **Keyboard Accessibility:**
+  - `Tab` focusable and closable using `Escape` key.
+- **Color-coded Feedback:**
+  - **Success (green)**: Task added successfully.
+  - **Error (red)**: Failed to save task.
+  - **Info (blue)**: Info about action.
+  - **Warning (yellow)**: Missing required fields.
+
+###  **5. Advanced Keyboard Navigation**
+
+- **Tab Trapping:** `trapFocus()` ensures users can only navigate within an open modal.
+- **Escape Key Handling:** `handleEscapeKey()` allows quick modal closing.
+- **Keyboard Shortcuts:**
+  - `Enter` submits forms and confirms actions.
+  - `Tab` cycles through interactive elements.
+
+## **6. Insights & Analytics (Task Progress Charts)**
+
+Uses **Google Charts API** to visualize task progress.
+
+### **6.1 Status Breakdown Chart**
+
+- **Pie Chart Representation** of tasks categorized as **To-Do, In Progress, and Done**.
+- **Data Fetching:** Reads `localStorage` and processes counts via `reduce()`.
+- **Color Coding:** Uses same colors used on task cards for consistency.
+  - **To-Do (yellow)**
+  - **In Progress (blue)**
+  - **Done (green)**
+- Dynamically updates as tasks are added/edited.
+
+### **6.2 Overdue Task Analysis**
+
+- **Overdue vs On-Time Tasks Pie Chart**
+- Highlights overdue tasks in **red** and on-time tasks in **green**.
+- Dynamically updates as tasks are added/edited.
+
+### **6.3 Responsive Charts**
+
+- **Auto-resizes on window resize** using `window.addEventListener("resize", drawCharts)`.
+- Charts adapt to screen size, maintaining clarity.
+
+---
+
+## **Additional Enhancements**
+- **LocalStorage Integration:** 
+  - Tasks persist between sessions without requiring a backend.
+- **Error Handling:** 
+  - Catches `JSON.parse()` failures and resets `localStorage` to prevent app crashes.
+- **ARIA Compliance:** 
+  - Uses `aria-live="polite"` for toast notifications to be screen reader-friendly.
+  - `aria-labelledby` ensures task descriptions are properly linked.
+- **Lightweight & Fast:** 
+  - No external dependencies beyond Google Charts API.
 
 ---
 ## Testing
@@ -177,6 +297,16 @@ Provides a responsive and accessible navigation bar for seamless access to site 
 
 
 ### Automated Testing  
+[Isse #26](https://github.com/larevolucia/task-wrangler/issues/26)
+
+- [Jshint.com](https://jshint.com/): No errors or warnings.
+- [Jigsaw CSS Validator](https://jigsaw.w3.org/css-validator/): No errors. Warnings related to Google Fonts and use of variables are shown.
+- [W3C HTML Validatior](https://validator.w3.org/): No errors or warnings.
+- [Accessibility Checker](https://www.accessibilitychecker.org/): Audit Score 95
+- [WAVE](https://wave.webaim.org/): No errors. One alert related to both logo and "Tasks" links on nav directing user to same page.
+- [Lighthouse] Tests performed for mobile device
+ 
+
 
 
 ### Accessibility Testing  
