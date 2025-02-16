@@ -294,20 +294,34 @@ Uses **Google Charts API** to visualize task progress.
 ## Testing
 
 ### Manual Testing 
+[Issue #5](https://github.com/larevolucia/task-wrangler/issues/5)
 
 
 ### Automated Testing  
-[Isse #26](https://github.com/larevolucia/task-wrangler/issues/26)
+[Issue #26](https://github.com/larevolucia/task-wrangler/issues/26)
 
 - [Jshint.com](https://jshint.com/): No errors or warnings.
 - [Jigsaw CSS Validator](https://jigsaw.w3.org/css-validator/): No errors. Warnings related to Google Fonts and use of variables are shown.
 - [W3C HTML Validatior](https://validator.w3.org/): No errors or warnings.
 - [Accessibility Checker](https://www.accessibilitychecker.org/): Audit Score 95
 - [WAVE](https://wave.webaim.org/): No errors. One alert related to both logo and "Tasks" links on nav directing user to same page.
-- [Lighthouse] Tests performed for mobile device
- 
-
-
+- Lighthouse: Tests performed for mobile device
+    <details>
+      <summary>Home Empty State</summary>
+     <img width="332" alt="image" src="https://github.com/user-attachments/assets/cefa6316-5f6f-4424-8c19-6a640d83d796" />
+    </details>
+    <details>
+      <summary>Home Loaded Tasks</summary>
+      <img width="332" alt="image" src="https://github.com/user-attachments/assets/80356fe7-aacf-4c9f-b70f-ecf5d20ad468" />
+    </details>
+    <details>
+      <summary>Insights Empty State</summary>
+      <img width="332" alt="image" src="https://github.com/user-attachments/assets/9c7ca88b-a715-424d-b838-9bb5894850c2" />
+    </details>
+    <details>
+      <summary>Insights Loaded Tasks</summary>
+      <img width="332" alt="image" src="https://github.com/user-attachments/assets/3ff25dcb-43a9-420e-a7a7-3e5bdbb24bc4" />
+    </details>
 
 ### Accessibility Testing  
 
@@ -320,9 +334,78 @@ Uses **Google Charts API** to visualize task progress.
 
 All issues are documented in this [Project View](https://github.com/users/larevolucia/projects/5/views/3)
 
+# Bug Fixes and Updates
+
+This document contains a list of bugs and their corresponding fixes, organized by ticket creation date.
+
+## List of Fixed Issues
+
+### 1. Create Task Not Working / Add new task button inconsistency
+- **Issue:** [#18](https://github.com/larevolucia/task-wrangler/issues/18), [#25](https://github.com/larevolucia/task-wrangler/issues/25)
+- **Summary of Fix:** Change 'create-task' id from icon to button.
+- **Commit:** [4e7aad2](https://github.com/larevolucia/task-wrangler/commit/4e7aad2f45c9156f8a09afecb9a62eac1496bfa4)
+
+### 2. CloseModal can't access form container
+- **Issue:** [#19](https://github.com/larevolucia/task-wrangler/issues/19)
+- **Summary of Fix:** The `formContainer` variable was changed from a local to a global scope, allowing the `CloseModal` function to properly access and close the form container.
+- **Commit:** [63fa163](https://github.com/larevolucia/task-wrangler/commit/63fa163)
+
+### 3. CloseModal function inconsistent behavior
+- **Issue:** [#20](https://github.com/larevolucia/task-wrangler/issues/20)
+- **Summary of Fix:** Ensured the modal is fully removed from the DOM after being triggered once, resolving the inconsistent behavior of the `CloseModal` function.
+- **Commit:** [b283efa](https://github.com/larevolucia/task-wrangler/commit/b283efa)
+
+### 4. Impossible to Edit Overdued Task
+- **Issue:** [#21](https://github.com/larevolucia/task-wrangler/issues/21)
+- **Summary of Fix:** Changed `min` attribute on form to match the original dueDate instead of today.
+- **Commit:** [42891af](https://github.com/larevolucia/task-wrangler/commit/42891af3b379fd5239d4d2d873a9e1974822f2e4)
+
+### 5. Cards appear side by side instead of stacked
+- **Issue:** [#27](https://github.com/larevolucia/task-wrangler/issues/27)
+- **Summary of Fix:** Adjusted the CSS by modifying the `display` property of the `task-container` to ensure cards are stacked vertically as intended.
+- **Commit:** [3816ee6](https://github.com/larevolucia/task-wrangler/commit/3816ee633d67bbbbc80557ae5f26fc2ea49c07c5)
+- 
+### 36. emptyStateMessage is not defined
+- **Issue:** [#28](https://github.com/larevolucia/task-wrangler/issues/28)
+- **Summary of Fix:** Declared the `emptyStateMessage` variable before calling it to prevent the "ReferenceError: emptyStateMessage is not defined" error in the `drawCharts` function.
+- **Commit:** [1c92d82](https://github.com/larevolucia/task-wrangler/commit/1c92d825a5dbe2969b18be61e8b7d18688d82028)
+
+### 7. Tasks not updating
+- **Issue:** [#29](https://github.com/larevolucia/task-wrangler/issues/29)
+- **Summary of Fix:** Re-added code that was accidentally removed when creating the conditional logic that displays toast notifications for both unchanged and changed tasks.  
+- **Commit:** [8db3584](https://github.com/larevolucia/task-wrangler/commit/8db358464c8f932fd1f427a4d8fe02b4097f4b6b)
+
+### 8. W3C validator issues
+- **Issue:** [#31](https://github.com/larevolucia/task-wrangler/issues/31)
+- **Summary of Fix:** Addressed W3C validation errors and warnings in `index.html` and `insights.html` by correcting the HTML structure and ensuring compliance with W3C standards.
+- **Commit:** [376cc57](https://github.com/larevolucia/task-wrangler/commit/376cc57d775c3738a3d45ba856f41f567bd53b4b), [717fb83](https://github.com/larevolucia/task-wrangler/commit/717fb83676532cb4a8abf70ecbf7d80c1555ce6d)
+
+### 9. Jigsaw error: f0f0f0 is not a color
+- **Issue:** [#32](https://github.com/larevolucia/task-wrangler/issues/32)
+- **Summary of Fix:** Corrected the color value from `f0f0f0` to `#f0f0f0` to comply with valid color formats, resolving the Jigsaw validation error.
+- **Commit:** [f95a81a](https://github.com/larevolucia/task-wrangler/commit/f95a81a)
+
+### 10. WAVE alerts and errors
+- **Issue:** [#33](https://github.com/larevolucia/task-wrangler/issues/33)
+- **Summary of Fix:** Fixed accessibility issues identified by the WAVE tool, including missing headings and low contrast text, to enhance the website's accessibility.
+- **Commit:** [f95a81a](https://github.com/larevolucia/task-wrangler/commit/f95a81a7cc4869bd900c5c6174e99f6cedda234a), [f61438d](https://github.com/larevolucia/task-wrangler/commit/f61438dc3beaaef97eecc4472bead4f5403df4cf), [48715dd](https://github.com/larevolucia/task-wrangler/commit/48715dd19a1dee46c783ba1509f1e0f43ee0ea49), [97461cf](https://github.com/larevolucia/task-wrangler/commit/97461cf605b2bcc0ceebfac847c25f4cd7d2db0f)
+
+### 11. DueDate line break on Overdue Task
+- **Issue:** [#35](https://github.com/larevolucia/task-wrangler/issues/35)
+- **Summary of Fix:** Adjusted the CSS adding a `min-width` to prevent line breaks in the due date display for overdue tasks, ensuring the date appears on a single line.
+- **Commit:** [1d109ad](https://github.com/larevolucia/task-wrangler/commit/1d109ad)
 
 ### Unfixed issues
 
+ ### 1. Jigsaw warnings: Font Imports and variables
+- **Issue:** [#26](https://github.com/larevolucia/task-wrangler/issues/26)
+- **Justification:** It's common practice the use of imports for fonts and variables for styling.
+- 
+### 2. WAVE alerts: Redundant link: Adjacent links go to the same URL
+- **Issue:** [#33](https://github.com/larevolucia/task-wrangler/issues/33)
+- **Justification:** It's common practice for logo to also redirect to home.
+
+  
 ---
 ## Deployment
 
