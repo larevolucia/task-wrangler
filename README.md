@@ -395,12 +395,12 @@ This document contains a list of bugs and their corresponding fixes, organized b
 - **Summary of Fix:** Adjusted the CSS adding a `min-width` to prevent line breaks in the due date display for overdue tasks, ensuring the date appears on a single line.
 - **Commit:** [1d109ad](https://github.com/larevolucia/task-wrangler/commit/1d109ad)
 
-### Unfixed issues
+## Unfixed issues
 
  ### 1. Jigsaw warnings: Font Imports and variables
 - **Issue:** [#26](https://github.com/larevolucia/task-wrangler/issues/26)
 - **Justification:** It's common practice the use of imports for fonts and variables for styling.
-- 
+
 ### 2. WAVE alerts: Redundant link: Adjacent links go to the same URL
 - **Issue:** [#33](https://github.com/larevolucia/task-wrangler/issues/33)
 - **Justification:** It's common practice for logo to also redirect to home.

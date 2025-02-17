@@ -17,6 +17,13 @@ TASKS HEADING
 TASKS CARD
 ---------------------------------- */
 
+#tasks-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 60vh;
+}
 
 .task-card {
   background-color: #22272B;
@@ -27,6 +34,7 @@ TASKS CARD
   margin: 0.5rem;
   cursor: pointer;
   /* grid style */
+  width: 90%;
   display: grid;
   grid-template-columns: 2fr 2fr 1fr;
   grid-template-rows: auto auto;
