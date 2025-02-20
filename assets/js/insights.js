@@ -108,22 +108,20 @@ function drawOverdueChart() {
 function getTasksByStatus() {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-  const todoTasks = tasks.reduce((acc, task) => {
-    return task.status === "to-do" ? ++acc : acc;
-  }, 0);
+  const statusCounts = {
+    "to-do": 0,
+    "in progress": 0,
+    "done": 0
+  };
 
-  const progressTasks = tasks.reduce((acc, task) => {
-    return task.status === "in progress" ? ++acc : acc;
-  }, 0);
-
-  const doneTasks = tasks.reduce((acc, task) => {
-    return task.status === "done" ? ++acc : acc;
-  }, 0);
+  tasks.forEach(task => {
+    statusCounts[task.status] = (statusCounts[task.status] || 0) + 1;
+  });
 
   const taskList = [
-    ["To-Do", todoTasks],
-    ["In Progress", progressTasks],
-    ["Done", doneTasks],
+    ["To-Do", statusCounts["to-do"]],
+    ["In Progress", statusCounts["in progress"]],
+    ["Done", statusCounts["done"]]
   ];
 
   return taskList;

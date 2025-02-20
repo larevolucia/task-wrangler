@@ -506,6 +506,7 @@ function editTask(event) {
         localStorage.setItem("tasks", JSON.stringify(tasks));
         showToast("Task edited successfully!", "success", 4000);
         loadTasks();
+  
       } else {
         showToast("No changes made.", "info", 4000);
       }
@@ -694,6 +695,7 @@ let toastIcon = {
 // Display Toast notification according to context given in parameters
 function showToast(message, toastType, duration = 5000) {
 
+
   // Remove existing toast if any
   let existingToast = document.body.querySelector(".toast");
   if (existingToast) {
@@ -734,15 +736,20 @@ function showToast(message, toastType, duration = 5000) {
   });
 
   setTimeout(() => closeToast(toastContainer), duration);
-  
 }
 
 // Function to close the toast and restore focus
 function closeToast(toastContainer) {
+
   if (toastContainer && document.body.contains(toastContainer)) {
     toastContainer.remove();
   }
-  contentContainer.focus();
+  // Restore focus to the element that was focused before the toast appeared
+  if (lastFocusedEl && document.contains(lastFocusedEl)) {
+    lastFocusedEl.focus();
+  } else {
+    contentContainer.focus(); // Fallback focus if previous element is gone
+  }
 }
 
 // Utility functions
