@@ -171,6 +171,11 @@ function loadTasks() {
 
   taskList.setAttribute("role", "list"); // Add role="list" if there are items
 
+  // Render list of tasks
+  renderTaskList(tasks, taskList)
+}
+
+function renderTaskList(tasks, taskList){
   tasks.forEach((task, index) => {
     const newDate = formatDate(task.dueDate);
     const isOverdue = task.dueDate && new Date(task.dueDate) < new Date(today);

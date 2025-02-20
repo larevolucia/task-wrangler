@@ -1,9 +1,6 @@
 /* jshint esversion: 6 */
 /* global google */
 
-/*  TaskWrangler is a simple and motivational To-Do app built using HTML, CSS, and JavaScript. 
-    insights.js connects with Google Charts API to display task progress insights   */
-
 // Load the Visualization API and the corechart package
 google.charts.load("current", { packages: ["corechart"] });
 
