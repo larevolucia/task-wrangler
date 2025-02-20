@@ -12,25 +12,29 @@ document.addEventListener("DOMContentLoaded", () => {
   google.charts.setOnLoadCallback(drawCharts);
 });
 
+//  No Insights message if no task exists
+function handleEmptyInsights(container){
+    let noInsightsMessage = document.createElement("div");
+    noInsightsMessage.id = "empty-state-insights";
+    noInsightsMessage.innerHTML = `<p id="no-tasks-message" class="empty-message">
+      No tasks yet! <a href="index.html#create-task" class="custom-anchor">Create a task</a> to see insights.
+    </p>`;
+
+    container.appendChild(noInsightsMessage);
+}
+
 // Trigger specific functions to draw charts if data is available or displays empty state message
 function drawCharts() {
  const tasks = JSON.parse(localStorage.getItem("tasks"));
- let emptyStateMessage = document.getElementById("empty-state-insights");
+ const insightsContainer = document.getElementById("insights-content-area");
+ let emptyTaskListMessage = document.getElementById("empty-state-insights");
 
  if(!tasks || tasks.length === 0) {
-
-    if (!emptyStateMessage) {
-    let section = document.getElementById("insights-content-area");
-    let emptyState = document.createElement("div");
-    emptyState.id = "empty-state-insights";
-    emptyState.innerHTML = `<p id="no-tasks-message" class="empty-message">No tasks yet! <a href="index.html#create-task">Create a task</a> to see insights.</p>`;
-
-    section.appendChild(emptyState);}
-    return;
+    handleEmptyInsights(insightsContainer);
  } else {
 
-    if (emptyStateMessage) {
-        emptyStateMessage.remove();
+    if (emptyTaskListMessage) {
+      emptyTaskListMessage.remove();
     }
 
      drawOverdueChart();
@@ -137,18 +141,14 @@ function getOverdueTasks() {
   let overdueTasks = 0;
   let notOverdueTasks = 0;
 
-  tasks.forEach((task) => {
-    if (task.dueDate) {
-      if (task.dueDate < today && task.status !== "done") {
-        overdueTasks++;
-      } else {
-        notOverdueTasks++;
-      }
+  tasks.forEach((task) => {  
+    if (task.dueDate && task.dueDate < today && task.status !== "done") { 
+      overdueTasks++;
     } else {
-      notOverdueTasks++; 
+      notOverdueTasks++;
     }
   });
-
+  
   return [
     ["On Time", notOverdueTasks],
     ["Overdue", overdueTasks],

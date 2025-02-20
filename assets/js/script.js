@@ -11,7 +11,11 @@ const contentContainer = document.getElementById("content-container");
 
 // Add event listener to the create-task button
 const createTaskButton = document.getElementById("create-task");
-createTaskButton.addEventListener("click", showCreateTaskForm);
+
+if (createTaskButton) {
+  createTaskButton.addEventListener("click", showCreateTaskForm);
+}
+
 
 // Global variables to manage modal states and prevent multiple instances  
 let createTaskFormContainer = null; // Stores the task creation form instance  
@@ -127,29 +131,41 @@ function createTask(event) {
   }
 }
 
+
+// Handle No Task Scenario
+function handleEmptyTaskList(container){
+  container.innerHTML = `<p id="no-tasks-message" class="empty-message">No tasks yet! <span class="custom-anchor" id="create-task-trigger">Create a task</span> to get started.</p>`;
+    container.removeAttribute("role"); // Remove role="list" if no tasks exist
+    // Add event listener to the empty state message
+    addEventListeners(["create-task-trigger"], "click", showCreateTaskForm);
+
+}
+
 // Retrieve task list from localStorage
 function loadTasks() {
   const taskList = document.getElementById("tasks-container");
-  taskList.innerHTML = ``;
+  
+  if (!taskList) {
+    console.warn("loadTasks() called but #tasks-container does not exist.");
+    return;
+  }
+  
+  taskList.innerHTML = "";  // Clear the existing tasks
+
 
   let tasks = [];
 
   try {
     // Retrieve tasks from localStorage
-    tasks = getTasksFromStorage();
+   tasks = getTasksFromStorage();
   } catch (error) {
     // Handle storage errors 
     showToast("Failed to load tasks. Resetting task list.", "danger", 4000);
     localStorage.removeItem("tasks");
-    tasks = [];
   }
 
   if (tasks.length === 0) {
-    taskList.innerHTML = `<p id="no-tasks-message" class="empty-message">No tasks yet! <span class="custom-anchor" id="create-task-trigger">Create a task</span> to get started.</p>`;
-    taskList.removeAttribute("role"); // Remove role="list" if no tasks exist
-    // Add event listener to the empty state message
-    addEventListeners(["create-task-trigger"], "click", showCreateTaskForm);
-
+    handleEmptyTaskList(taskList);
     return;
   }
 
