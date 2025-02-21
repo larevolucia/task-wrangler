@@ -29,6 +29,9 @@ let lastFocusedEl = document.getElementById("home-navigation");
 // Get today's date in YYYY-MM-DD format for task due date validation
 const today = getTodayDate();
 
+
+/* CREATE TASKS */
+
 // Create form for task creation
 function showCreateTaskForm() {
   
@@ -131,6 +134,7 @@ function createTask(event) {
   }
 }
 
+/* LOAD TASK LIST */
 
 // Handle No Task Scenario
 function handleEmptyTaskList(container){
@@ -171,139 +175,161 @@ function loadTasks() {
 
   taskList.setAttribute("role", "list"); // Add role="list" if there are items
 
-  // Render list of tasks
   renderTaskList(tasks, taskList)
 }
 
-function renderTaskList(tasks, taskList){
+// Function to render tasks
+function renderTaskList(tasks, taskList) {
   tasks.forEach((task, index) => {
-    const newDate = formatDate(task.dueDate);
-    const isOverdue = task.dueDate && new Date(task.dueDate) < new Date(today);
-    const taskTitleId = `task-title-${index}`;
-    const taskElement = document.createElement("div");
-
-    taskElement.classList.add("task-card");
-    taskElement.setAttribute("role", "listitem");
-    taskElement.setAttribute("tabindex", "0");
-    taskElement.setAttribute("id", `task-${task.id}`);
-    taskElement.setAttribute("aria-labelledby", taskTitleId);
-
-    const statusClass = getStatusClass(task.status || "unknown");
-
-    if (task.status !== "done" && isOverdue) {
-      taskElement.classList.add("overdue");
-    }
-
-    taskElement.innerHTML = `
-            <div class="status-box">
-              <span class="task-status ${statusClass}">
-              ${task.status || "N/A"}
-              </span>
-            </div>
-            ${
-              task.dueDate  ? task.status !== "done" && isOverdue ? `<div class="task-due-date date-box">
-                <i class="fa-solid fa-triangle-exclamation"></i> 
-                <i class="fa-solid fa-calendar-days"></i>
-                <span class="task-due-date-text">${newDate}</span>
-              </div>`
-                  : `<div class="task-due-date date-box">
-              <i class="fa-regular fa-calendar-days"></i>
-              <span class="task-due-date-text">${newDate}</span>
-              </div>`
-                : `<div class="date-box"></div>`
-            }
-            <div class="title-box">
-              <span class="task-title" id="${taskTitleId}">${task.title}</span>
-              ${
-                task.description ? `<span class="task-description-icon"><i class="fa-solid fa-align-left"></i></span>`
-                  : ""
-              }
-            </div>
-            <div class="edit-box">
-              <button class="edit-task" id="edit-${
-                task.id
-              }" title="Edit Task" data-id="${task.id}" aria-label="Edit ${
-      task.title
-    }"><i class="fa-solid fa-pen"></i></button>
-            </div>
-            <div class="delete-box">
-              <button class="delete-task"id="delete-${
-                task.id
-              }" title="Delete Task" data-id="${task.id}" data-title="${
-      task.title
-    }" aria-label="Delete ${
-      task.title
-    }"><i class="fa-solid fa-trash"></i></button>
-            </div>
-        `;
-
+    const taskElement = createTaskElement(task, index);
     taskList.appendChild(taskElement);
+    addTaskEventListeners(taskElement, task);
+  });
+}
 
-    // Click listener for opening task details
-    taskElement.addEventListener("click", function (event) {
-      if (
-        !event.target.closest(".edit-task") &&
-        !event.target.closest(".delete-task")
-      ) {
+// Function to create a task element
+function createTaskElement(task, index) {
+  const newDate = formatDate(task.dueDate);
+  const isOverdue = task.dueDate && new Date(task.dueDate) < new Date(today);
+  const taskTitleId = `task-title-${index}`;
+  const taskElement = document.createElement("div");
+
+  taskElement.classList.add("task-card");
+  taskElement.setAttribute("role", "listitem");
+  taskElement.setAttribute("tabindex", "0");
+  taskElement.setAttribute("id", `task-${task.id}`);
+  taskElement.setAttribute("aria-labelledby", taskTitleId);
+
+  const statusClass = getStatusClass(task.status || "unknown");
+
+  if (task.status !== "done" && isOverdue) {
+    taskElement.classList.add("overdue");
+  }
+
+  taskElement.innerHTML = `
+      <div class="status-box">
+        <span class="task-status ${statusClass}">
+        ${task.status || "N/A"}
+        </span>
+      </div>
+      ${
+        task.dueDate
+          ? task.status !== "done" && isOverdue
+            ? `<div class="task-due-date date-box">
+          <i class="fa-solid fa-triangle-exclamation"></i> 
+          <i class="fa-solid fa-calendar-days"></i>
+          <span class="task-due-date-text">${newDate}</span>
+        </div>`
+            : `<div class="task-due-date date-box">
+        <i class="fa-regular fa-calendar-days"></i>
+        <span class="task-due-date-text">${newDate}</span>
+        </div>`
+          : `<div class="date-box"></div>`
+      }
+      <div class="title-box">
+        <span class="task-title" id="${taskTitleId}">${task.title}</span>
+        ${
+          task.description
+            ? `<span class="task-description-icon"><i class="fa-solid fa-align-left"></i></span>`
+            : ""
+        }
+      </div>
+      <div class="edit-box">
+        <button class="edit-task" id="edit-${
+          task.id
+        }" title="Edit Task" data-id="${task.id}" aria-label="Edit ${
+    task.title
+  }"><i class="fa-solid fa-pen"></i></button>
+      </div>
+      <div class="delete-box">
+        <button class="delete-task" id="delete-${
+          task.id
+        }" title="Delete Task" data-id="${task.id}" data-title="${
+    task.title
+  }" aria-label="Delete ${
+    task.title
+  }"><i class="fa-solid fa-trash"></i></button>
+      </div>
+  `;
+
+  return taskElement;
+}
+
+// Function to add event listeners to a task element
+function addTaskEventListeners(taskElement, task) {
+  taskElement.addEventListener("click", function (event) {
+    if (
+      !event.target.closest(".edit-task") &&
+      !event.target.closest(".delete-task")
+    ) {
+      showTaskDetails(task);
+    }
+  });
+
+  taskElement.addEventListener("keydown", (event) => {
+    if (
+      !event.target.closest(".edit-task") &&
+      !event.target.closest(".delete-task")
+    ) {
+      if (event.key === "Enter") {
+        event.preventDefault();
         showTaskDetails(task);
       }
-    });
-
-    // Keyboard listener for opening task details
-    taskElement.addEventListener("keydown", (event) => {
-      if (
-        !event.target.closest(".edit-task") &&
-        !event.target.closest(".delete-task")
-      ) {
-        if (event.key === "Enter") {
-          event.preventDefault();
-          showTaskDetails(task);
-        }
-      }
-    });
-
-    // Add event listeners for edit button
-    const editButton = document.getElementById(`edit-${task.id}`);
-    if (editButton) {
-      editButton.addEventListener("click", function () {
-        showEditTaskForm(this.dataset.id);
-      });
-
-      // Add Enter key support for edit button
-      editButton.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-          event.preventDefault();
-          showEditTaskForm(this.dataset.id);
-        }
-      });
     }
+  });
 
-    // Add event listeners for delete buttons
-    const deleteButton = document.getElementById(`delete-${task.id}`);
-    if (deleteButton) {
-      deleteButton.addEventListener("click", function () {
-        confirmDelete(
-          "delete",
-          "Delete confirmation",
-          `Are you sure you want to delete <em><strong>${this.dataset.title}</strong></em>?`,
-          this.dataset.id
-        );
-      });
-      // Add Enter key support for delete button
-      deleteButton.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-          event.preventDefault();
-          confirmDelete(
-            "delete",
-            "Delete confirmation",
-            `Are you sure you want to delete <em><strong>${this.dataset.title}</strong></em>?`,
-            this.dataset.id
-          );
-        }
-      });
+  // Add event listeners for edit button
+  const editButton = document.getElementById(`edit-${task.id}`);
+  if (editButton) {
+    addEditButtonListener(editButton, task.id);
+  }
+
+  // Add event listeners for delete button
+  const deleteButton = document.getElementById(`delete-${task.id}`);
+  if (deleteButton) {
+    addDeleteButtonListener(deleteButton, task);
+  }
+}
+
+// Function to add event listeners for the edit button
+function addEditButtonListener(editButton, taskId) {
+  editButton.addEventListener("click", function () {
+    showEditTaskForm(taskId);
+  });
+
+  editButton.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      showEditTaskForm(taskId);
     }
   });
 }
+
+// Function to add event listeners for the delete button
+function addDeleteButtonListener(deleteButton, task) {
+  deleteButton.addEventListener("click", function () {
+    confirmDelete(
+      "delete",
+      "Delete confirmation",
+      `Are you sure you want to delete <em><strong>${this.dataset.title}</strong></em>?`,
+      task.id
+    );
+  });
+
+  deleteButton.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      confirmDelete(
+        "delete",
+        "Delete confirmation",
+        `Are you sure you want to delete <em><strong>${this.dataset.title}</strong></em>?`,
+        task.id
+      );
+    }
+  });
+}
+
+/* SHOW TASK DETAILS */
 
 // Retrieve details of specific task from localStorage
 function showTaskDetails(task) {
@@ -395,6 +421,8 @@ function showTaskDetails(task) {
   // Close modal when the Escape key is pressed, ensuring users can dismiss dialogs with the keyboard  
   document.addEventListener("keydown", handleEscapeKey);
 }
+
+/* EDIT TASK DETAILS */
 
 // Preloads task information into form for manipulation
 function showEditTaskForm(taskId) {
@@ -542,6 +570,8 @@ function editTask(event) {
     }
   }
   
+/* DELETE TASK */
+
 // Show confirmation modal for critical action
 function confirmDelete(action, title, message, taskId) {
   closeModal();
@@ -609,6 +639,8 @@ function deleteTask(taskId) {
   }
 }
 
+/* FORM VALIDATION */
+
 // Validate form inputs for task title and due date  
 function isFormValid(titleId, dateId){
     const title = document.getElementById(titleId).value.trim();
@@ -654,6 +686,8 @@ function markField(fieldId, message) {
   );
 }
 
+/* MODAL INTERACTION */
+
 // Close forms & details modals
 function closeModal() {
   let allModals = [createTaskFormContainer, editTaskFormContainer, taskDetailsContainer, confirmationModal];
@@ -673,6 +707,8 @@ function closeModal() {
   document.removeEventListener("keydown", trapFocus);
   lastFocusedEl.focus();
 }
+
+/* ACCESSIBILITY */
 
 // Trap keyboard focus to modal 
 // https://zachpatrick.com/blog/how-to-trap-focus-inside-modal-to-make-it-ada-compliant
@@ -704,6 +740,8 @@ const isTabPressed = event.key === `Tab` || event.keyCode === 9;
   }
 
 }
+
+/* NOTIFICATION */
 
 // Toast icons
 let toastIcon = {
@@ -773,7 +811,7 @@ function closeToast(toastContainer) {
   }
 }
 
-// Utility functions
+/* UTILITY FUNCTIONS */
 
 function getStatusClass(status) {
   switch (status.toLowerCase()) {
