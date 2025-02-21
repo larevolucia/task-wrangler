@@ -16,18 +16,134 @@ if (createTaskButton) {
   createTaskButton.addEventListener("click", showCreateTaskForm);
 }
 
-
 // Global variables to manage modal states and prevent multiple instances  
-let createTaskFormContainer = null; // Stores the task creation form instance  
-let editTaskFormContainer = null;   // Stores the edit task form instance  
+let createTaskContainer = null; // Stores the task creation form instance  
+let editTaskContainer = null;   // Stores the edit task form instance  
 let taskDetailsContainer = null;    // Stores the task details modal instance  
 let confirmationModal = null;       // Stores the confirmation modal instance  
+
+/* UTILITY FUNCTIONS */
+
+function getStatusClass(status) {
+  switch (status.toLowerCase()) {
+    case "to-do":
+      return "status-todo";
+    case "in progress":
+      return "status-in-progress";
+    case "done":
+      return "status-done";
+    default:
+      return "status-unknown";
+  }
+}
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const options = { month: "short", day: "numeric" };
+  return date.toLocaleDateString("en-US", options);
+}
+
+function getTodayDate() {
+  return new Date().toISOString().split("T")[0];
+}
+
+function handleEscapeKey(event) {
+  if (event.key === "Escape") closeModal();
+}
+
+function addEventListeners(ids, event, handler) {
+  ids.forEach((id) => {
+    const element = document.getElementById(id);
+    if (element) element.addEventListener(event, handler);
+  });
+}
+
+function getTasksFromStorage() {
+  try {
+    return JSON.parse(localStorage.getItem("tasks")) || [];
+  } catch (error) {
+    console.error("Error parsing localStorage data:", error);
+    localStorage.removeItem("tasks"); // reset tasks in case of corrupted data
+    return [];
+  }
+}
 
 // Tracks the last focused element before a modal is opened, ensuring proper keyboard navigation
 let lastFocusedEl = document.getElementById("home-navigation");
 
 // Get today's date in YYYY-MM-DD format for task due date validation
 const today = getTodayDate();
+
+/* NOTIFICATION */
+
+// Toast icons
+let toastIcon = {
+  success: '<i class="fa-solid fa-check"></i>',
+  danger: '<i class="fa-solid fa-xmark"></i>',
+  info: '<i class="fa-solid fa-info"></i>',
+  warning: '<i class="fa-solid fa-triangle-exclamation"></i>',
+};
+
+// Display Toast notification according to context given in parameters
+function showToast(message, toastType, duration = 5000) {
+
+
+  // Remove existing toast if any
+  let existingToast = document.body.querySelector(".toast");
+  if (existingToast) {
+    existingToast.remove();
+  }
+
+  // Create toast container
+  let toastContainer = document.createElement("div");
+  toastContainer.setAttribute("tabindex", "0");
+  toastContainer.setAttribute("role", "alert");
+  toastContainer.setAttribute("aria-live", "polite");
+  toastContainer.classList.add("toast", `toast-${toastType}`);
+  toastContainer.innerHTML = `
+    <div class="toast-content-wrapper">
+      <div class="toast-icon">${toastIcon[toastType]}</div>
+      <div class="toast-message">${message}</div>
+      <button class="toast-close" id="toast-close-icon" aria-label="Close Notification">&times;</button>
+      <div class="toast-progress"></div>
+    </div>`;
+
+  // Set animation duration for progress bar
+  toastContainer.querySelector(".toast-progress").style.animationDuration = `${duration / 1000}s`;
+
+  // Append toast to body
+  document.body.appendChild(toastContainer);
+  toastContainer.focus();
+
+  // Close toast on button click
+  document.getElementById("toast-close-icon").addEventListener("click", () => {
+    closeToast(toastContainer);
+  });
+
+  // Close toast when Escape key is pressed
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeToast(toastContainer);
+    }
+  });
+
+  setTimeout(() => closeToast(toastContainer), duration);
+}
+
+// Function to close the toast and restore focus
+function closeToast(toastContainer) {
+
+  if (toastContainer && document.body.contains(toastContainer)) {
+    toastContainer.remove();
+  }
+  // Restore focus to the element that was focused before the toast appeared
+  if (lastFocusedEl && document.contains(lastFocusedEl)) {
+    lastFocusedEl.focus();
+  } else {
+    contentContainer.focus(); // Fallback focus if previous element is gone
+  }
+}
+
 
 
 /* CREATE TASKS */
@@ -38,14 +154,14 @@ function showCreateTaskForm() {
   lastFocusedEl = createTaskButton;
 
   //  Check if form already exists
-  if (createTaskFormContainer) {
-    createTaskFormContainer.classList.toggle("show");
+  if (createTaskContainer) {
+    createTaskContainer.classList.toggle("show");
     return;
   }
   
   // Create the task form container
-  createTaskFormContainer = showTaskFormContainer();
-  contentContainer.appendChild(createTaskFormContainer);
+  createTaskContainer = createTaskFormContainer();
+  contentContainer.appendChild(createTaskContainer);
 
   // Trap focus
   document.addEventListener("keydown", (event) => trapFocus(event, "create-task-form-container"));
@@ -57,7 +173,7 @@ function showCreateTaskForm() {
 }
 
 // Function to create form element
-function showTaskFormContainer(){
+function createTaskFormContainer(){
   const container = document.createElement("div");
   container.id = "create-task-form-container";
   container.classList.add("show");
@@ -365,7 +481,7 @@ function createTaskDetailsContainer(task) {
   const isOverdue = task.dueDate && new Date(task.dueDate) < new Date(today);
   
   // Create modal container
-  container = document.createElement("div");
+  const container = document.createElement("div");
   container.id = `task-${task.id}-details-container`;
   container.classList.add("task-details-container");
   container.classList.add("details-modal");
@@ -461,8 +577,8 @@ function showEditTaskForm(taskId) {
   }
 
   // Create form container
-  editTaskFormContainer = createEditTaskFormContainer(currentTask);
-  contentContainer.appendChild(editTaskFormContainer);
+  editTaskContainer = createEditTaskFormContainer(currentTask);
+  contentContainer.appendChild(editTaskContainer);
 
   // Trap focus
   document.addEventListener("keydown", (event) => trapFocus(event, "edit-task-form-container"));
@@ -612,6 +728,7 @@ function addEditTaskEventListeners(taskId) {
   document.addEventListener("keydown", handleEscapeKey);
   addEventListeners(["edit-task-form"], "submit", editTask);
 }
+
 /* DELETE TASK */
 
 // Show confirmation modal for critical action
@@ -706,14 +823,14 @@ function isFormValid(titleId, dateId){
     if (!title) {
         showToast("Title is a required field.", "warning", 4000);
         markField(titleId, "This field is required.");
-        return;
+        return false;
       }
 
     // Ensure dueDate is not before configured earliest date
       if (new Date(dueDate) < new Date(minDate)) {
         showToast("The due date cannot be in the past.", "warning", 4000);
         markField(dateId, `Date cannot be before ${formatDate(minDate)}`);
-        return;
+        return f;
       }
     
     return true;
@@ -744,7 +861,7 @@ function markField(fieldId, message) {
 
 // Close forms & details modals
 function closeModal() {
-  let allModals = [createTaskFormContainer, editTaskFormContainer, taskDetailsContainer, confirmationModal];
+  let allModals = [createTaskContainer, editTaskContainer, taskDetailsContainer, confirmationModal];
   
   allModals.forEach((modal) => {
     if (modal) {
@@ -753,8 +870,8 @@ function closeModal() {
     }
   });
 
-  createTaskFormContainer = null;
-  editTaskFormContainer = null;
+  createTaskContainer = null;
+  editTaskContainer = null;
   taskDetailsContainer = null;
   confirmationModal = null;
 
@@ -795,118 +912,3 @@ const isTabPressed = event.key === `Tab` || event.keyCode === 9;
 
 }
 
-/* NOTIFICATION */
-
-// Toast icons
-let toastIcon = {
-  success: '<i class="fa-solid fa-check"></i>',
-  danger: '<i class="fa-solid fa-xmark"></i>',
-  info: '<i class="fa-solid fa-info"></i>',
-  warning: '<i class="fa-solid fa-triangle-exclamation"></i>',
-};
-
-// Display Toast notification according to context given in parameters
-function showToast(message, toastType, duration = 5000) {
-
-
-  // Remove existing toast if any
-  let existingToast = document.body.querySelector(".toast");
-  if (existingToast) {
-    existingToast.remove();
-  }
-
-  // Create toast container
-  let toastContainer = document.createElement("div");
-  toastContainer.setAttribute("tabindex", "0");
-  toastContainer.setAttribute("role", "alert");
-  toastContainer.setAttribute("aria-live", "polite");
-  toastContainer.classList.add("toast", `toast-${toastType}`);
-  toastContainer.innerHTML = `
-    <div class="toast-content-wrapper">
-      <div class="toast-icon">${toastIcon[toastType]}</div>
-      <div class="toast-message">${message}</div>
-      <button class="toast-close" id="toast-close-icon" aria-label="Close Notification">&times;</button>
-      <div class="toast-progress"></div>
-    </div>`;
-
-  // Set animation duration for progress bar
-  toastContainer.querySelector(".toast-progress").style.animationDuration = `${duration / 1000}s`;
-
-  // Append toast to body
-  document.body.appendChild(toastContainer);
-  toastContainer.focus();
-
-  // Close toast on button click
-  document.getElementById("toast-close-icon").addEventListener("click", () => {
-    closeToast(toastContainer);
-  });
-
-  // Close toast when Escape key is pressed
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closeToast(toastContainer);
-    }
-  });
-
-  setTimeout(() => closeToast(toastContainer), duration);
-}
-
-// Function to close the toast and restore focus
-function closeToast(toastContainer) {
-
-  if (toastContainer && document.body.contains(toastContainer)) {
-    toastContainer.remove();
-  }
-  // Restore focus to the element that was focused before the toast appeared
-  if (lastFocusedEl && document.contains(lastFocusedEl)) {
-    lastFocusedEl.focus();
-  } else {
-    contentContainer.focus(); // Fallback focus if previous element is gone
-  }
-}
-
-/* UTILITY FUNCTIONS */
-
-function getStatusClass(status) {
-  switch (status.toLowerCase()) {
-    case "to-do":
-      return "status-todo";
-    case "in progress":
-      return "status-in-progress";
-    case "done":
-      return "status-done";
-    default:
-      return "status-unknown";
-  }
-}
-
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  const options = { month: "short", day: "numeric" };
-  return date.toLocaleDateString("en-US", options);
-}
-
-function getTodayDate() {
-  return new Date().toISOString().split("T")[0];
-}
-
-function handleEscapeKey(event) {
-  if (event.key === "Escape") closeModal();
-}
-
-function addEventListeners(ids, event, handler) {
-  ids.forEach((id) => {
-    const element = document.getElementById(id);
-    if (element) element.addEventListener(event, handler);
-  });
-}
-
-function getTasksFromStorage() {
-  try {
-    return JSON.parse(localStorage.getItem("tasks")) || [];
-  } catch (error) {
-    console.error("Error parsing localStorage data:", error);
-    localStorage.removeItem("tasks"); // reset tasks in case of corrupted data
-    return [];
-  }
-}
