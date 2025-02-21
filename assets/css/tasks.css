@@ -79,6 +79,7 @@ TASKS CARD
 
 .delete-task{
   background-color: var(--danger-color);
+  color: var(--background-color)
 }
 
 /* Specific focus states for edit & delete buttons */
@@ -101,13 +102,14 @@ TASKS CARD
 }
 
 .overdue .delete-task {
-  background-color: #f0f0f0 !important; 
+  background-color: var(--text-color) !important; 
   color: var(--danger-color) !important; 
 }
 .overdue .delete-task:focus {
   outline: 3px dashed var(--text-color);
   box-shadow: 0 0 10px rgba(211, 47, 47, 0.5);
 }
+
 
 
 /* Grid item styles */
