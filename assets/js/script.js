@@ -794,7 +794,7 @@ function addConfirmDeleteEventListeners(taskId) {
 function deleteTask(taskId) {
   // alert for taskID null or undefined
   if (!taskId) {
-    showToast("Error: Invalid task ID.",danger,5000);
+    showToast("Error: Invalid task ID.","danger",5000);
     return;
   }
   try {
@@ -836,7 +836,7 @@ function isFormValid(titleId, dateId){
       if (new Date(dueDate) < new Date(minDate)) {
         showToast("The due date cannot be in the past.", "warning", 4000);
         markField(dateId, `Date cannot be before ${formatDate(minDate)}`);
-        return f;
+        return false;
       }
     
     return true;
@@ -902,7 +902,7 @@ const isTabPressed = event.key === `Tab` || event.keyCode === 9;
 
 
   const focusableEls = modal.querySelectorAll('button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled])');
-  if (focusableEls.length === 0) return; // Stop function if not focusable element is present 
+  if (focusableEls.length === 0) return; // Stop function if no focusable element is present 
 
   const firstFocusableEl = focusableEls[0];  
   const lastFocusableEl = focusableEls[focusableEls.length - 1];
