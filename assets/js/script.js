@@ -620,7 +620,7 @@ function createEditTaskFormContainer(task){
    : `min="${today}"`;
 
   // Create a form container div
-  container = document.createElement("div");
+  let container = document.createElement("div");
   container.id = "edit-task-form-container";
   container.classList.add("show");
   container.innerHTML = `
@@ -792,11 +792,17 @@ function addConfirmDeleteEventListeners(taskId) {
 
 // Delete task from localStorage
 function deleteTask(taskId) {
+  // alert for taskID null or undefined
+  if (!taskId) {
+    showToast("Error: Invalid task ID.",danger,5000);
+    return;
+  }
   try {
     // retrieve stored tasks, if there is no tasks default to empty array
     let tasks = getTasksFromStorage();
     // create new array filtering out the task with given taskId
     tasks = tasks.filter((task) => task.id != taskId);
+
     // save updated task lists to localStorage
     localStorage.setItem("tasks", JSON.stringify(tasks));
     // Feedback to user
@@ -896,6 +902,7 @@ const isTabPressed = event.key === `Tab` || event.keyCode === 9;
 
 
   const focusableEls = modal.querySelectorAll('button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled])');
+  if (focusableEls.length === 0) return; // Stop function if not focusable element is present 
 
   const firstFocusableEl = focusableEls[0];  
   const lastFocusableEl = focusableEls[focusableEls.length - 1];
