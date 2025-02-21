@@ -333,30 +333,31 @@ function addDeleteButtonListener(deleteButton, task) {
 
 // Retrieve details of specific task from localStorage
 function showTaskDetails(task) {
-
+  
   lastFocusedEl = document.getElementById(`task-${task.id}`);
-
+  
   // Remove existing task details if any
   if (taskDetailsContainer) {
     taskDetailsContainer.remove();
   }
-
+  
   taskDetailsContainer = createTaskDetailsContainer(task);
   contentContainer.appendChild(taskDetailsContainer);
-
+  
   // Trap focus
   document.addEventListener("keydown", (event) => trapFocus(event, `task-${task.id}-details-container`));
-
+  
   document.getElementById(`edit-task-${task.id}`).focus();
-
+  
   // Add Event Listeners
   addTaskDetailsEventListeners(task);
 }
 
+// Function to create task details element
 function createTaskDetailsContainer(task) {
   const statusClass = getStatusClass(task.status);
   const isOverdue = task.dueDate && new Date(task.dueDate) < new Date(today);
-
+  
   // Create modal container
   container = document.createElement("div");
   container.id = `task-${task.id}-details-container`;
@@ -364,52 +365,53 @@ function createTaskDetailsContainer(task) {
   container.classList.add("details-modal");
   container.classList.add("show");
   container.innerHTML = `
-        <div id="details-modal-content">
-            <div class="modal-header">
-                <button id="close-details-modal">&times;</button>
-                <h2>${task.title}</h2>
-            </div>
-            <div class="modal-body">
-               <div class="details-item"><span class="task-status ${statusClass}">${
+  <div id="details-modal-content">
+  <div class="modal-header">
+  <button id="close-details-modal">&times;</button>
+  <h2>${task.title}</h2>
+  </div>
+  <div class="modal-body">
+  <div class="details-item"><span class="task-status ${statusClass}">${
     task.status
   }</span></div>
-               ${
-                 task.description ? `<div class="details-item"><p><strong>Description</strong></p><p>${task.description}</p></div>`
-                   : ""
-               }
-               ${
-                 task.dueDate ? task.status !== "done" && isOverdue  ? `<div class="details-item">
-                    <p><i class="fa-solid fa-triangle-exclamation"></i> <strong>Due Date</strong></p> 
-                    <p>${formatDate(
-                         task.dueDate
-                       )}</p>
-                  </div>`
-                     : `<div class="details-item"><p><strong>Due Date</strong></p> <p>${formatDate(
-                         task.dueDate
-                       )}</p></div>`
-                   : ""
-               }    
-            </div>
-            <div class="modal-footer">
-                <button class="btn-primary" id="edit-task-${
-                  task.id
-                }" title="Edit Task" data-id="${
-    task.id
-  }" aria-label="Edit "><i class="fa-solid fa-pen" aria-hidden="true"></i> Edit Task</button>
-                <button class="btn-danger" id="delete-task-${
-                  task.id
-                }" title="Delete Task" data-id="${
-    task.id
-  }" aria-label="Delete ${
-    task.title
-  }"><i class="fa-solid fa-trash" aria-hidden="true"></i> Delete Task</button>
-            </div>
-        </div>
-    `;
-
-    return container;
-}
-
+  ${
+    task.description ? `<div class="details-item"><p><strong>Description</strong></p><p>${task.description}</p></div>`
+    : ""
+  }
+  ${
+    task.dueDate ? task.status !== "done" && isOverdue  ? `<div class="details-item">
+    <p><i class="fa-solid fa-triangle-exclamation"></i> <strong>Due Date</strong></p> 
+    <p>${formatDate(
+      task.dueDate
+      )}</p>
+      </div>`
+      : `<div class="details-item"><p><strong>Due Date</strong></p> <p>${formatDate(
+        task.dueDate
+        )}</p></div>`
+        : ""
+      }    
+      </div>
+      <div class="modal-footer">
+      <button class="btn-primary" id="edit-task-${
+        task.id
+      }" title="Edit Task" data-id="${
+        task.id
+      }" aria-label="Edit "><i class="fa-solid fa-pen" aria-hidden="true"></i> Edit Task</button>
+      <button class="btn-danger" id="delete-task-${
+        task.id
+      }" title="Delete Task" data-id="${
+        task.id
+      }" aria-label="Delete ${
+        task.title
+      }"><i class="fa-solid fa-trash" aria-hidden="true"></i> Delete Task</button>
+      </div>
+      </div>
+      `;
+      
+      return container;
+    }
+    
+// Function to add event listeners 
 function addTaskDetailsEventListeners(task) {
   // Add event listeners for edit button
   document
@@ -445,92 +447,105 @@ function showEditTaskForm(taskId) {
 
   lastFocusedEl = document.getElementById(`edit-${taskId}`);
 
-  // retrieve stored tasks
-  let tasks = getTasksFromStorage();
+  // Retrieve task details
+  const currentTask = getTaskById(taskId);
+  if (!currentTask) {
+   showToast("Task not found!", "danger", 4000);
+   return;
+  }
 
-  // create new array filtering only the task with given taskId
-  let currentTask = tasks.filter((task) => task.id === Number(taskId));
-
-  // define possible status
-  const statusOptions = ["to-do", "in progress", "done"];
-
-  const statusSelectOptions = statusOptions
-    .map(
-      (status) => `
-        <option value="${status}" ${
-        currentTask[0].status === status ? "selected" : ""
-      }>${status}</option>
-    `
-    )
-    .join("");
-
-  // Allow past dates if the task is overdue, otherwise set min date to today
-  const isOverdue = currentTask[0].dueDate && currentTask[0].dueDate < today;
-  const minDate = isOverdue ? `min=${currentTask[0].dueDate}`
-    : `min="${today}"`;
-
-  // Create a form container div
-  editTaskFormContainer = document.createElement("div");
-  editTaskFormContainer.id = "edit-task-form-container";
-  editTaskFormContainer.classList.add("show");
-  editTaskFormContainer.innerHTML = `
-        <form id="edit-task-form" data-id="${taskId}" novalidate>
-        <div class="modal-header">
-                <button type="button" id="close-edit-form">&times;</button>
-                <h2>Edit Task</h2>
-            </div>
-            <div class="modal-body">
-                <div class="form-item">
-                    <label for="new-status">Status</label>
-                    <select id="new-status" name="status">
-                    ${statusSelectOptions}
-                    </select>
-                </div>
-                <div class="form-item">
-                    <label for="new-task-title">Title<small>*</small></label>
-                    <input type="text" id="new-task-title" placeholder="Task Title" value="${
-                      currentTask[0].title
-                    }" aria-required="true">
-                    <span id="new-task-title-error" class="error-message" aria-live="assertive"></span>
-                    </div>
-                    <div class="form-item">
-                    <label for="new-task-description">Description</label>
-                    <textarea id="new-task-description">${
-                        currentTask[0].description  ? currentTask[0].description
-                        : ""
-                    }</textarea>
-                    </div>
-                    <div class="form-item">
-                    <label for="new-task-date">Due Date</label>
-                    <input type="date" id="new-task-date" value="${
-                        currentTask[0].dueDate
-                    }" ${minDate}>
-                    <span id="new-task-date-error" class="error-message" aria-live="assertive"></span>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="close-edit-modal">Discard Changes</button>
-                <button type="submit" class="btn-primary">Save Changes</button>
-            </div>
-        </form>
-    `;
-  // Add form at the top of content-container
+  // Create form container
+  editTaskFormContainer = createEditTaskFormContainer(currentTask);
   contentContainer.appendChild(editTaskFormContainer);
 
   // Trap focus
   document.addEventListener("keydown", (event) => trapFocus(event, "edit-task-form-container"));
   document.getElementById("new-status").focus();
 
-// Close modal on Cancel or X click
-    addEventListeners(["close-edit-form", "close-edit-modal"], "click", closeModal);
-
-  // Close modal when the Escape key is pressed, ensuring users can dismiss dialogs with the keyboard  
-  document.addEventListener("keydown", handleEscapeKey);
-
-  addEventListeners(["edit-task-form"], "submit", editTask);
+// Add Event Listeners
+addEditTaskEventListeners(taskId);
 
 }
-  
+
+// Function to get task by ID
+function getTaskById(taskId) {
+  const tasks = getTasksFromStorage();
+  return tasks.find((task) => task.id === Number(taskId)) || null;
+}
+
+// Function to get Task Status 
+function generateStatusOptions(task) {
+  const statusOptions = ["to-do", "in progress", "done"];
+
+  return statusOptions.map(
+      (status) => `
+        <option value="${status}" ${
+        task.status === status ? "selected" : ""
+      }>${status}</option>
+    `
+    )
+    .join("");
+}
+
+// Create edit form element 
+function createEditTaskFormContainer(task){
+ // define possible status
+ const statusSelectOptions = generateStatusOptions(task);
+
+ // Allow past dates if the task is overdue, otherwise set min date to today
+ const isOverdue = task.dueDate && task.dueDate < today;
+ const minDate = isOverdue ? `min=${task.dueDate}`
+   : `min="${today}"`;
+
+  // Create a form container div
+  container = document.createElement("div");
+  container.id = "edit-task-form-container";
+  container.classList.add("show");
+  container.innerHTML = `
+      <form id="edit-task-form" data-id="${task.id}" novalidate>
+      <div class="modal-header">
+              <button type="button" id="close-edit-form">&times;</button>
+              <h2>Edit Task</h2>
+          </div>
+          <div class="modal-body">
+              <div class="form-item">
+                  <label for="new-status">Status</label>
+                  <select id="new-status" name="status">
+                  ${statusSelectOptions}
+                  </select>
+              </div>
+              <div class="form-item">
+                  <label for="new-task-title">Title<small>*</small></label>
+                  <input type="text" id="new-task-title" placeholder="Task Title" value="${
+                    task.title
+                  }" aria-required="true">
+                  <span id="new-task-title-error" class="error-message" aria-live="assertive"></span>
+                  </div>
+                  <div class="form-item">
+                  <label for="new-task-description">Description</label>
+                  <textarea id="new-task-description">${
+                      task.description  ? task.description
+                      : ""
+                  }</textarea>
+                  </div>
+                  <div class="form-item">
+                  <label for="new-task-date">Due Date</label>
+                  <input type="date" id="new-task-date" value="${
+                      task.dueDate
+                  }" ${minDate}>
+                  <span id="new-task-date-error" class="error-message" aria-live="assertive"></span>
+              </div>
+          </div>
+          <div class="modal-footer">
+              <button type="button" id="close-edit-modal">Discard Changes</button>
+              <button type="submit" class="btn-primary">Save Changes</button>
+          </div>
+      </form>
+  `;
+
+  return container;
+}
+
 // Remove task from localStorage and replace it with modified version
 function editTask(event) {
     event.preventDefault();
@@ -585,6 +600,12 @@ function editTask(event) {
     }
   }
   
+// Function to add event listeners for edit form
+function addEditTaskEventListeners(taskId) {
+  addEventListeners(["close-edit-form", "close-edit-modal"], "click", closeModal);
+  document.addEventListener("keydown", handleEscapeKey);
+  addEventListeners(["edit-task-form"], "submit", editTask);
+}
 /* DELETE TASK */
 
 // Show confirmation modal for critical action
