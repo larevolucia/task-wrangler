@@ -336,16 +336,34 @@ function showTaskDetails(task) {
 
   lastFocusedEl = document.getElementById(`task-${task.id}`);
 
+  // Remove existing task details if any
+  if (taskDetailsContainer) {
+    taskDetailsContainer.remove();
+  }
+
+  taskDetailsContainer = createTaskDetailsContainer(task);
+  contentContainer.appendChild(taskDetailsContainer);
+
+  // Trap focus
+  document.addEventListener("keydown", (event) => trapFocus(event, `task-${task.id}-details-container`));
+
+  document.getElementById(`edit-task-${task.id}`).focus();
+
+  // Add Event Listeners
+  addTaskDetailsEventListeners(task);
+}
+
+function createTaskDetailsContainer(task) {
   const statusClass = getStatusClass(task.status);
   const isOverdue = task.dueDate && new Date(task.dueDate) < new Date(today);
 
   // Create modal container
-  taskDetailsContainer = document.createElement("div");
-  taskDetailsContainer.id = `task-${task.id}-details-container`;
-  taskDetailsContainer.classList.add("task-details-container");
-  taskDetailsContainer.classList.add("details-modal");
-  taskDetailsContainer.classList.add("show");
-  taskDetailsContainer.innerHTML = `
+  container = document.createElement("div");
+  container.id = `task-${task.id}-details-container`;
+  container.classList.add("task-details-container");
+  container.classList.add("details-modal");
+  container.classList.add("show");
+  container.innerHTML = `
         <div id="details-modal-content">
             <div class="modal-header">
                 <button id="close-details-modal">&times;</button>
@@ -389,13 +407,10 @@ function showTaskDetails(task) {
         </div>
     `;
 
-  contentContainer.appendChild(taskDetailsContainer);
+    return container;
+}
 
-  // Trap focus
-  document.addEventListener("keydown", (event) => trapFocus(event, `task-${task.id}-details-container`));
-
-  document.getElementById(`edit-task-${task.id}`).focus();
-
+function addTaskDetailsEventListeners(task) {
   // Add event listeners for edit button
   document
     .getElementById(`edit-task-${task.id}`)
