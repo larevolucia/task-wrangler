@@ -379,6 +379,11 @@ function createTaskElement(task, index) {
 
 // Function to add event listeners to a task element
 function addTaskEventListeners(taskElement, task) {
+  if (!task.id) {
+    console.error("Invalid task: Missing ID", task);
+    showToast("Something went wrong. Invalid Task.", "warning", 5000);
+    return;
+  }  
   taskElement.addEventListener("click", function (event) {
     if (
       !event.target.closest(".edit-task") &&
