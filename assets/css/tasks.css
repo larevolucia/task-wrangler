@@ -509,7 +509,6 @@ Code from: https://www.geeksforgeeks.org/how-to-make-a-toast-notification-in-htm
   /* Task Card  */
   
   .task-card {
-    font-size: large;
     grid-template-columns: 3fr 1fr 1fr;
   }
   
