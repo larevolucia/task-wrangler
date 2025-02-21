@@ -674,7 +674,7 @@ function createEditTaskFormContainer(task){
 }
 
 // Remove task from localStorage and replace it with modified version
-function editTask(event) {
+function editTask(event, taskId) {
     event.preventDefault();
   
      // Validate form before proceeding
@@ -682,7 +682,6 @@ function editTask(event) {
       return; // Stop form submission if validation fails
      }
   
-    const taskId = event.target.dataset.id;
     const title = document.getElementById("new-task-title").value;
     const dueDate = document.getElementById("new-task-date").value;
     const status = document.getElementById("new-status").value;
@@ -731,7 +730,12 @@ function editTask(event) {
 function addEditTaskEventListeners(taskId) {
   addEventListeners(["close-edit-form", "close-edit-modal"], "click", closeModal);
   document.addEventListener("keydown", handleEscapeKey);
-  addEventListeners(["edit-task-form"], "submit", editTask);
+  // Ensure the edit form has the correct taskId in dataset
+  const editForm = document.getElementById("edit-task-form");
+  if (editForm) {
+    editForm.dataset.id = taskId; // Store the task ID in the form
+  }
+  addEventListeners(["edit-task-form"], "submit", (event) => editTask(event, taskId));
 }
 
 /* DELETE TASK */
