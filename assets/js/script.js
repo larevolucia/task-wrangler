@@ -36,17 +36,32 @@ const today = getTodayDate();
 function showCreateTaskForm() {
   
   lastFocusedEl = createTaskButton;
+
   //  Check if form already exists
   if (createTaskFormContainer) {
     createTaskFormContainer.classList.toggle("show");
     return;
   }
+  
+  // Create the task form container
+  createTaskFormContainer = showTaskFormContainer();
+  contentContainer.appendChild(createTaskFormContainer);
 
-  // Create a form container div
-  createTaskFormContainer = document.createElement("div");
-  createTaskFormContainer.id = "create-task-form-container";
-  createTaskFormContainer.classList.add("show");
-  createTaskFormContainer.innerHTML = `
+  // Trap focus
+  document.addEventListener("keydown", (event) => trapFocus(event, "create-task-form-container"));
+
+  document.getElementById("task-title").focus();
+
+  // Add event listeners for form actions
+  addCreateTaskEventListeners();    
+}
+
+// Function to create form element
+function showTaskFormContainer(){
+  const container = document.createElement("div");
+  container.id = "create-task-form-container";
+  container.classList.add("show");
+  container.innerHTML = `
     <form id="create-task-form" novalidate>
     <div class="modal-header">
     <button type="button" id="close-create-form">&times;</button>
@@ -74,22 +89,7 @@ function showCreateTaskForm() {
     </div>
     </form>
     `;
-
-  // Add form at the top of content-container
-  contentContainer.appendChild(createTaskFormContainer);
-
-  // Trap focus
-  document.addEventListener("keydown", (event) => trapFocus(event, "create-task-form-container"));
-
-  document.getElementById("task-title").focus();
-
-  // Close modal if cancel or X is clicked 
-  addEventListeners(["close-create-form", "close-create-modal"], "click", closeModal);
-  // Close modal when the Escape key is pressed, ensuring users can dismiss dialogs with the keyboard  
-  document.addEventListener("keydown", handleEscapeKey);
-  
-  addEventListeners(["create-task-form"], "submit", createTask);
-    
+  return container;
 }
 
 // Save task to localStorage
@@ -132,6 +132,12 @@ function createTask(event) {
     // Handle storage errors  
     showToast("Failed to save task. Please try again.", "danger", 4000);
   }
+}
+
+function addCreateTaskEventListeners() {
+  addEventListeners(["close-create-form", "close-create-modal"], "click", closeModal);
+  document.addEventListener("keydown", handleEscapeKey);
+  addEventListeners(["create-task-form"], "submit", createTask);
 }
 
 /* LOAD TASK LIST */
