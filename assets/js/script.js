@@ -308,7 +308,7 @@ function addEditButtonListener(editButton, taskId) {
 // Function to add event listeners for the delete button
 function addDeleteButtonListener(deleteButton, task) {
   deleteButton.addEventListener("click", function () {
-    confirmDelete(
+    showConfirmDelete(
       "delete",
       "Delete confirmation",
       `Are you sure you want to delete <em><strong>${this.dataset.title}</strong></em>?`,
@@ -319,7 +319,7 @@ function addDeleteButtonListener(deleteButton, task) {
   deleteButton.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
       event.preventDefault();
-      confirmDelete(
+      showConfirmDelete(
         "delete",
         "Delete confirmation",
         `Are you sure you want to delete <em><strong>${this.dataset.title}</strong></em>?`,
@@ -424,7 +424,7 @@ function addTaskDetailsEventListeners(task) {
   document
     .getElementById(`delete-task-${task.id}`)
     .addEventListener("click", function () {
-      confirmDelete(
+      showConfirmDelete(
         "delete",
         "Delete confirmation",
         `Are you sure you want to delete <em><strong>${task.title}</strong></em>?`,
@@ -609,16 +609,30 @@ function addEditTaskEventListeners(taskId) {
 /* DELETE TASK */
 
 // Show confirmation modal for critical action
-function confirmDelete(action, title, message, taskId) {
+function showConfirmDelete(action, title, message, taskId) {
   closeModal();
 
   lastFocusedEl = document.getElementById(`delete-${taskId}`);
 
-  confirmationModal = document.createElement("div");
-  confirmationModal.id = `${action}-confirmation-modal`;
-  confirmationModal.classList.add("confirmation-modal");
-  confirmationModal.classList.add("show");
-  confirmationModal.innerHTML = `
+  confirmationModal = createConfirmationModal(action, title, message, taskId);
+  contentContainer.appendChild(confirmationModal);
+
+  // Trap focus
+  document.addEventListener("keydown", (event) => trapFocus(event, `${action}-confirmation-modal`));
+  document.getElementById("cancel-delete").focus();
+  
+  // Add Event Listeners
+  addConfirmDeleteEventListeners(taskId);
+
+}
+
+// Function to create confirmation modal element
+function createConfirmationModal(action, title, message) {
+  const container = document.createElement("div");
+  container.id = `${action}-confirmation-modal`;
+  container.classList.add("confirmation-modal");
+  container.classList.add("show");
+  container.innerHTML = `
     <div class="confirm-modal-content">
     <button type="button" id="close-confirm-modal">&times;</button>
     <div class="modal-header">
@@ -632,16 +646,15 @@ function confirmDelete(action, title, message, taskId) {
         <button id="confirm-delete" class="btn-danger">Yes, Delete</button>
     </div>
     </div>`;
-  contentContainer.appendChild(confirmationModal);
+  return container;
+}
 
-  // Trap focus
-  document.addEventListener("keydown", (event) => trapFocus(event, `${action}-confirmation-modal`));
-  document.getElementById("cancel-delete").focus();
-
-  // Close modal if "Cancel" or X is clicked
+// Function to add event listeners for delete confirmation modal
+function addConfirmDeleteEventListeners(taskId) {
+  // Close modal if "Cancel" or "X" is clicked
   addEventListeners(["cancel-delete", "close-confirm-modal"], "click", closeModal);
 
-  // Close modal when the Escape key is pressed, ensuring users can dismiss dialogs with the keyboard  
+  // Close modal when Escape key is pressed
   document.addEventListener("keydown", handleEscapeKey);
 
   // Confirm delete when "Yes" is clicked
@@ -652,7 +665,6 @@ function confirmDelete(action, title, message, taskId) {
       taskId = null; // Reset
     }
   });
-
 }
 
 // Delete task from localStorage
