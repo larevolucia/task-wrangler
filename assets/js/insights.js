@@ -50,58 +50,67 @@ window.addEventListener("resize", () => {
 function drawStatusChart() {
   let taskList = getTasksByStatus();
 
-  // Create the data table
-  const data = new google.visualization.DataTable();
-  data.addColumn("string", "Status");
-  data.addColumn("number", "Tasks");
-  data.addRows(taskList);
-
-  // Configure the pie chart to display task counts by status
-  const options = {
-    title: "Tasks by Status",
-    titleTextStyle: { fontSize: 16, bold: true },
-    legend: { position: "bottom" },
-    width: "100%",
-    height: 300,
-    colors: ["#FFC107", "#1565C0", "#4CAF50"],
-  };
+  try {
+    // Create the data table
+    const data = new google.visualization.DataTable();
+    data.addColumn("string", "Status");
+    data.addColumn("number", "Tasks");
+    data.addRows(taskList);
   
-  // Instantiate and draw our chart, passing in some options
-  const chart = new google.visualization.PieChart(
-    document.getElementById("chart-status")
-  );
-  chart.draw(data, options);
+    // Configure the pie chart to display task counts by status
+    const options = {
+      title: "Tasks by Status",
+      titleTextStyle: { fontSize: 16, bold: true },
+      legend: { position: "bottom" },
+      width: "100%",
+      height: 300,
+      colors: ["#FFC107", "#1565C0", "#4CAF50"],
+    };
+    
+    // Instantiate and draw our chart, passing in some options
+    const chart = new google.visualization.PieChart(
+      document.getElementById("chart-status")
+    );
+    chart.draw(data, options);
+  } catch (error) {
+    // Log the error details to console
+    console.error("Error creating data table in drawStatusChart:", error);
+  }
 }
 
 // Draw pie chart with overdue vs on time tasks
 function drawOverdueChart() {
   let taskList = getOverdueTasks();
   let totalOverdue =  taskList[1][1];
-  
-  // Create the data table.
-  const data = new google.visualization.DataTable();
-  data.addColumn("string", "Overdue");
-  data.addColumn("number", "Tasks");
-  data.addRows(taskList);
-  
-  let chartTitle = totalOverdue !== 0 ? "Overdue Tasks" : "All Tasks On Track";
-
-  // Configure the pie chart to display Overdue tasks
-  const options = {
-    title: chartTitle,
-    titleTextStyle: { fontSize: 16, bold: true },
-    width: "100%",
-    height: 300,
-    colors: ["#4CAF50","#D32F2F"],
-    legend: { position: "bottom" },
+  try {
+    // Create the data table.
+    const data = new google.visualization.DataTable();
+    data.addColumn("string", "Overdue");
+    data.addColumn("number", "Tasks");
+    data.addRows(taskList);
     
-  };
+    let chartTitle = totalOverdue !== 0 ? "Overdue Tasks" : "All Tasks On Track";
   
-  // Instantiate and draw our chart, passing in some options
-  const chart = new google.visualization.PieChart(
-    document.getElementById("chart-overdue")
-  );
-  chart.draw(data, options);
+    // Configure the pie chart to display Overdue tasks
+    const options = {
+      title: chartTitle,
+      titleTextStyle: { fontSize: 16, bold: true },
+      width: "100%",
+      height: 300,
+      colors: ["#4CAF50","#D32F2F"],
+      legend: { position: "bottom" },
+      
+    };
+    
+    // Instantiate and draw our chart, passing in some options
+    const chart = new google.visualization.PieChart(
+      document.getElementById("chart-overdue")
+    );
+    chart.draw(data, options);
+  } catch (error) {
+    // Log the error details to console
+    console.error("Error creating data table in drawStatusChart:", error);
+  }
 }
 
 // Get the count of tasks for each status category (to-do, in-progress, done)
