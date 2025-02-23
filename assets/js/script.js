@@ -290,12 +290,14 @@ function loadTasks() {
   }
 
   if (tasks.length === 0) {
+    taskList.classList.add("flex-tasks-container");
     handleEmptyTaskList(taskList);
     return;
+  } else {
+    taskList.classList.remove("flex-tasks-container");
   }
 
   taskList.setAttribute("role", "list"); // Add role="list" if there are items
-  taskList.classList.remove("flex-tasks-container");
   renderTaskList(tasks, taskList)
 }
 
