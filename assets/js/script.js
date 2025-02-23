@@ -1,6 +1,6 @@
 /* jshint esversion: 6 */
-/*  TaskWrangler is a simple and motivational To-Do app built using HTML, CSS, and JavaScript. 
-    script.js stores core CRUD (create, read, update, delete) functionality  */
+/* global showToast */
+
 
 document.addEventListener("DOMContentLoaded", () => {
   loadTasks();
@@ -74,85 +74,6 @@ let lastFocusedEl = document.getElementById("home-navigation");
 
 // Get today's date in YYYY-MM-DD format for task due date validation
 const today = getTodayDate();
-
-/* NOTIFICATION */
-
-// Toast icons
-let toastIcon = {
-  success: '<i class="fa-solid fa-check"></i>',
-  danger: '<i class="fa-solid fa-xmark"></i>',
-  info: '<i class="fa-solid fa-info"></i>',
-  warning: '<i class="fa-solid fa-triangle-exclamation"></i>',
-};
-
-// Display Toast notification according to context given in parameters
-function showToast(message, toastType, duration = 5000) {
-  // Remove existing toast if any
-  let existingToast = document.body.querySelector(".toast");
-  if (existingToast) {
-    existingToast.remove();
-  }
-  const toastContainer = createToastContainer(message, toastType);
-  
-  // Set animation duration for progress bar
-  toastContainer.querySelector(".toast-progress").style.animationDuration = `${
-    duration / 1000
-  }s`;
-  
-  // Append toast to body
-  document.body.appendChild(toastContainer);
-  toastContainer.focus();
-  
-  // Close toast on button click
-  document.getElementById("toast-close-icon").addEventListener("click", () => {
-    closeToast(toastContainer);
-  });
-  
-  // Close toast when Escape key is pressed
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closeToast(toastContainer);
-    }
-  });
-  
-  setTimeout(() => closeToast(toastContainer), duration);
-}
-
-// Fucntion to create toast container
-function createToastContainer(message, toastType){
-  
-  let container = document.createElement("div");
-  container.setAttribute("tabindex", "0");
-  container.setAttribute("role", "alert");
-  container.setAttribute("aria-live", "polite");
-  container.classList.add("toast", `toast-${toastType}`);
-  container.innerHTML = `
-  <div class="toast-content-wrapper">
-  <div class="toast-icon">${toastIcon[toastType]}</div>
-  <div class="toast-message">${message}</div>
-  <button class="toast-close" id="toast-close-icon" aria-label="Close Notification">&times;</button>
-  <div class="toast-progress"></div>
-    </div>`;
-    
-    return container;
-  }
-
-  // Function to close the toast and restore focus
-function closeToast(toastContainer) {
-    if (toastContainer && document.body.contains(toastContainer)) {
-      toastContainer.remove();
-    }
-     // If the create task form is still open, do nothing 
-    if (document.getElementById("create-task-form-container") || document.getElementById("edit-task-form-container")) {
-      return;
-    }
-    // Restore focus to the element that was focused before the toast appeared
-    if (lastFocusedEl && document.contains(lastFocusedEl)) {
-      lastFocusedEl.focus();
-  } else {
-    taskListContainer.focus(); // Fallback focus if previous element is gone
-  }
-}
 
 /* CREATE TASKS */
 
@@ -248,13 +169,13 @@ function createTask(event) {
   try {
     // Attempt to save the task list to localStorage
     localStorage.setItem("tasks", JSON.stringify(tasks));
-    showToast("Task added successfully!", "success", 4000); // Feedback to user
+    showToast("Task added successfully!", "success", 4000, lastFocusedEl, createTaskButton); // Feedback to user
     closeModal();
     // Immediately update the task list
     loadTasks();
   } catch (error) {
     // Handle storage errors
-    showToast("Failed to save task. Please try again.", "danger", 4000);
+    showToast("Failed to save task. Please try again.", "danger", 4000, lastFocusedEl, createTaskButton);
   }
 }
 
@@ -295,7 +216,7 @@ function loadTasks() {
     tasks = getTasksFromStorage();
   } catch (error) {
     // Handle storage errors
-    showToast("Failed to load tasks. Resetting task list.", "danger", 4000);
+    showToast("Failed to load tasks. Resetting task list.", "danger", 4000, lastFocusedEl, taskListContainer);
     localStorage.removeItem("tasks");
   }
 
@@ -390,7 +311,7 @@ function createTaskElement(task, index) {
 function addTaskEventListeners(taskElement, task) {
   if (!task.id) {
     console.error("Invalid task: Missing ID", task);
-    showToast("Something went wrong. Invalid Task.", "warning", 5000);
+    showToast("Something went wrong. Invalid Task.", "warning", 4000, lastFocusedEl, taskListContainer);
     return;
   }
   taskElement.addEventListener("click", function (event) {
@@ -584,7 +505,7 @@ function showEditTaskForm(taskId) {
   // Retrieve task details
   const currentTask = getTaskById(taskId);
   if (!currentTask) {
-    showToast("Task not found!", "danger", 4000);
+    showToast("Task not found!", "danger", 4000, lastFocusedEl, taskListContainer);
     return;
   }
 
@@ -715,10 +636,10 @@ function editTask(event, taskId) {
       tasks[taskIndex].description = description;
 
       localStorage.setItem("tasks", JSON.stringify(tasks));
-      showToast("Task edited successfully!", "success", 4000);
+      showToast("Task edited successfully!", "success", 4000, lastFocusedEl, taskListContainer);
       loadTasks();
     } else {
-      showToast("No changes made.", "info", 4000);
+      showToast("No changes made.", "info", 4000, lastFocusedEl, taskListContainer);
     }
 
     closeModal();
@@ -727,7 +648,7 @@ function editTask(event, taskId) {
     loadTasks();
   } catch (error) {
     // Handle storage errors
-    showToast("Failed to edit task. Please try again.", "danger", 4000);
+    showToast("Failed to edit task. Please try again.", "danger", 4000, lastFocusedEl, taskListContainer);
   }
 }
 
@@ -819,7 +740,7 @@ function addConfirmDeleteEventListeners(taskId) {
 function deleteTask(taskId) {
   // alert for taskID null or undefined
   if (!taskId) {
-    showToast("Error: Invalid task ID.", "danger", 5000);
+    showToast("Error: Invalid task ID.", "danger", 4000, lastFocusedEl, taskListContainer);
     return;
   }
   try {
@@ -831,13 +752,14 @@ function deleteTask(taskId) {
     // save updated task lists to localStorage
     localStorage.setItem("tasks", JSON.stringify(tasks));
     // Feedback to user
-    showToast("Task deleted successfully!", "success", 4000);
+    showToast("Task deleted successfully!", "success", 4000, lastFocusedEl, taskListContainer);
     // Reset focus
-    lastFocusedEl = taskListContainer;
+    // COMMENTED CODE!
+    // lastFocusedEl = taskListContainer;
     // Refresh task list on page
     loadTasks();
   } catch (error) {
-    showToast("Failed to delete task. Please try again.", "danger", 4000);
+    showToast("Failed to delete task. Please try again.", "danger", 4000, lastFocusedEl, taskListContainer);
   }
 }
 
@@ -845,6 +767,7 @@ function deleteTask(taskId) {
 
 // Validate form inputs for task title and due date
 function isFormValid(titleId, dateId) {
+  const titleInput = document.getElementById(titleId);
   const title = document.getElementById(titleId).value.trim();
   const dueDateInput = document.getElementById(dateId);
   const dueDate = dueDateInput.value;
@@ -852,14 +775,14 @@ function isFormValid(titleId, dateId) {
 
   // Ensure title is provided
   if (!title) {
-    showToast("Title is a required field.", "warning", 4000);
+    showToast("Title is a required field.", "warning", 4000, lastFocusedEl, titleInput);
     markField(titleId, "This field is required.");
     return false;
   }
 
   // Ensure dueDate is not before configured earliest date
   if (new Date(dueDate) < new Date(minDate)) {
-    showToast("The due date cannot be in the past.", "warning", 4000);
+    showToast("The due date cannot be in the past.", "warning", 4000, lastFocusedEl, dueDateInput);
     markField(dateId, `Date cannot be before ${formatDate(minDate)}`);
     return false;
   }
