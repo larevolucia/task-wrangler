@@ -278,7 +278,6 @@ function loadTasks() {
   
   taskList.innerHTML = "";  // Clear the existing tasks
 
-
   let tasks = [];
 
   try {
@@ -296,7 +295,7 @@ function loadTasks() {
   }
 
   taskList.setAttribute("role", "list"); // Add role="list" if there are items
-
+  taskList.classList.remove("flex-tasks-container");
   renderTaskList(tasks, taskList)
 }
 

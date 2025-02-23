@@ -17,12 +17,12 @@ TASKS HEADING
 TASKS CARD
 ---------------------------------- */
 
-#tasks-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    min-height: 60vh;
+.flex-tasks-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 60vh;
 }
 
 .task-card {
@@ -79,8 +79,9 @@ TASKS CARD
 
 .delete-task{
   background-color: var(--danger-color);
-  color: var(--background-color)
+  color: var(--background-color);
 }
+
 
 /* Specific focus states for edit & delete buttons */
 .edit-task:focus-visible {
