@@ -20,11 +20,11 @@ TASKS CARD
 #tasks-container{
   display: flex;
   justify-content: center;
+  flex-direction: column;
 }
 
 .flex-tasks-container {
   align-items: center;
-  flex-direction: column;
   min-height: 60vh;
 }
 
