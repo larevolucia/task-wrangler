@@ -80,7 +80,6 @@ function drawStatusChart() {
   } catch (error) {
     // Log the error details to console
     console.error("Error creating data table in drawStatusChart:", error);
-    showToast("Failed to render charts.", "danger", 4000, lastFocusedEl, insightsContainer);
   }
 }
 
@@ -116,7 +115,6 @@ function drawOverdueChart() {
   } catch (error) {
     // Log the error details to console
     console.error("Error creating data table in drawStatusChart:", error);
-    showToast("Failed to render charts.", "danger", 4000, lastFocusedEl, insightsContainer);
   }
 }
 
