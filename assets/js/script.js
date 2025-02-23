@@ -91,53 +91,59 @@ function showToast(message, toastType, duration = 5000) {
   if (existingToast) {
     existingToast.remove();
   }
-
-  // Create toast container
-  let toastContainer = document.createElement("div");
-  toastContainer.setAttribute("tabindex", "0");
-  toastContainer.setAttribute("role", "alert");
-  toastContainer.setAttribute("aria-live", "polite");
-  toastContainer.classList.add("toast", `toast-${toastType}`);
-  toastContainer.innerHTML = `
-    <div class="toast-content-wrapper">
-      <div class="toast-icon">${toastIcon[toastType]}</div>
-      <div class="toast-message">${message}</div>
-      <button class="toast-close" id="toast-close-icon" aria-label="Close Notification">&times;</button>
-      <div class="toast-progress"></div>
-    </div>`;
-
+  const toastContainer = createToastContainer(message, toastType);
+  
   // Set animation duration for progress bar
   toastContainer.querySelector(".toast-progress").style.animationDuration = `${
     duration / 1000
   }s`;
-
+  
   // Append toast to body
   document.body.appendChild(toastContainer);
   toastContainer.focus();
-
+  
   // Close toast on button click
   document.getElementById("toast-close-icon").addEventListener("click", () => {
     closeToast(toastContainer);
   });
-
+  
   // Close toast when Escape key is pressed
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       closeToast(toastContainer);
     }
   });
-
+  
   setTimeout(() => closeToast(toastContainer), duration);
 }
 
-// Function to close the toast and restore focus
-function closeToast(toastContainer) {
-  if (toastContainer && document.body.contains(toastContainer)) {
-    toastContainer.remove();
+// Fucntion to create toast container
+function createToastContainer(message, toastType){
+  
+  let container = document.createElement("div");
+  container.setAttribute("tabindex", "0");
+  container.setAttribute("role", "alert");
+  container.setAttribute("aria-live", "polite");
+  container.classList.add("toast", `toast-${toastType}`);
+  container.innerHTML = `
+  <div class="toast-content-wrapper">
+  <div class="toast-icon">${toastIcon[toastType]}</div>
+  <div class="toast-message">${message}</div>
+  <button class="toast-close" id="toast-close-icon" aria-label="Close Notification">&times;</button>
+  <div class="toast-progress"></div>
+    </div>`;
+    
+    return container;
   }
-  // Restore focus to the element that was focused before the toast appeared
-  if (lastFocusedEl && document.contains(lastFocusedEl)) {
-    lastFocusedEl.focus();
+
+  // Function to close the toast and restore focus
+  function closeToast(toastContainer) {
+    if (toastContainer && document.body.contains(toastContainer)) {
+      toastContainer.remove();
+    }
+    // Restore focus to the element that was focused before the toast appeared
+    if (lastFocusedEl && document.contains(lastFocusedEl)) {
+      lastFocusedEl.focus();
   } else {
     contentContainer.focus(); // Fallback focus if previous element is gone
   }
