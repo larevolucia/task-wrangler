@@ -753,9 +753,6 @@ function deleteTask(taskId) {
     localStorage.setItem("tasks", JSON.stringify(tasks));
     // Feedback to user
     showToast("Task deleted successfully!", "success", 4000, lastFocusedEl, taskListContainer);
-    // Reset focus
-    // COMMENTED CODE!
-    // lastFocusedEl = taskListContainer;
     // Refresh task list on page
     loadTasks();
   } catch (error) {

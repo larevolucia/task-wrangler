@@ -1,6 +1,12 @@
 /* jshint esversion: 6 */
 /* global google */
+/* global showToast */
 
+// Global Variable to manage notifications focus
+const insightsContainer = document.getElementById("insights-content-area");
+
+// Tracks the last focused element before a modal is opened, ensuring proper keyboard navigation
+let lastFocusedEl = document.getElementById("home-navigation");
 
 // Load the Visualization API and the corechart package
 google.charts.load("current", { packages: ["corechart"] });
@@ -24,7 +30,6 @@ function handleEmptyInsights(container){
 // Trigger specific functions to draw charts if data is available or displays empty state message
 function drawCharts() {
  const tasks = JSON.parse(localStorage.getItem("tasks"));
- const insightsContainer = document.getElementById("insights-content-area");
  let emptyTaskListMessage = document.getElementById("empty-state-insights");
 
  if(!tasks || tasks.length === 0) {
@@ -75,6 +80,7 @@ function drawStatusChart() {
   } catch (error) {
     // Log the error details to console
     console.error("Error creating data table in drawStatusChart:", error);
+    showToast("Failed to render charts.", "danger", 4000, lastFocusedEl, insightsContainer);
   }
 }
 
@@ -110,6 +116,7 @@ function drawOverdueChart() {
   } catch (error) {
     // Log the error details to console
     console.error("Error creating data table in drawStatusChart:", error);
+    showToast("Failed to render charts.", "danger", 4000, lastFocusedEl, insightsContainer);
   }
 }
 
