@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   loadTasks();
 });
 
-// Global variable saved to return focus 
+// Global variable saved to return focus
 const contentContainer = document.getElementById("content-container");
 
 // Add event listener to the create-task button
@@ -16,11 +16,11 @@ if (createTaskButton) {
   createTaskButton.addEventListener("click", showCreateTaskForm);
 }
 
-// Global variables to manage modal states and prevent multiple instances  
-let createTaskContainer = null; // Stores the task creation form instance  
-let editTaskContainer = null;   // Stores the edit task form instance  
-let taskDetailsContainer = null;    // Stores the task details modal instance  
-let confirmationModal = null;       // Stores the confirmation modal instance  
+// Global variables to manage modal states and prevent multiple instances
+let createTaskContainer = null; // Stores the task creation form instance
+let editTaskContainer = null; // Stores the edit task form instance
+let taskDetailsContainer = null; // Stores the task details modal instance
+let confirmationModal = null; // Stores the confirmation modal instance
 
 /* UTILITY FUNCTIONS */
 
@@ -86,8 +86,6 @@ let toastIcon = {
 
 // Display Toast notification according to context given in parameters
 function showToast(message, toastType, duration = 5000) {
-
-
   // Remove existing toast if any
   let existingToast = document.body.querySelector(".toast");
   if (existingToast) {
@@ -109,7 +107,9 @@ function showToast(message, toastType, duration = 5000) {
     </div>`;
 
   // Set animation duration for progress bar
-  toastContainer.querySelector(".toast-progress").style.animationDuration = `${duration / 1000}s`;
+  toastContainer.querySelector(".toast-progress").style.animationDuration = `${
+    duration / 1000
+  }s`;
 
   // Append toast to body
   document.body.appendChild(toastContainer);
@@ -132,7 +132,6 @@ function showToast(message, toastType, duration = 5000) {
 
 // Function to close the toast and restore focus
 function closeToast(toastContainer) {
-
   if (toastContainer && document.body.contains(toastContainer)) {
     toastContainer.remove();
   }
@@ -144,13 +143,10 @@ function closeToast(toastContainer) {
   }
 }
 
-
-
 /* CREATE TASKS */
 
 // Create form for task creation
 function showCreateTaskForm() {
-  
   lastFocusedEl = createTaskButton;
 
   //  Check if form already exists
@@ -158,22 +154,24 @@ function showCreateTaskForm() {
     createTaskContainer.classList.toggle("show");
     return;
   }
-  
+
   // Create the task form container
   createTaskContainer = createTaskFormContainer();
   contentContainer.appendChild(createTaskContainer);
 
   // Trap focus
-  document.addEventListener("keydown", (event) => trapFocus(event, "create-task-form-container"));
+  document.addEventListener("keydown", (event) =>
+    trapFocus(event, "create-task-form-container")
+  );
 
   document.getElementById("task-title").focus();
 
   // Add event listeners for form actions
-  addCreateTaskEventListeners();    
+  addCreateTaskEventListeners();
 }
 
 // Function to create form element
-function createTaskFormContainer(){
+function createTaskFormContainer() {
   const container = document.createElement("div");
   container.id = "create-task-form-container";
   container.classList.add("show");
@@ -216,13 +214,12 @@ function createTask(event) {
   if (!isFormValid("task-title", "task-date")) {
     return; // Stop form submission if validation fails
   }
-    
+
   const title = document.getElementById("task-title").value;
   const dueDate = document.getElementById("task-date").value;
   const description = document.getElementById("task-description").value;
 
-
-  // Load existing tasks from localStorage; default to an empty array if none exist  
+  // Load existing tasks from localStorage; default to an empty array if none exist
   let tasks = getTasksFromStorage();
 
   // Create new task object
@@ -238,20 +235,24 @@ function createTask(event) {
   tasks.push(task);
 
   try {
-    // Attempt to save the task list to localStorage 
+    // Attempt to save the task list to localStorage
     localStorage.setItem("tasks", JSON.stringify(tasks));
     showToast("Task added successfully!", "success", 4000); // Feedback to user
     closeModal();
     // Immediately update the task list
     loadTasks();
   } catch (error) {
-    // Handle storage errors  
+    // Handle storage errors
     showToast("Failed to save task. Please try again.", "danger", 4000);
   }
 }
 
 function addCreateTaskEventListeners() {
-  addEventListeners(["close-create-form", "close-create-modal"], "click", closeModal);
+  addEventListeners(
+    ["close-create-form", "close-create-modal"],
+    "click",
+    closeModal
+  );
   document.addEventListener("keydown", handleEscapeKey);
   addEventListeners(["create-task-form"], "submit", createTask);
 }
@@ -259,32 +260,31 @@ function addCreateTaskEventListeners() {
 /* LOAD TASK LIST */
 
 // Handle No Task Scenario
-function handleEmptyTaskList(container){
+function handleEmptyTaskList(container) {
   container.innerHTML = `<p id="no-tasks-message" class="empty-message">No tasks yet! <span class="custom-anchor" id="create-task-trigger">Create a task</span> to get started.</p>`;
-    container.removeAttribute("role"); // Remove role="list" if no tasks exist
-    // Add event listener to the empty state message
-    addEventListeners(["create-task-trigger"], "click", showCreateTaskForm);
-
+  container.removeAttribute("role"); // Remove role="list" if no tasks exist
+  // Add event listener to the empty state message
+  addEventListeners(["create-task-trigger"], "click", showCreateTaskForm);
 }
 
 // Retrieve task list from localStorage
 function loadTasks() {
   const taskList = document.getElementById("tasks-container");
-  
+
   if (!taskList) {
     console.warn("loadTasks() called but #tasks-container does not exist.");
     return;
   }
-  
-  taskList.innerHTML = "";  // Clear the existing tasks
+
+  taskList.innerHTML = ""; // Clear the existing tasks
 
   let tasks = [];
 
   try {
     // Retrieve tasks from localStorage
-   tasks = getTasksFromStorage();
+    tasks = getTasksFromStorage();
   } catch (error) {
-    // Handle storage errors 
+    // Handle storage errors
     showToast("Failed to load tasks. Resetting task list.", "danger", 4000);
     localStorage.removeItem("tasks");
   }
@@ -298,7 +298,7 @@ function loadTasks() {
   }
 
   taskList.setAttribute("role", "list"); // Add role="list" if there are items
-  renderTaskList(tasks, taskList)
+  renderTaskList(tasks, taskList);
 }
 
 // Function to render tasks
@@ -336,9 +336,8 @@ function createTaskElement(task, index) {
         </span>
       </div>
       ${
-        task.dueDate
-          ? task.status !== "done" && isOverdue
-            ? `<div class="task-due-date date-box">
+        task.dueDate ? task.status !== "done" && isOverdue  ? 
+        `<div class="task-due-date date-box">
           <i class="fa-solid fa-triangle-exclamation"></i> 
           <i class="fa-solid fa-calendar-days"></i>
           <span class="task-due-date-text">${newDate}</span>
@@ -352,8 +351,7 @@ function createTaskElement(task, index) {
       <div class="title-box">
         <span class="task-title" id="${taskTitleId}">${task.title}</span>
         ${
-          task.description
-            ? `<span class="task-description-icon"><i class="fa-solid fa-align-left"></i></span>`
+          task.description ? `<span class="task-description-icon"><i class="fa-solid fa-align-left"></i></span>`
             : ""
         }
       </div>
@@ -384,7 +382,7 @@ function addTaskEventListeners(taskElement, task) {
     console.error("Invalid task: Missing ID", task);
     showToast("Something went wrong. Invalid Task.", "warning", 5000);
     return;
-  }  
+  }
   taskElement.addEventListener("click", function (event) {
     if (
       !event.target.closest(".edit-task") &&
@@ -461,22 +459,23 @@ function addDeleteButtonListener(deleteButton, task) {
 
 // Retrieve details of specific task from localStorage
 function showTaskDetails(task) {
-  
   lastFocusedEl = document.getElementById(`task-${task.id}`);
-  
+
   // Remove existing task details if any
   if (taskDetailsContainer) {
     taskDetailsContainer.remove();
   }
-  
+
   taskDetailsContainer = createTaskDetailsContainer(task);
   contentContainer.appendChild(taskDetailsContainer);
-  
+
   // Trap focus
-  document.addEventListener("keydown", (event) => trapFocus(event, `task-${task.id}-details-container`));
-  
+  document.addEventListener("keydown", (event) =>
+    trapFocus(event, `task-${task.id}-details-container`)
+  );
+
   document.getElementById(`edit-task-${task.id}`).focus();
-  
+
   // Add Event Listeners
   addTaskDetailsEventListeners(task);
 }
@@ -485,7 +484,7 @@ function showTaskDetails(task) {
 function createTaskDetailsContainer(task) {
   const statusClass = getStatusClass(task.status);
   const isOverdue = task.dueDate && new Date(task.dueDate) < new Date(today);
-  
+
   // Create modal container
   const container = document.createElement("div");
   container.id = `task-${task.id}-details-container`;
@@ -504,42 +503,39 @@ function createTaskDetailsContainer(task) {
   }</span></div>
   ${
     task.description ? `<div class="details-item"><p><strong>Description</strong></p><p>${task.description}</p></div>`
-    : ""
+      : ""
   }
   ${
-    task.dueDate ? task.status !== "done" && isOverdue  ? `<div class="details-item">
-    <p><i class="fa-solid fa-triangle-exclamation"></i> <strong>Due Date</strong></p> 
-    <p>${formatDate(
-      task.dueDate
-      )}</p>
-      </div>`
-      : `<div class="details-item"><p><strong>Due Date</strong></p> <p>${formatDate(
-        task.dueDate
-        )}</p></div>`
-        : ""
-      }    
+    task.dueDate ? task.status !== "done" && isOverdue  ? 
+    `<div class="details-item">
+       <p><i class="fa-solid fa-triangle-exclamation"></i> <strong>Due Date</strong></p> 
+       <p>${formatDate(task.dueDate)}</p>
+    </div>`
+        : `<div class="details-item"><p><strong>Due Date</strong></p> <p>${formatDate(
+            task.dueDate
+          )}</p></div>`
+      : ""
+  }    
       </div>
       <div class="modal-footer">
       <button class="btn-primary" id="edit-task-${
         task.id
       }" title="Edit Task" data-id="${
-        task.id
-      }" aria-label="Edit "><i class="fa-solid fa-pen" aria-hidden="true"></i> Edit Task</button>
+    task.id
+  }" aria-label="Edit "><i class="fa-solid fa-pen" aria-hidden="true"></i> Edit Task</button>
       <button class="btn-danger" id="delete-task-${
         task.id
-      }" title="Delete Task" data-id="${
-        task.id
-      }" aria-label="Delete ${
-        task.title
-      }"><i class="fa-solid fa-trash" aria-hidden="true"></i> Delete Task</button>
+      }" title="Delete Task" data-id="${task.id}" aria-label="Delete ${
+    task.title
+  }"><i class="fa-solid fa-trash" aria-hidden="true"></i> Delete Task</button>
       </div>
       </div>
       `;
-      
-      return container;
-    }
-    
-// Function to add event listeners 
+
+  return container;
+}
+
+// Function to add event listeners
 function addTaskDetailsEventListeners(task) {
   // Add event listeners for edit button
   document
@@ -563,7 +559,7 @@ function addTaskDetailsEventListeners(task) {
   document
     .getElementById("close-details-modal")
     .addEventListener("click", closeModal);
-  // Close modal when the Escape key is pressed, ensuring users can dismiss dialogs with the keyboard  
+  // Close modal when the Escape key is pressed, ensuring users can dismiss dialogs with the keyboard
   document.addEventListener("keydown", handleEscapeKey);
 }
 
@@ -578,8 +574,8 @@ function showEditTaskForm(taskId) {
   // Retrieve task details
   const currentTask = getTaskById(taskId);
   if (!currentTask) {
-   showToast("Task not found!", "danger", 4000);
-   return;
+    showToast("Task not found!", "danger", 4000);
+    return;
   }
 
   // Create form container
@@ -587,12 +583,13 @@ function showEditTaskForm(taskId) {
   contentContainer.appendChild(editTaskContainer);
 
   // Trap focus
-  document.addEventListener("keydown", (event) => trapFocus(event, "edit-task-form-container"));
+  document.addEventListener("keydown", (event) =>
+    trapFocus(event, "edit-task-form-container")
+  );
   document.getElementById("new-status").focus();
 
-// Add Event Listeners
-addEditTaskEventListeners(taskId);
-
+  // Add Event Listeners
+  addEditTaskEventListeners(taskId);
 }
 
 // Function to get task by ID
@@ -601,11 +598,12 @@ function getTaskById(taskId) {
   return tasks.find((task) => task.id === Number(taskId)) || null;
 }
 
-// Function to get Task Status 
+// Function to get Task Status
 function generateStatusOptions(task) {
   const statusOptions = ["to-do", "in progress", "done"];
 
-  return statusOptions.map(
+  return statusOptions
+    .map(
       (status) => `
         <option value="${status}" ${
         task.status === status ? "selected" : ""
@@ -615,15 +613,14 @@ function generateStatusOptions(task) {
     .join("");
 }
 
-// Create edit form element 
-function createEditTaskFormContainer(task){
- // define possible status
- const statusSelectOptions = generateStatusOptions(task);
+// Create edit form element
+function createEditTaskFormContainer(task) {
+  // define possible status
+  const statusSelectOptions = generateStatusOptions(task);
 
- // Allow past dates if the task is overdue, otherwise set min date to today
- const isOverdue = task.dueDate && task.dueDate < today;
- const minDate = isOverdue ? `min=${task.dueDate}`
-   : `min="${today}"`;
+  // Allow past dates if the task is overdue, otherwise set min date to today
+  const isOverdue = task.dueDate && task.dueDate < today;
+  const minDate = isOverdue ? `min=${task.dueDate}` : `min="${today}"`;
 
   // Create a form container div
   let container = document.createElement("div");
@@ -652,14 +649,13 @@ function createEditTaskFormContainer(task){
                   <div class="form-item">
                   <label for="new-task-description">Description</label>
                   <textarea id="new-task-description">${
-                      task.description  ? task.description
-                      : ""
+                    task.description ? task.description : ""
                   }</textarea>
                   </div>
                   <div class="form-item">
                   <label for="new-task-date">Due Date</label>
                   <input type="date" id="new-task-date" value="${
-                      task.dueDate
+                    task.dueDate
                   }" ${minDate}>
                   <span id="new-task-date-error" class="error-message" aria-live="assertive"></span>
               </div>
@@ -676,67 +672,71 @@ function createEditTaskFormContainer(task){
 
 // Remove task from localStorage and replace it with modified version
 function editTask(event, taskId) {
-    event.preventDefault();
-  
-     // Validate form before proceeding
-     if (!isFormValid("new-task-title", "new-task-date")) {
-      return; // Stop form submission if validation fails
-     }
-  
-    const title = document.getElementById("new-task-title").value;
-    const dueDate = document.getElementById("new-task-date").value;
-    const status = document.getElementById("new-status").value;
-    const description = document.getElementById("new-task-description").value;
-  
-    try {
-      // retrieve stored tasks
-      let tasks = getTasksFromStorage();
-  
-      // Find the index of the task to edit
-      const taskIndex = tasks.findIndex((task) => task.id === Number(taskId));
-  
-      // Save updated tasks array back to localStorage if changes are made
-      if (
-        tasks[taskIndex].title !== title ||
-        tasks[taskIndex].dueDate !== dueDate ||
-        tasks[taskIndex].status !== status ||
-        tasks[taskIndex].description !== description
-      ) {
+  event.preventDefault();
 
-        // Update task properties
-        tasks[taskIndex].title = title;
-        tasks[taskIndex].dueDate = dueDate;
-        tasks[taskIndex].status = status;
-        tasks[taskIndex].description = description;
-
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-        showToast("Task edited successfully!", "success", 4000);
-        loadTasks();
-  
-      } else {
-        showToast("No changes made.", "info", 4000);
-      }
-  
-      closeModal();
-  
-      // Refresh task list on page
-      loadTasks();
-    } catch (error) {
-      // Handle storage errors 
-      showToast("Failed to edit task. Please try again.", "danger", 4000);
-    }
+  // Validate form before proceeding
+  if (!isFormValid("new-task-title", "new-task-date")) {
+    return; // Stop form submission if validation fails
   }
-  
+
+  const title = document.getElementById("new-task-title").value;
+  const dueDate = document.getElementById("new-task-date").value;
+  const status = document.getElementById("new-status").value;
+  const description = document.getElementById("new-task-description").value;
+
+  try {
+    // retrieve stored tasks
+    let tasks = getTasksFromStorage();
+
+    // Find the index of the task to edit
+    const taskIndex = tasks.findIndex((task) => task.id === Number(taskId));
+
+    // Save updated tasks array back to localStorage if changes are made
+    if (
+      tasks[taskIndex].title !== title ||
+      tasks[taskIndex].dueDate !== dueDate ||
+      tasks[taskIndex].status !== status ||
+      tasks[taskIndex].description !== description
+    ) {
+      // Update task properties
+      tasks[taskIndex].title = title;
+      tasks[taskIndex].dueDate = dueDate;
+      tasks[taskIndex].status = status;
+      tasks[taskIndex].description = description;
+
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      showToast("Task edited successfully!", "success", 4000);
+      loadTasks();
+    } else {
+      showToast("No changes made.", "info", 4000);
+    }
+
+    closeModal();
+
+    // Refresh task list on page
+    loadTasks();
+  } catch (error) {
+    // Handle storage errors
+    showToast("Failed to edit task. Please try again.", "danger", 4000);
+  }
+}
+
 // Function to add event listeners for edit form
 function addEditTaskEventListeners(taskId) {
-  addEventListeners(["close-edit-form", "close-edit-modal"], "click", closeModal);
+  addEventListeners(
+    ["close-edit-form", "close-edit-modal"],
+    "click",
+    closeModal
+  );
   document.addEventListener("keydown", handleEscapeKey);
   // Ensure the edit form has the correct taskId in dataset
   const editForm = document.getElementById("edit-task-form");
   if (editForm) {
     editForm.dataset.id = taskId; // Store the task ID in the form
   }
-  addEventListeners(["edit-task-form"], "submit", (event) => editTask(event, taskId));
+  addEventListeners(["edit-task-form"], "submit", (event) =>
+    editTask(event, taskId)
+  );
 }
 
 /* DELETE TASK */
@@ -751,12 +751,13 @@ function showConfirmDelete(action, title, message, taskId) {
   contentContainer.appendChild(confirmationModal);
 
   // Trap focus
-  document.addEventListener("keydown", (event) => trapFocus(event, `${action}-confirmation-modal`));
+  document.addEventListener("keydown", (event) =>
+    trapFocus(event, `${action}-confirmation-modal`)
+  );
   document.getElementById("cancel-delete").focus();
-  
+
   // Add Event Listeners
   addConfirmDeleteEventListeners(taskId);
-
 }
 
 // Function to create confirmation modal element
@@ -785,7 +786,11 @@ function createConfirmationModal(action, title, message) {
 // Function to add event listeners for delete confirmation modal
 function addConfirmDeleteEventListeners(taskId) {
   // Close modal if "Cancel" or "X" is clicked
-  addEventListeners(["cancel-delete", "close-confirm-modal"], "click", closeModal);
+  addEventListeners(
+    ["cancel-delete", "close-confirm-modal"],
+    "click",
+    closeModal
+  );
 
   // Close modal when Escape key is pressed
   document.addEventListener("keydown", handleEscapeKey);
@@ -804,7 +809,7 @@ function addConfirmDeleteEventListeners(taskId) {
 function deleteTask(taskId) {
   // alert for taskID null or undefined
   if (!taskId) {
-    showToast("Error: Invalid task ID.","danger",5000);
+    showToast("Error: Invalid task ID.", "danger", 5000);
     return;
   }
   try {
@@ -818,7 +823,7 @@ function deleteTask(taskId) {
     // Feedback to user
     showToast("Task deleted successfully!", "success", 4000);
     // Reset focus
-     lastFocusedEl = contentContainer;
+    lastFocusedEl = contentContainer;
     // Refresh task list on page
     loadTasks();
   } catch (error) {
@@ -828,29 +833,28 @@ function deleteTask(taskId) {
 
 /* FORM VALIDATION */
 
-// Validate form inputs for task title and due date  
-function isFormValid(titleId, dateId){
-    const title = document.getElementById(titleId).value.trim();
-    const dueDateInput = document.getElementById(dateId);
-    const dueDate = dueDateInput.value;
-    const minDate = dueDateInput.min;
-    
-    // Ensure title is provided
-    if (!title) {
-        showToast("Title is a required field.", "warning", 4000);
-        markField(titleId, "This field is required.");
-        return false;
-      }
+// Validate form inputs for task title and due date
+function isFormValid(titleId, dateId) {
+  const title = document.getElementById(titleId).value.trim();
+  const dueDateInput = document.getElementById(dateId);
+  const dueDate = dueDateInput.value;
+  const minDate = dueDateInput.min;
 
-    // Ensure dueDate is not before configured earliest date
-      if (new Date(dueDate) < new Date(minDate)) {
-        showToast("The due date cannot be in the past.", "warning", 4000);
-        markField(dateId, `Date cannot be before ${formatDate(minDate)}`);
-        return false;
-      }
-    
-    return true;
+  // Ensure title is provided
+  if (!title) {
+    showToast("Title is a required field.", "warning", 4000);
+    markField(titleId, "This field is required.");
+    return false;
+  }
 
+  // Ensure dueDate is not before configured earliest date
+  if (new Date(dueDate) < new Date(minDate)) {
+    showToast("The due date cannot be in the past.", "warning", 4000);
+    markField(dateId, `Date cannot be before ${formatDate(minDate)}`);
+    return false;
+  }
+
+  return true;
 }
 
 // Add class to validated field for highligth
@@ -877,8 +881,13 @@ function markField(fieldId, message) {
 
 // Close forms & details modals
 function closeModal() {
-  let allModals = [createTaskContainer, editTaskContainer, taskDetailsContainer, confirmationModal];
-  
+  let allModals = [
+    createTaskContainer,
+    editTaskContainer,
+    taskDetailsContainer,
+    confirmationModal,
+  ];
+
   allModals.forEach((modal) => {
     if (modal) {
       modal.classList.remove("show");
@@ -897,11 +906,11 @@ function closeModal() {
 
 /* ACCESSIBILITY */
 
-// Trap keyboard focus to modal 
+// Trap keyboard focus to modal
 // https://zachpatrick.com/blog/how-to-trap-focus-inside-modal-to-make-it-ada-compliant
 // https://hidde.blog/using-javascript-to-trap-focus-in-an-element/
-function trapFocus(event, modalId){
-const isTabPressed = event.key === `Tab` || event.keyCode === 9;
+function trapFocus(event, modalId) {
+  const isTabPressed = event.key === `Tab` || event.keyCode === 9;
 
   if (!isTabPressed) {
     return;
@@ -910,22 +919,21 @@ const isTabPressed = event.key === `Tab` || event.keyCode === 9;
   const modal = document.getElementById(modalId);
   if (!modal) return;
 
+  const focusableEls = modal.querySelectorAll(
+    'button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled])'
+  );
+  if (focusableEls.length === 0) return; // Stop function if no focusable element is present
 
-  const focusableEls = modal.querySelectorAll('button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled])');
-  if (focusableEls.length === 0) return; // Stop function if no focusable element is present 
-
-  const firstFocusableEl = focusableEls[0];  
+  const firstFocusableEl = focusableEls[0];
   const lastFocusableEl = focusableEls[focusableEls.length - 1];
 
   if (event.shiftKey) {
     if (document.activeElement === firstFocusableEl) {
-        lastFocusableEl.focus();
+      lastFocusableEl.focus();
       event.preventDefault();
     }
   } else if (document.activeElement === lastFocusableEl) {
     firstFocusableEl.focus();
     event.preventDefault();
   }
-
 }
-

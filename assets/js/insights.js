@@ -1,6 +1,7 @@
 /* jshint esversion: 6 */
 /* global google */
 
+
 // Load the Visualization API and the corechart package
 google.charts.load("current", { packages: ["corechart"] });
 
@@ -110,19 +111,26 @@ function getTasksByStatus() {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
   const statusCounts = {
-    "to-do": 0,
-    "in progress": 0,
-    "done": 0
+    toDo: 0,
+    inProgress: 0,
+    done: 0
   };
 
   tasks.forEach(task => {
-    statusCounts[task.status] = (statusCounts[task.status] || 0) + 1;
+    // Map the task.status string to the appropriate key
+    if (task.status === "to-do") {
+      statusCounts.toDo++;
+    } else if (task.status === "in progress") {
+      statusCounts.inProgress++;
+    } else if (task.status === "done") {
+      statusCounts.done++;
+    }
   });
 
   const taskList = [
-    ["To-Do", statusCounts["to-do"]],
-    ["In Progress", statusCounts["in progress"]],
-    ["Done", statusCounts["done"]]
+    ["To-Do", statusCounts.toDo],
+    ["In Progress", statusCounts.inProgress],
+    ["Done", statusCounts.done]
   ];
 
   return taskList;
