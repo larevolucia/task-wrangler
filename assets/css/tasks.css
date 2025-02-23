@@ -17,10 +17,13 @@ TASKS HEADING
 TASKS CARD
 ---------------------------------- */
 
-.flex-tasks-container {
+#tasks-container{
   display: flex;
-  align-items: center;
   justify-content: center;
+}
+
+.flex-tasks-container {
+  align-items: center;
   flex-direction: column;
   min-height: 60vh;
 }
@@ -42,7 +45,7 @@ TASKS CARD
   grid-row-gap: 10px;
 }
 
-.task-card:focus-visible {
+.task-card:focus-visible, #tasks-container:focus-visible {
     outline: 3px dashed var(--attention-color); 
     outline-offset: 3px; 
 }

@@ -18,6 +18,7 @@ if (createTaskButton) {
 
 // Global variables to manage modal states and prevent multiple instances
 let createTaskContainer = null; // Stores the task creation form instance
+let taskListContainer = document.getElementById("tasks-container"); // Stores the task creation form instance
 let editTaskContainer = null; // Stores the edit task form instance
 let taskDetailsContainer = null; // Stores the task details modal instance
 let confirmationModal = null; // Stores the confirmation modal instance
@@ -137,15 +138,19 @@ function createToastContainer(message, toastType){
   }
 
   // Function to close the toast and restore focus
-  function closeToast(toastContainer) {
+function closeToast(toastContainer) {
     if (toastContainer && document.body.contains(toastContainer)) {
       toastContainer.remove();
+    }
+     // If the create task form is still open, do nothing 
+    if (document.getElementById("create-task-form-container") || document.getElementById("edit-task-form-container")) {
+      return;
     }
     // Restore focus to the element that was focused before the toast appeared
     if (lastFocusedEl && document.contains(lastFocusedEl)) {
       lastFocusedEl.focus();
   } else {
-    contentContainer.focus(); // Fallback focus if previous element is gone
+    taskListContainer.focus(); // Fallback focus if previous element is gone
   }
 }
 
@@ -275,14 +280,13 @@ function handleEmptyTaskList(container) {
 
 // Retrieve task list from localStorage
 function loadTasks() {
-  const taskList = document.getElementById("tasks-container");
 
-  if (!taskList) {
+  if (!taskListContainer) {
     console.warn("loadTasks() called but #tasks-container does not exist.");
     return;
   }
 
-  taskList.innerHTML = ""; // Clear the existing tasks
+  taskListContainer.innerHTML = ""; // Clear the existing tasks
 
   let tasks = [];
 
@@ -296,22 +300,22 @@ function loadTasks() {
   }
 
   if (tasks.length === 0) {
-    taskList.classList.add("flex-tasks-container");
-    handleEmptyTaskList(taskList);
+    taskListContainer.classList.add("flex-tasks-container");
+    handleEmptyTaskList(taskListContainer);
     return;
   } else {
-    taskList.classList.remove("flex-tasks-container");
+    taskListContainer.classList.remove("flex-tasks-container");
   }
 
-  taskList.setAttribute("role", "list"); // Add role="list" if there are items
-  renderTaskList(tasks, taskList);
+  taskListContainer.setAttribute("role", "list"); // Add role="list" if there are items
+  renderTaskList(tasks, taskListContainer);
 }
 
 // Function to render tasks
-function renderTaskList(tasks, taskList) {
+function renderTaskList(tasks, container) {
   tasks.forEach((task, index) => {
     const taskElement = createTaskElement(task, index);
-    taskList.appendChild(taskElement);
+    container.appendChild(taskElement);
     addTaskEventListeners(taskElement, task);
   });
 }
@@ -829,7 +833,7 @@ function deleteTask(taskId) {
     // Feedback to user
     showToast("Task deleted successfully!", "success", 4000);
     // Reset focus
-    lastFocusedEl = contentContainer;
+    lastFocusedEl = taskListContainer;
     // Refresh task list on page
     loadTasks();
   } catch (error) {
