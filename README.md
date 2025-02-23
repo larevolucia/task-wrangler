@@ -1,5 +1,6 @@
 # TaskWrangler
 
+
 Many people feel overwhelmed when managing their to-do lists, making it difficult to stay motivated. Traditional to-do apps often overcomplicate things with excessive features while neglecting simplicity and motivation. As a result, these apps can become cumbersome to use, causing users to lose focus on their goals and abandon task management altogether.
 
 **TaskWrangler** goes back to basics and is designed to be a simple, beginner-friendly to-do app aimed at making task management intuitive and motivating.
@@ -12,6 +13,11 @@ The app enables users to:
 - Track progress visually with insightful charts.
 
 By focusing on simplicity, usability, and motivation, **TaskWrangler** empowers users to manage their tasks consistently without feeling overwhelmed.
+
+<div align="center">
+  <img width="600" alt="image" src="https://github.com/user-attachments/assets/58613200-62e2-4211-b074-20380e3f89b7" />
+</div>
+
 
 🔗 **Live Link to access site**: [TaskWrangler](https://larevolucia.github.io/task-wrangler/)
 
@@ -166,8 +172,6 @@ For TaskWrangler, [Inter](https://fonts.google.com/specimen/Inter) was selected 
 ---
 ## 🚀 Features
 
-
-
 ### **1. Navigation**
 
 Provides a clean and accessible navigation system for seamless interaction with the app. Users can easily create tasks, view task lists, and access insights.
@@ -176,6 +180,10 @@ Provides a clean and accessible navigation system for seamless interaction with 
 - **Keyboard navigation:** Supports `Tab` key navigation across buttons, links, and modals.
 - **ARIA attributes:** Ensures screen reader compatibility with `aria-labelledby`, `role="list"`, and `aria-live` for live updates.
 - **Sticky Navigation:** The header remains fixed at the top using `position: sticky`, improving accessibility.
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/3ffbeb3e-4750-4cf5-a939-889c8b031f02" alt="responsive-design">
+</div>
 
 ### **2. Create Tasks with Ease**
 
@@ -192,6 +200,9 @@ Allows users to add new tasks with essential details such as **title, descriptio
   - `Enter` key submission for faster input.
   - `Escape` key to close the form.
 
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/2b897b54-fcbc-4382-9e1d-03754247b5b2" alt="create-task">
+</div>
 
 ### **3. Task Management (CRUD)**
 
@@ -206,12 +217,21 @@ Displays all tasks in **card format**, each showing **status, due date, and acti
 - **Overdue Task Highlighting:**
   - If a task’s due date is past today’s date, the task is assigned an `overdue` class that applies a red color.
 
+<div align="center">
+<img width="307" alt="image" src="https://github.com/user-attachments/assets/3124ef7e-3e2e-44fd-9881-e99f7583443d" />
+</div>
+
+
 #### **3.2 Read Task Details**
 
 - Clicking a task card opens a modal displaying **status, description, and due date**.
 - Implemented using a dynamically created `div` inside `#content-container`.
 - Read view also includes action buttons to minimize back and forth on the UI.
 - Uses **`trapFocus()` function** to lock focus within the modal.
+
+<div align="center">
+<img width="290" alt="image" src="https://github.com/user-attachments/assets/2274d8a8-264a-4352-9659-c424d18ae14a" />
+</div>
 
 #### **3.3 Edit Task**
 
@@ -222,11 +242,20 @@ Displays all tasks in **card format**, each showing **status, due date, and acti
   - If a task is overdue, past dates are still allowed for consistency. Earliest date is set to original due date using `min=${currentTask[0].dueDate}`.
 - **Auto-save on Submit:** Updates **localStorage** and **UI** without page reload.
 
+<div align="center">
+<img width="573" alt="image" src="https://github.com/user-attachments/assets/91597b1c-dabd-4389-905d-1febb0fb1630" />
+</div>
+
 #### **3.4 Delete Task**
 
 - **Confirmation Modal:** Before deletion, users receive a confirmation prompt.
 - **Persistent Storage Update:** Task is removed from `localStorage`, and UI is updated dynamically.
 - **Keyboard Navigation:** Supports `Enter` key selection and `Escape` key to cancel.
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/73e4535b-65c1-4164-8d2e-8b3968ee2a2c" alt="delete-task">
+</div>
+
 
 ### **4. Smart Toast Notifications**
 
@@ -244,6 +273,13 @@ Provides real-time feedback on task actions such as **creation, updates, and del
   - **Info (blue)**: Info about action.
   - **Warning (yellow)**: Missing required fields.
 
+<div align="center">
+   <img width="308" alt="image" src="https://github.com/user-attachments/assets/bb645e09-7a5e-4152-8539-8e5b0e300430" />
+
+   <img width="317" alt="image" src="https://github.com/user-attachments/assets/be78501b-5d28-4edb-ae75-50870a84213b" />
+</div>
+
+
 ###  **5. Advanced Keyboard Navigation**
 
 - **Tab Trapping:** `trapFocus()` ensures users can only navigate within an open modal.
@@ -251,10 +287,21 @@ Provides real-time feedback on task actions such as **creation, updates, and del
 - **Keyboard Shortcuts:**
   - `Enter` submits forms and confirms actions.
   - `Tab` cycles through interactive elements.
+ 
+
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/f20e070a-ec9b-4983-91c0-7bf2dd0158a6" alt="trap-focus">
+</div>
+
 
 ## **6. Insights & Analytics (Task Progress Charts)**
 
 Uses **Google Charts API** to visualize task progress.
+
+
+<div align="center">
+   <img width="308" alt="image" src="https://github.com/user-attachments/assets/3e3da238-6907-4c66-83a4-48a2686a4b04" />
+</div>
 
 ### **6.1 Status Breakdown Chart**
 
@@ -296,6 +343,22 @@ Uses **Google Charts API** to visualize task progress.
 ### Manual Testing 
 [Issue #5](https://github.com/larevolucia/task-wrangler/issues/5)
 
+#### User actions
+- Create a task (mouse, keyboard)
+- Edit a task (mouse, keyboard)
+- Open task card details (mouse, keyboard)
+- Delete a task (mouse, keyboard)
+- Form Validation:
+  - Save task (create / edit) without title
+  - Save task (create / edit) with date in past
+- Move focus with tab on modal (expected to be trapped in modal)
+- Close modals with escape key
+- Save tasks (create / edit) with enter on submit button
+- Read insights chart
+- Navigate to GitHub in new tab
+
+#### Technical testing
+- localStorage.getItem("tasks") on console to validate create, update and delete actions
 
 ### Automated Testing  
 [Issue #26](https://github.com/larevolucia/task-wrangler/issues/26)
