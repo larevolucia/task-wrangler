@@ -58,7 +58,7 @@ These users are naturally organized and detail-oriented. They use the app to mai
 
 #### **User Stories:**
 - [As a user, I want to register my tasks so I can track what I need to do.](https://github.com/larevolucia/task-wrangler/issues/1)
-- [As an user I want to see my list of tasks so I can have an overview of items to prioritize.](https://github.com/larevolucia/task-wrangler/issues/16)
+- [As a user I want to see my list of tasks so I can have an overview of items to prioritize.](https://github.com/larevolucia/task-wrangler/issues/16)
 - [As a user, I want to set the status of my tasks so I can track my progress.](https://github.com/larevolucia/task-wrangler/issues/9)
 - [As a user, I want to be able to edit tasks so I can correct or update information.](https://github.com/larevolucia/task-wrangler/issues/11)
 - [As a user, I want to delete tasks so I can remove tasks that are no longer relevant.](https://github.com/larevolucia/task-wrangler/issues/12)
@@ -121,8 +121,8 @@ These features remain on the **backlog** for potential future development as **T
 
 ### Colors
 
-Considering primary function of the app is managing tasks, it was decided to keep with simple color scheme.
-It was selected worldwide recognizable colors for tracking progress: green, yellow, red.
+Considering the primary function of the app is managing tasks, it was decided to keep with simple color scheme.
+Worldwide recognizable colors were selected for tracking progress: green, yellow, red.
 
 For the base of the app, a neutral blue was chosen, since it is a calming color that doesn't clash with the traffic light scheme.
 A white hex was selected for the background and a black hex was selected for the text color.
@@ -135,7 +135,7 @@ A white hex was selected for the background and a black hex was selected for the
 
 ### Fonts
 
-For TaskWrangler, [Inter](https://fonts.google.com/specimen/Inter) was selected as the primary font, used for the body text and logo, and [Roboto](https://fonts.google.com/specimen/Roboto) as the secondary font for headings and toast notifications to optimize readability and maintain a clean, modern asthetic.
+For TaskWrangler, [Inter](https://fonts.google.com/specimen/Inter) was selected as the primary font, used for the body text and logo, and [Roboto](https://fonts.google.com/specimen/Roboto) as the secondary font for headings and toast notifications to optimize readability and maintain a clean, modern aesthetic.
 
 ### Why Inter for Body & Logo?
 - Highly readable for long-form text, ensuring tasks and descriptions are easy to scan.
@@ -242,7 +242,7 @@ Displays all tasks in **card format**, each showing **status, due date, and acti
 #### **3.3 Edit Task**
 
 - Users can **update title, description, status, and due date**.
-- **Previous values:** Pre-fills form with task current values for users convenience.
+- **Previous values:** Pre-fills form with task current values for users' convenience.
 - **Prevent Unnecessary updates:** Compares current and new values before updating `localStorage` and sends notification of use cases (edit success, no edits).
 - **Prevent Overdue Edits:** 
   - If a task is overdue, past dates are still allowed for consistency. Earliest date is set to original due date using `min=${currentTask[0].dueDate}`.
@@ -474,7 +474,7 @@ This document contains a list of bugs and their corresponding fixes, organized b
 
  ### 1. Jigsaw warnings: Font Imports and variables
 - **Issue:** [#26](https://github.com/larevolucia/task-wrangler/issues/26)
-- **Justification:** It's common practice the use of imports for fonts and variables for styling.
+- **Justification:** It's common practice to use imports for fonts and variables for styling.
 
 ### 2. WAVE alerts: Redundant link: Adjacent links go to the same URL
 - **Issue:** [#33](https://github.com/larevolucia/task-wrangler/issues/33)
@@ -488,7 +488,7 @@ This document contains a list of bugs and their corresponding fixes, organized b
 ---
 ## Deployment
 
-This project was deployed using GitHub pages. Steps to deploy are as follow:
+This project was deployed using GitHub Pages. Steps to deploy are as follow:
 
 1. Go to your repository on GitHub.com
 2. Select 'Settings' on the repository top menu.
@@ -505,7 +505,7 @@ This project was deployed using GitHub pages. Steps to deploy are as follow:
 
 - HTML5
 - CSS
-- Javascript
+- JavaScript
 
 ### Resources Used
 
@@ -521,7 +521,7 @@ This project was deployed using GitHub pages. Steps to deploy are as follow:
 - [FontAwesome](https://fontawesome.com/)
 - [Tinypng](https://tinypng.com/) to optmize the images
 - [Responsinator](http://www.responsinator.com/) to test responsiveness
-- ChatGPT for documentation review and to explain other  peoples' codes used.
+- ChatGPT for documentation review and to explain referenced code when not initially understood (e.g. TrapFocus and CSS for Notifications).
 
 ---
 ## Credits
@@ -532,5 +532,5 @@ This project was deployed using GitHub pages. Steps to deploy are as follow:
 
 ## Acknowledgments
 
-- Friends and family who tested to application to provide valuable feedback
+- Friends and family who tested the application to provide valuable feedback.
 - My mentor for pushing me to improve the code 
