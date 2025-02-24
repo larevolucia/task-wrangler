@@ -1,5 +1,48 @@
 # TaskWrangler
 
+## Table of Contents
+
+- [Summary](#summary)
+- [Site Goals](#-site-goals)
+- [User Stories](#-user-stories)
+  - [The Planner](#the-planner)
+  - [The Juggler](#the-juggler)
+  - [The Inspirer](#the-inspirer)
+- [Backlog](#-backlog)
+  - [Features Not Implemented](#features-not-implemented)
+- [Design](#-design)
+  - [Colors](#colors)
+  - [Fonts](#fonts)
+  - [Buttons](#buttons)
+  - [Anchor](#anchor)
+- [Wireframes](#wireframes)
+- [Features](#-features)
+  - [1. Navigation](#1-navigation)
+  - [2. Create Tasks with Ease](#2-create-tasks-with-ease)
+  - [3. Task Management (CRUD)](#3-task-management-crud)
+    - [3.1 Task List View](#31-task-list-view)
+    - [3.2 Read Task Details](#32-read-task-details)
+    - [3.3 Edit Task](#33-edit-task)
+    - [3.4 Delete Task](#34-delete-task)
+  - [4. Smart Toast Notifications](#4-smart-toast-notifications)
+  - [5. Advanced Keyboard Navigation](#5-advanced-keyboard-navigation)
+  - [6. Insights & Analytics (Task Progress Charts)](#6-insights--analytics-task-progress-charts)
+    - [6.1 Status Breakdown Chart](#61-status-breakdown-chart)
+    - [6.2 Overdue Task Analysis](#62-overdue-task-analysis)
+    - [6.3 Responsive Charts](#63-responsive-charts)
+- [Additional Enhancements](#additional-enhancements)
+- [Testing](#testing)
+  - [Manual Testing](#manual-testing)
+  - [Automated Testing](#automated-testing)
+  - [Bugs & Issues](#bugs--issues)
+- [Bug Fixes and Updates](#bug-fixes-and-updates)
+  - [List of Fixed Issues](#list-of-fixed-issues)
+  - [Unfixed issues](#unfixed-issues)
+- [Deployment](#deployment)
+- [Technologies Used](#technologies-used)
+- [Credits](#credits)
+- [Acknowledgments](#acknowledgments)
+
 ## Summary
 
 Many people feel overwhelmed when managing their to-do lists, making it difficult to stay motivated. Traditional to-do apps often overcomplicate things with excessive features while neglecting simplicity and motivation. As a result, these apps can become cumbersome to use, causing users to lose focus on their goals and abandon task management altogether.
