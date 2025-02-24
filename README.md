@@ -1,5 +1,6 @@
 # TaskWrangler
 
+## Summary
 
 Many people feel overwhelmed when managing their to-do lists, making it difficult to stay motivated. Traditional to-do apps often overcomplicate things with excessive features while neglecting simplicity and motivation. As a result, these apps can become cumbersome to use, causing users to lose focus on their goals and abandon task management altogether.
 
@@ -378,20 +379,21 @@ Uses **Google Charts API** to visualize task progress.
 - [WAVE](https://wave.webaim.org/): No errors. One alert related to both logo and "Tasks" links on nav directing user to same page.
 - Lighthouse: Tests performed for mobile device
     <details>
-      <summary>Home Empty State</summary>
-     <img width="332" alt="image" src="https://github.com/user-attachments/assets/cefa6316-5f6f-4424-8c19-6a640d83d796" />
+      <summary>Desktop Tasks</summary>
+      <img src="https://github.com/user-attachments/assets/6618d120-3c51-42d6-b86b-550d5cbd4dc7">
     </details>
     <details>
-      <summary>Home Loaded Tasks</summary>
-      <img width="332" alt="image" src="https://github.com/user-attachments/assets/80356fe7-aacf-4c9f-b70f-ecf5d20ad468" />
+      <summary>Desktop Insights</summary>
+      <img src="https://github.com/user-attachments/assets/c9ce57ab-fcd3-47fa-bd5d-25136ab8c4f8">
     </details>
     <details>
-      <summary>Insights Empty State</summary>
-      <img width="332" alt="image" src="https://github.com/user-attachments/assets/9c7ca88b-a715-424d-b838-9bb5894850c2" />
+      <summary>Mobile Tasks</summary>
+      <img src="https://github.com/user-attachments/assets/5e1fdf81-5abb-48b1-a255-8b9274a3c053">
+
     </details>
     <details>
-      <summary>Insights Loaded Tasks</summary>
-      <img width="332" alt="image" src="https://github.com/user-attachments/assets/3ff25dcb-43a9-420e-a7a7-3e5bdbb24bc4" />
+      <summary>Mobile Insights</summary>
+      <img src="https://github.com/user-attachments/assets/363ca5b3-bfac-4505-8818-016d488f5504">
     </details>
 
 
