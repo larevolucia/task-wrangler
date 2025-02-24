@@ -157,6 +157,10 @@ _This feature was **deprioritized** in favor of **[toast notifications](https://
 - [As a user, I want to categorize my tasks so I can organize them by type or priority.](https://github.com/larevolucia/task-wrangler/issues/13)  
  _Instead of implementing **categorization**, we focused on **[keyboard accessibility](https://github.com/larevolucia/task-wrangler/issues/17)**, making the app more inclusive and efficient for all users._
 
+#### 3️⃣ **Update Status From Task List**   
+- [As a user, I want to update the status from the task list, to avoid unecessary clicks navigating to edit form.](https://github.com/larevolucia/task-wrangler/issues/39)  
+ _Feature was requested by user during testing period. After analysing the complexity of the request, it was decided not to include on MVP as it was a non-blocking enhancement that would require creation of multiple functions and modification of existing ones._
+
 These features remain on the **backlog** for potential future development as **TaskWrangler** continues to evolve.
 
 ---
