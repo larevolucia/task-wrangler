@@ -410,7 +410,7 @@ Uses **Google Charts API** to visualize task progress.
 - Navigate to GitHub in new tab
 
 #### Technical testing
-- localStorage.getItem("tasks") on console to validate create, update and delete actions
+- Used Developer Tools and Console to validate changes in localStorage (Developer Tools > Application > Storage > Local Storage)
 
 ### Automated Testing  
 [Issue #26](https://github.com/larevolucia/task-wrangler/issues/26)
@@ -514,6 +514,11 @@ This document contains a list of bugs and their corresponding fixes, organized b
 - **Issue:** [#37](https://github.com/larevolucia/task-wrangler/issues/37)
 - **Summary of Fix:** Explicit reset of focus on closeModal and closeToast resets the focus even after user has navigated to other elements using tab. Conditional was added at the end of each function to check if the focus was already on a valid element, preventing explicit reset after user navigated elsewhere.
 - **Commit:** [2673c2c](https://github.com/larevolucia/task-wrangler/commit/2673c2c83f77ebf4525cbc477c758434ce87296e), [2d34ec0](https://github.com/larevolucia/task-wrangler/commit/2d34ec0afc107438e21bd188088aa959396bca0b)
+
+### 14. Multiple Empty Task List messages on Insights page
+- **Issue:** [#38](https://github.com/larevolucia/task-wrangler/issues/38)
+- **Summary of Fix:** Added conditional to `handleEmptyInsights` to only append message if the message doesn't already exists.
+- **Commit:** [03716e9](https://github.com/larevolucia/task-wrangler/commit/03716e99e5868b31425faaf4ef9ae0d251769bc1)
 
 ## Unfixed issues
 
