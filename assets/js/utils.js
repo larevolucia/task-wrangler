@@ -40,6 +40,15 @@ function addEventListeners(ids, event, handler) {
   });
 }
 
+function createEscapeKeyHandler(callback) {
+    return function (event) {
+      if (event.key === "Escape") {
+        callback(event);
+      }
+    };
+  }
+  
+
 /* ACCESSIBILITY */
 
 // Trap keyboard focus to modal
@@ -74,6 +83,4 @@ function trapFocus(event, modalId) {
     }
   }
   
-  
-
-export { getTasksFromStorage, formatDate, getTodayDate, getStatusClass, addEventListeners, trapFocus };
+export { getTasksFromStorage, formatDate, getTodayDate, getStatusClass, addEventListeners, trapFocus, createEscapeKeyHandler };

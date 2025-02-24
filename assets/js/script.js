@@ -1,7 +1,7 @@
 /* jshint esversion: 6 */
 
 import { showToast } from './notification.js';
-import { getTasksFromStorage, formatDate, getTodayDate, getStatusClass, addEventListeners, trapFocus } from './utils.js';
+import { getTasksFromStorage, formatDate, getTodayDate, getStatusClass, addEventListeners, trapFocus, createEscapeKeyHandler } from './utils.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   loadTasks();
@@ -140,7 +140,7 @@ function addCreateTaskEventListeners() {
     "click",
     closeModal
   );
-  document.addEventListener("keydown", handleEscapeKey);
+  document.addEventListener("keydown", createEscapeKeyHandler(closeModal));
   addEventListeners(["create-task-form"], "submit", createTask);
 }
 
@@ -446,7 +446,7 @@ function addTaskDetailsEventListeners(task) {
     .getElementById("close-details-modal")
     .addEventListener("click", closeModal);
   // Close modal when the Escape key is pressed, ensuring users can dismiss dialogs with the keyboard
-  document.addEventListener("keydown", handleEscapeKey);
+  document.addEventListener("keydown", createEscapeKeyHandler(closeModal));
 }
 
 /* EDIT TASK DETAILS */
@@ -614,7 +614,7 @@ function addEditTaskEventListeners(taskId) {
     "click",
     closeModal
   );
-  document.addEventListener("keydown", handleEscapeKey);
+  document.addEventListener("keydown", createEscapeKeyHandler(closeModal));
   // Ensure the edit form has the correct taskId in dataset
   const editForm = document.getElementById("edit-task-form");
   if (editForm) {
@@ -679,7 +679,7 @@ function addConfirmDeleteEventListeners(taskId) {
   );
 
   // Close modal when Escape key is pressed
-  document.addEventListener("keydown", handleEscapeKey);
+  document.addEventListener("keydown", createEscapeKeyHandler(closeModal));
 
   // Confirm delete when "Yes" is clicked
   document.getElementById("confirm-delete").addEventListener("click", () => {
@@ -794,10 +794,5 @@ function closeModal() {
       taskListContainer.focus();
      }
   }
-}
-
-// Handle Escape for close modal
-function handleEscapeKey(event) {
-  if (event.key === "Escape") closeModal();
 }
 
