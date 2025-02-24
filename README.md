@@ -457,6 +457,10 @@ This document contains a list of bugs and their corresponding fixes, organized b
 - **Summary of Fix:** Initial fix implemented `tabindex` to contentContainer element and directed the focus to that element after delete. Later that was moved to taskListContainer. Final fix moved the notifications code to an idenpendent js file and introduce parameters for `lastFocusedEl` and a `fallbackFocusEl`. The new parameters allowed more flexibility to define behavior in different scenarios and prepares for further use when scaling the application.
 - **Commit:** [78ae558](https://github.com/larevolucia/task-wrangler/commit/78ae558813aea556cbde309d4697ce01793941bb), [0c7afb1](https://github.com/larevolucia/task-wrangler/commit/0c7afb167599b01b02480a72a7683107a737fcbd), [29fdb24](https://github.com/larevolucia/task-wrangler/commit/29fdb24fa2eddac08893668564af0ead522c6d0a)
 
+### 13. Focus resets to taskListContainer
+- **Issue:** [#37](https://github.com/larevolucia/task-wrangler/issues/37)
+- **Summary of Fix:** Explicit reset of focus on closeModal and closeToast resets the focus even after user has navigated to other elements using tab. Conditional was added at the end of each function to check if the focus was already on a valid element, preventing explicit reset after user navigated elsewhere.
+- **Commit:** [2673c2c](https://github.com/larevolucia/task-wrangler/commit/2673c2c83f77ebf4525cbc477c758434ce87296e), [2d34ec0](https://github.com/larevolucia/task-wrangler/commit/2d34ec0afc107438e21bd188088aa959396bca0b)
 
 ## Unfixed issues
 
