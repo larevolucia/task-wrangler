@@ -1,6 +1,11 @@
 /* jshint esversion: 6 */
 /* global google */
 
+import { getTasksFromStorage, getTodayDate } from './utils.js';
+
+// Global Variable to manage empty tasks list message
+const insightsContainer = document.getElementById("insights-content-area");
+
 // Load the Visualization API and the corechart package
 google.charts.load("current", { packages: ["corechart"] });
 
@@ -117,7 +122,7 @@ function drawOverdueChart() {
 // Uses `.reduce()` to accumulate counts for each status type
 // Reference: https://stackoverflow.com/questions/45547504/counting-occurrences-of-particular-property-value-in-array-of-objects
 function getTasksByStatus() {
-  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  const tasks = getTasksFromStorage();
 
   const statusCounts = {
     toDo: 0,
@@ -149,8 +154,8 @@ function getTasksByStatus() {
 // - "Overdue" = Tasks with a past due date and not marked as "done"
 // - "On Time" = Tasks with future due dates or no due date at all (assumed to be flexible)
 function getOverdueTasks() {
-  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-  const today = new Date().toISOString().split("T")[0];
+  const tasks = getTasksFromStorage();
+  const today = getTodayDate();
 
   let overdueTasks = 0;
   let notOverdueTasks = 0;

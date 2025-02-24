@@ -63,7 +63,7 @@ let toastIcon = {
     }
   
     // Function to close the toast and restore focus
-  function closeToast(toastContainer) {
+  function closeToast(toastContainer, lastFocusedEl, fallbackFocusEl) {
       if (toastContainer && document.body.contains(toastContainer)) {
         toastContainer.remove();
       }
@@ -78,7 +78,9 @@ let toastIcon = {
           if (lastFocusedEl && document.contains(lastFocusedEl)) {
             lastFocusedEl.focus();
         } else {
-          taskListContainer.focus(); // Fallback focus if previous element is gone
+            fallbackFocusEl.focus(); // Fallback focus if previous element is gone
         }
       }      
   }
+
+  export { showToast };

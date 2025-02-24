@@ -1,6 +1,7 @@
 /* jshint esversion: 6 */
-/* global showToast */
 
+import { showToast } from './notification.js';
+import { getTasksFromStorage, formatDate, getTodayDate, getStatusClass, addEventListeners } from './utils.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   loadTasks();
@@ -22,52 +23,6 @@ let taskListContainer = document.getElementById("tasks-container"); // Stores th
 let editTaskContainer = null; // Stores the edit task form instance
 let taskDetailsContainer = null; // Stores the task details modal instance
 let confirmationModal = null; // Stores the confirmation modal instance
-
-/* UTILITY FUNCTIONS */
-
-function getStatusClass(status) {
-  switch (status.toLowerCase()) {
-    case "to-do":
-      return "status-todo";
-    case "in progress":
-      return "status-in-progress";
-    case "done":
-      return "status-done";
-    default:
-      return "status-unknown";
-  }
-}
-
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  const options = { month: "short", day: "numeric" };
-  return date.toLocaleDateString("en-US", options);
-}
-
-function getTodayDate() {
-  return new Date().toISOString().split("T")[0];
-}
-
-function handleEscapeKey(event) {
-  if (event.key === "Escape") closeModal();
-}
-
-function addEventListeners(ids, event, handler) {
-  ids.forEach((id) => {
-    const element = document.getElementById(id);
-    if (element) element.addEventListener(event, handler);
-  });
-}
-
-function getTasksFromStorage() {
-  try {
-    return JSON.parse(localStorage.getItem("tasks")) || [];
-  } catch (error) {
-    console.error("Error parsing localStorage data:", error);
-    localStorage.removeItem("tasks"); // reset tasks in case of corrupted data
-    return [];
-  }
-}
 
 // Tracks the last focused element before a modal is opened, ensuring proper keyboard navigation
 let lastFocusedEl = document.getElementById("home-navigation");
@@ -839,6 +794,11 @@ function closeModal() {
       taskListContainer.focus();
      }
   }
+}
+
+// Handle Escape for close modal
+function handleEscapeKey(event) {
+  if (event.key === "Escape") closeModal();
 }
 
 /* ACCESSIBILITY */
