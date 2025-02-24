@@ -1,3 +1,4 @@
+/* jshint esversion: 6 */
 /* UTILITY FUNCTIONS */
 
 function getTasksFromStorage() {
@@ -82,5 +83,5 @@ function trapFocus(event, modalId) {
       event.preventDefault();
     }
   }
-  
+
 export { getTasksFromStorage, formatDate, getTodayDate, getStatusClass, addEventListeners, trapFocus, createEscapeKeyHandler };

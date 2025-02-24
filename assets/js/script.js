@@ -795,4 +795,3 @@ function closeModal() {
      }
   }
 }
-
