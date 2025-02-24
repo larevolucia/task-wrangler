@@ -71,10 +71,14 @@ let toastIcon = {
       if (document.getElementById("create-task-form-container") || document.getElementById("edit-task-form-container")) {
         return;
       }
-      // Restore focus to the element that was focused before the toast appeared
-      if (lastFocusedEl && document.contains(lastFocusedEl)) {
-        lastFocusedEl.focus();
-    } else {
-      taskListContainer.focus(); // Fallback focus if previous element is gone
-    }
+
+      // Check if the currently focused element is acceptable.
+      if (!document.activeElement || document.activeElement === document.body){
+          // Restore focus to the element that was focused before the toast appeared
+          if (lastFocusedEl && document.contains(lastFocusedEl)) {
+            lastFocusedEl.focus();
+        } else {
+          taskListContainer.focus(); // Fallback focus if previous element is gone
+        }
+      }      
   }
