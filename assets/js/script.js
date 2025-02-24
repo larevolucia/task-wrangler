@@ -1,7 +1,7 @@
 /* jshint esversion: 6 */
 
 import { showToast } from './notification.js';
-import { getTasksFromStorage, formatDate, getTodayDate, getStatusClass, addEventListeners } from './utils.js';
+import { getTasksFromStorage, formatDate, getTodayDate, getStatusClass, addEventListeners, trapFocus } from './utils.js';
 
 document.addEventListener("DOMContentLoaded", () => {
   loadTasks();
@@ -799,39 +799,5 @@ function closeModal() {
 // Handle Escape for close modal
 function handleEscapeKey(event) {
   if (event.key === "Escape") closeModal();
-}
-
-/* ACCESSIBILITY */
-
-// Trap keyboard focus to modal
-// https://zachpatrick.com/blog/how-to-trap-focus-inside-modal-to-make-it-ada-compliant
-// https://hidde.blog/using-javascript-to-trap-focus-in-an-element/
-function trapFocus(event, modalId) {
-  const isTabPressed = event.key === `Tab` || event.keyCode === 9;
-
-  if (!isTabPressed) {
-    return;
-  }
-
-  const modal = document.getElementById(modalId);
-  if (!modal) return;
-
-  const focusableEls = modal.querySelectorAll(
-    'button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled])'
-  );
-  if (focusableEls.length === 0) return; // Stop function if no focusable element is present
-
-  const firstFocusableEl = focusableEls[0];
-  const lastFocusableEl = focusableEls[focusableEls.length - 1];
-
-  if (event.shiftKey) {
-    if (document.activeElement === firstFocusableEl) {
-      lastFocusableEl.focus();
-      event.preventDefault();
-    }
-  } else if (document.activeElement === lastFocusableEl) {
-    firstFocusableEl.focus();
-    event.preventDefault();
-  }
 }
 
