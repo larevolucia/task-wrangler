@@ -185,6 +185,8 @@ Provides a clean and accessible navigation system for seamless interaction with 
   <img src="https://github.com/user-attachments/assets/3ffbeb3e-4750-4cf5-a939-889c8b031f02" alt="responsive-design">
 </div>
 
+**Reference:** [Hidde Blog](https://hidde.blog/using-javascript-to-trap-focus-in-an-element/), [Zach Patrick](https://zachpatrick.com/blog/how-to-trap-focus-inside-modal-to-make-it-ada-compliant) and [More](https://github.com/larevolucia/task-wrangler/issues/17)
+
 ### **2. Create Tasks with Ease**
 
 Allows users to add new tasks with essential details such as **title, description, and due date**.
@@ -203,6 +205,8 @@ Allows users to add new tasks with essential details such as **title, descriptio
 <div align="center">
   <img src="https://github.com/user-attachments/assets/2b897b54-fcbc-4382-9e1d-03754247b5b2" alt="create-task">
 </div>
+
+**Reference:** [DEV.to](https://dev.to/adetutu/how-to-implement-a-custom-modal-with-css-ah1), [GeeksForGeeks](https://www.geeksforgeeks.org/how-to-create-a-modal-box-using-html-css-and-javascript/) and [More](https://github.com/larevolucia/task-wrangler/issues/1)
 
 ### **3. Task Management (CRUD)**
 
@@ -232,6 +236,8 @@ Displays all tasks in **card format**, each showing **status, due date, and acti
 <div align="center">
 <img width="290" alt="image" src="https://github.com/user-attachments/assets/2274d8a8-264a-4352-9659-c424d18ae14a" />
 </div>
+
+**Reference:** [Codepen](https://codepen.io/patrickhlauke/pen/vpQNgJ), [StackOverflow](https://stackoverflow.com/questions/70068954/make-entire-card-clickable-by-targeting-a-inside-of-it) and [More](https://github.com/larevolucia/task-wrangler/issues/16)
 
 #### **3.3 Edit Task**
 
@@ -279,6 +285,7 @@ Provides real-time feedback on task actions such as **creation, updates, and del
    <img width="317" alt="image" src="https://github.com/user-attachments/assets/be78501b-5d28-4edb-ae75-50870a84213b" />
 </div>
 
+**Reference:** Used code from [GeeksForGeeks](https://www.geeksforgeeks.org/how-to-make-a-toast-notification-in-html-css-and-javascript/) with minimal changes
 
 ###  **5. Advanced Keyboard Navigation**
 
@@ -293,6 +300,7 @@ Provides real-time feedback on task actions such as **creation, updates, and del
   <img src="https://github.com/user-attachments/assets/f20e070a-ec9b-4983-91c0-7bf2dd0158a6" alt="trap-focus">
 </div>
 
+**Reference:** [Hidde Blog](https://hidde.blog/using-javascript-to-trap-focus-in-an-element/), [Zach Patrick](https://zachpatrick.com/blog/how-to-trap-focus-inside-modal-to-make-it-ada-compliant) and [More](https://github.com/larevolucia/task-wrangler/issues/17)
 
 ## **6. Insights & Analytics (Task Progress Charts)**
 
