@@ -831,7 +831,14 @@ function closeModal() {
   confirmationModal = null;
 
   document.removeEventListener("keydown", trapFocus);
-  lastFocusedEl.focus();
+
+  if (!document.activeElement || document.activeElement === document.body) {
+     if (lastFocusedEl && document.contains(lastFocusedEl)){
+       lastFocusedEl.focus();
+     } else {
+      taskListContainer.focus();
+     }
+  }
 }
 
 /* ACCESSIBILITY */
@@ -867,3 +874,4 @@ function trapFocus(event, modalId) {
     event.preventDefault();
   }
 }
+
