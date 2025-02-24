@@ -564,7 +564,7 @@ This project was deployed using GitHub Pages. Steps to deploy are as follow:
 - [Flaticon](https://www.flaticon.com/)
 - [favicon.io](https://favicon.io/)
 - [FontAwesome](https://fontawesome.com/)
-- [Tinypng](https://tinypng.com/) to optmize the images
+- [AmIResponsive](https://ui.dev/amiresponsive) to test responsiveness
 - [Responsinator](http://www.responsinator.com/) to test responsiveness
 - ChatGPT for documentation review and to explain referenced code when not initially understood (e.g. TrapFocus and CSS for Notifications).
 
