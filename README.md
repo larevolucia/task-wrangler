@@ -386,12 +386,6 @@ Uses **Google Charts API** to visualize task progress.
       <img width="332" alt="image" src="https://github.com/user-attachments/assets/3ff25dcb-43a9-420e-a7a7-3e5bdbb24bc4" />
     </details>
 
-### Accessibility Testing  
-
-
-### Peer Review and User Feedback
-
-
 
 ### Bugs & Issues
 
@@ -457,6 +451,12 @@ This document contains a list of bugs and their corresponding fixes, organized b
 - **Issue:** [#35](https://github.com/larevolucia/task-wrangler/issues/35)
 - **Summary of Fix:** Adjusted the CSS adding a `min-width` to prevent line breaks in the due date display for overdue tasks, ensuring the date appears on a single line.
 - **Commit:** [1d109ad](https://github.com/larevolucia/task-wrangler/commit/1d109ad)
+- 
+### 12. Last focused element lost after Toast Notification / Delete task
+- **Issue:** [#30](https://github.com/larevolucia/task-wrangler/issues/30)
+- **Summary of Fix:** Initial fix implemented `tabindex` to contentContainer element and directed the focus to that element after delete. Later that was moved to taskListContainer. Final fix moved the notifications code to an idenpendent js file and introduce parameters for `lastFocusedEl` and a `fallbackFocusEl`. The new parameters allowed more flexibility to define behavior in different scenarios and prepares for further use when scaling the application.
+- **Commit:** [78ae558](https://github.com/larevolucia/task-wrangler/commit/78ae558813aea556cbde309d4697ce01793941bb), [0c7afb1](https://github.com/larevolucia/task-wrangler/commit/0c7afb167599b01b02480a72a7683107a737fcbd), [29fdb24](https://github.com/larevolucia/task-wrangler/commit/29fdb24fa2eddac08893668564af0ead522c6d0a)
+
 
 ## Unfixed issues
 
@@ -468,6 +468,10 @@ This document contains a list of bugs and their corresponding fixes, organized b
 - **Issue:** [#33](https://github.com/larevolucia/task-wrangler/issues/33)
 - **Justification:** It's common practice for logo to also redirect to home.
 
+### 3. Error loading charts
+- **Issue:** [#36](https://github.com/larevolucia/task-wrangler/issues/36)
+- **Summary of Fix:** DataTable was undefined when loading the screen. I couldn't fix it, but to mitigate it, I added a try...catch to prevent app from crashing. Error seems non-critical as the charts eventually do load without crashing. Common user is unlikely to notice any issue.
+- **Commit:** [d664ec4](https://github.com/larevolucia/task-wrangler/commit/d664ec4fc6d28419e00a779878d636350cf0bddc)
   
 ---
 ## Deployment
@@ -516,3 +520,5 @@ Logo Icons made by [Rizki Ahmad Fauzi](https://www.flaticon.com/authors/rizki-ah
 
 ## Acknowledgments
 
+- Friends and family who tested to application to provide valuable feedback
+- My mentor for pushing me to improve the code 
