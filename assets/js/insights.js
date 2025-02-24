@@ -1,12 +1,5 @@
 /* jshint esversion: 6 */
 /* global google */
-/* global showToast */
-
-// Global Variable to manage notifications focus
-const insightsContainer = document.getElementById("insights-content-area");
-
-// Tracks the last focused element before a modal is opened, ensuring proper keyboard navigation
-let lastFocusedEl = document.getElementById("home-navigation");
 
 // Load the Visualization API and the corechart package
 google.charts.load("current", { packages: ["corechart"] });
@@ -18,13 +11,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //  No Insights message if no task exists
 function handleEmptyInsights(container){
+  if (!document.getElementById("empty-state-insights")){
     let noInsightsMessage = document.createElement("div");
     noInsightsMessage.id = "empty-state-insights";
     noInsightsMessage.innerHTML = `<p id="no-tasks-message" class="empty-message">
-      No tasks yet! <a href="index.html#create-task" class="custom-anchor">Create a task</a> to see insights.
+    No tasks yet! <a href="index.html#create-task" class="custom-anchor">Create a task</a> to see insights.
     </p>`;
-
-    container.appendChild(noInsightsMessage);
+    
+   container.appendChild(noInsightsMessage);
+  }
 }
 
 // Trigger specific functions to draw charts if data is available or displays empty state message
