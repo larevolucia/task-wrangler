@@ -429,7 +429,7 @@ This document contains a list of bugs and their corresponding fixes, organized b
 - **Issue:** [#27](https://github.com/larevolucia/task-wrangler/issues/27)
 - **Summary of Fix:** Adjusted the CSS by modifying the `display` property of the `task-container` to ensure cards are stacked vertically as intended.
 - **Commit:** [3816ee6](https://github.com/larevolucia/task-wrangler/commit/3816ee633d67bbbbc80557ae5f26fc2ea49c07c5)
-- 
+
 ### 36. emptyStateMessage is not defined
 - **Issue:** [#28](https://github.com/larevolucia/task-wrangler/issues/28)
 - **Summary of Fix:** Declared the `emptyStateMessage` variable before calling it to prevent the "ReferenceError: emptyStateMessage is not defined" error in the `drawCharts` function.
@@ -459,7 +459,7 @@ This document contains a list of bugs and their corresponding fixes, organized b
 - **Issue:** [#35](https://github.com/larevolucia/task-wrangler/issues/35)
 - **Summary of Fix:** Adjusted the CSS adding a `min-width` to prevent line breaks in the due date display for overdue tasks, ensuring the date appears on a single line.
 - **Commit:** [1d109ad](https://github.com/larevolucia/task-wrangler/commit/1d109ad)
-- 
+
 ### 12. Last focused element lost after Toast Notification / Delete task
 - **Issue:** [#30](https://github.com/larevolucia/task-wrangler/issues/30)
 - **Summary of Fix:** Initial fix implemented `tabindex` to contentContainer element and directed the focus to that element after delete. Later that was moved to taskListContainer. Final fix moved the notifications code to an idenpendent js file and introduce parameters for `lastFocusedEl` and a `fallbackFocusEl`. The new parameters allowed more flexibility to define behavior in different scenarios and prepares for further use when scaling the application.
@@ -528,7 +528,7 @@ This project was deployed using GitHub pages. Steps to deploy are as follow:
 
 ### Logo Attribution
 
-Logo Icons made by [Rizki Ahmad Fauzi](https://www.flaticon.com/authors/rizki-ahmad-fauzi) from [Flaticon](https://www.flaticon.com/).
+- Logo Icons made by [Rizki Ahmad Fauzi](https://www.flaticon.com/authors/rizki-ahmad-fauzi) from [Flaticon](https://www.flaticon.com/).
 
 ## Acknowledgments
 
