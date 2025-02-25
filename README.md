@@ -138,7 +138,6 @@ These users are less focused on task management and more on personal growth and 
 - [As a user, I want a visual indicator of progress so I can see how many tasks I have completed.](https://github.com/larevolucia/task-wrangler/issues/14)
 - [As a user, I want to categorize my tasks so I can organize them by type or priority.](https://github.com/larevolucia/task-wrangler/issues/13) *(Not implemented – see backlog)*
 
-
 ---
 
 ## 📂 Backlog
@@ -146,6 +145,7 @@ These users are less focused on task management and more on personal growth and 
 The following features were **originally planned** but were not implemented in this phase due to a shift in priorities. Instead, we focused on **enhancing the user experience** by introducing:
 - **[Toast notifications](https://github.com/larevolucia/task-wrangler/issues/23)** for better feedback.
 - **[Keyboard accessibility](https://github.com/larevolucia/task-wrangler/issues/17)** for improved usability.
+- **[Update Status From Task List](https://github.com/larevolucia/task-wrangler/issues/39)** for improved usability.
 
 ### **Features Not Implemented:**
 
@@ -157,9 +157,6 @@ _This feature was **deprioritized** in favor of **[toast notifications](https://
 - [As a user, I want to categorize my tasks so I can organize them by type or priority.](https://github.com/larevolucia/task-wrangler/issues/13)  
  _Instead of implementing **categorization**, we focused on **[keyboard accessibility](https://github.com/larevolucia/task-wrangler/issues/17)**, making the app more inclusive and efficient for all users._
 
-#### 3️⃣ **Update Status From Task List**   
-- [As a user, I want to update the status from the task list, to avoid unecessary clicks navigating to edit form.](https://github.com/larevolucia/task-wrangler/issues/39)  
- _Feature was requested by user during testing period. After analysing the complexity of the request, it was decided not to include on MVP as it was a non-blocking enhancement that would require creation of multiple functions and modification of existing ones._
 
 These features remain on the **backlog** for potential future development as **TaskWrangler** continues to evolve.
 
@@ -287,7 +284,23 @@ Displays all tasks in **card format**, each showing **status, due date, and acti
 
 **Reference:** [Codepen](https://codepen.io/patrickhlauke/pen/vpQNgJ), [StackOverflow](https://stackoverflow.com/questions/70068954/make-entire-card-clickable-by-targeting-a-inside-of-it) and [More](https://github.com/larevolucia/task-wrangler/issues/16)
 
-#### **3.3 Edit Task**
+#### **3.4 Edit Status**
+
+- Users can change a task’s status (**To-Do → In Progress → Done**) directly from the list view.
+- **Dropdown Selection:** A simple **dropdown menu** is provided for easy status selection.
+- **Auto-Save & UI Update:**  
+  - Upon selection, the task status is **immediately updated in localStorage** and **reflected in the UI** without requiring a page reload.
+- **Accessibility Support:**  
+  - Fully navigable via keyboard (`Tab` and `Enter` keys).
+- **Visual Feedback:**  
+  - **Color-coded indicators** adjust automatically to reflect the new status.  
+  - A **toast notification** confirms successful status updates.  
+
+
+<div align="center">
+</div>
+
+#### **3.4 Edit Task**
 
 - Users can **update title, description, status, and due date**.
 - **Previous values:** Pre-fills form with task current values for users' convenience.
@@ -300,7 +313,7 @@ Displays all tasks in **card format**, each showing **status, due date, and acti
 <img width="573" alt="image" src="https://github.com/user-attachments/assets/91597b1c-dabd-4389-905d-1febb0fb1630" />
 </div>
 
-#### **3.4 Delete Task**
+#### **3.5 Delete Task**
 
 - **Confirmation Modal:** Before deletion, users receive a confirmation prompt.
 - **Persistent Storage Update:** Task is removed from `localStorage`, and UI is updated dynamically.
