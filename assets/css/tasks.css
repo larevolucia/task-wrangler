@@ -59,6 +59,30 @@ TASKS CARD
   display: inline-block;
 }
 
+.select-status {
+  width: auto;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.645rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border: 1px solid var(--background-color);
+  border-radius: 0.75rem;
+  background-color: var(--background-color);
+  color: var(--text-color);  
+  cursor: pointer;
+
+}
+
+.task-status:focus-visible, .select-status:focus-visible {
+  outline: 3px dashed var(--attention-color);
+  outline-offset: 3px;
+}
+
+.select-status:focus {
+  outline: 3px solid var(--attention-color);
+  outline-offset: 3px;
+}
+
 .task-title {
   margin-left: 0.5rem;
 }
@@ -368,7 +392,7 @@ CONFIRMATION MODAL
     grid-template-columns: 3fr 1fr 1fr;
   }
   
-  .task-status {
+  .task-status, .select-status  {
     font-size: 0.8rem;
   }
 
@@ -393,7 +417,7 @@ MEDIA QUERY - LARGE SCREEN (min-width: 992px)
     grid-template-columns: 4fr 1fr 1fr;
   }
  
-  .task-status {
+  .task-status, .select-status  {
     font-size: 1rem;
   }
   

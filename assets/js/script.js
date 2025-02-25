@@ -1,7 +1,15 @@
 /* jshint esversion: 6 */
 
-import { showToast } from './notification.js';
-import { getTasksFromStorage, formatDate, getTodayDate, getStatusClass, addEventListeners, trapFocus, createEscapeKeyHandler } from './utils.js';
+import { showToast } from "./notification.js";
+import {
+  getTasksFromStorage,
+  formatDate,
+  getTodayDate,
+  getStatusClass,
+  addEventListeners,
+  trapFocus,
+  createEscapeKeyHandler,
+} from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   loadTasks();
@@ -124,13 +132,25 @@ function createTask(event) {
   try {
     // Attempt to save the task list to localStorage
     localStorage.setItem("tasks", JSON.stringify(tasks));
-    showToast("Task added successfully!", "success", 4000, lastFocusedEl, createTaskButton); // Feedback to user
+    showToast(
+      "Task added successfully!",
+      "success",
+      4000,
+      lastFocusedEl,
+      createTaskButton
+    ); // Feedback to user
     closeModal();
     // Immediately update the task list
     loadTasks();
   } catch (error) {
     // Handle storage errors
-    showToast("Failed to save task. Please try again.", "danger", 4000, lastFocusedEl, createTaskButton);
+    showToast(
+      "Failed to save task. Please try again.",
+      "danger",
+      4000,
+      lastFocusedEl,
+      createTaskButton
+    );
   }
 }
 
@@ -156,7 +176,6 @@ function handleEmptyTaskList(container) {
 
 // Retrieve task list from localStorage
 function loadTasks() {
-
   if (!taskListContainer) {
     console.warn("loadTasks() called but #tasks-container does not exist.");
     return;
@@ -171,7 +190,13 @@ function loadTasks() {
     tasks = getTasksFromStorage();
   } catch (error) {
     // Handle storage errors
-    showToast("Failed to load tasks. Resetting task list.", "danger", 4000, lastFocusedEl, taskListContainer);
+    showToast(
+      "Failed to load tasks. Resetting task list.",
+      "danger",
+      4000,
+      lastFocusedEl,
+      taskListContainer
+    );
     localStorage.removeItem("tasks");
   }
 
@@ -217,13 +242,12 @@ function createTaskElement(task, index) {
 
   taskElement.innerHTML = `
       <div class="status-box">
-        <span class="task-status ${statusClass}">
+        <span class="task-status ${statusClass}" tabindex="0">
         ${task.status || "N/A"}
         </span>
       </div>
       ${
-        task.dueDate ? task.status !== "done" && isOverdue  ? 
-        `<div class="task-due-date date-box">
+        task.dueDate ? task.status !== "done" && isOverdue  ? `<div class="task-due-date date-box">
           <i class="fa-solid fa-triangle-exclamation"></i> 
           <i class="fa-solid fa-calendar-days"></i>
           <span class="task-due-date-text">${newDate}</span>
@@ -258,6 +282,22 @@ function createTaskElement(task, index) {
   }"><i class="fa-solid fa-trash"></i></button>
       </div>
   `;
+  // Add inline edit listener for status
+  const statusSpan = taskElement.querySelector(".task-status");
+  if (statusSpan) {
+    statusSpan.addEventListener("click", (event) => {
+      event.stopPropagation();
+      enableInlineStatusEdit(task, taskElement);
+    });
+  }
+  // Listen for keydown to trigger inline editing
+  statusSpan.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      event.stopPropagation();
+      enableInlineStatusEdit(task, taskElement);
+    }
+  });
 
   return taskElement;
 }
@@ -266,13 +306,20 @@ function createTaskElement(task, index) {
 function addTaskEventListeners(taskElement, task) {
   if (!task.id) {
     console.error("Invalid task: Missing ID", task);
-    showToast("Something went wrong. Invalid Task.", "warning", 4000, lastFocusedEl, taskListContainer);
+    showToast(
+      "Something went wrong. Invalid Task.",
+      "warning",
+      4000,
+      lastFocusedEl,
+      taskListContainer
+    );
     return;
   }
   taskElement.addEventListener("click", function (event) {
     if (
       !event.target.closest(".edit-task") &&
-      !event.target.closest(".delete-task")
+      !event.target.closest(".delete-task") &&
+      !event.target.closest(".status-box")
     ) {
       showTaskDetails(task);
     }
@@ -281,7 +328,8 @@ function addTaskEventListeners(taskElement, task) {
   taskElement.addEventListener("keydown", (event) => {
     if (
       !event.target.closest(".edit-task") &&
-      !event.target.closest(".delete-task")
+      !event.target.closest(".delete-task") &&
+      !event.target.closest(".status-box")
     ) {
       if (event.key === "Enter") {
         event.preventDefault();
@@ -392,8 +440,7 @@ function createTaskDetailsContainer(task) {
       : ""
   }
   ${
-    task.dueDate ? task.status !== "done" && isOverdue  ? 
-    `<div class="details-item">
+    task.dueDate ? task.status !== "done" && isOverdue  ? `<div class="details-item">
        <p><i class="fa-solid fa-triangle-exclamation"></i> <strong>Due Date</strong></p> 
        <p>${formatDate(task.dueDate)}</p>
     </div>`
@@ -451,6 +498,92 @@ function addTaskDetailsEventListeners(task) {
 
 /* EDIT TASK DETAILS */
 
+// Function to enable Status update without navigating to Edit Form
+function enableInlineStatusEdit(task, taskElement) {
+  const statusBox = taskElement.querySelector(".status-box");
+  if (!statusBox) return;
+
+  // Create a select element and populate with generateStatusOptions
+  const select = document.createElement("select");
+  select.id = `inline-status-${task.id}`;
+  select.classList.add("select-status");
+  select.name = "status";
+  select.innerHTML = generateStatusOptions(task);
+
+  // Replace span with select
+  statusBox.innerHTML = "";
+  statusBox.appendChild(select);
+
+  //Store focus
+  select.focus();
+
+  // Track changes for committed status
+  let mouseInteraction = false;
+  let committed = false;
+
+  select.addEventListener("mousedown", () => {
+    mouseInteraction = true;
+  });
+
+  // Handle status change for mouse users
+  select.addEventListener("change", () => {
+    if (mouseInteraction) {
+      const newStatus = select.value;
+      updateTaskStatus(task.id, newStatus);
+      showToast(
+        "Status updated successfully!",
+        "success",
+        4000,
+        lastFocusedEl,
+        taskElement
+      );
+      committed = true;
+      loadTasks();
+    }
+  });
+
+  // Handle status change for keyboard users
+  select.addEventListener("keydown", (event) => {
+  // When user presses Enter, commit the change
+  if (event.key === "Enter") {
+      event.preventDefault();
+      const newStatus = select.value;
+      updateTaskStatus(task.id, newStatus);
+      showToast(
+        "Status updated successfully!",
+        "success",
+        4000,
+        taskElement,
+        taskListContainer
+      );
+      committed = true;
+      loadTasks();
+    }
+  });
+
+  select.addEventListener("blur", () => {
+    if (!committed) {
+      loadTasks();
+    }
+  });
+
+  // Handle Escape key 
+  select.addEventListener("keydown", createEscapeKeyHandler(() => {
+    loadTasks();
+  }));
+
+}
+
+// Function to update status on localStorage
+function updateTaskStatus(taskId, newStatus) {
+  let tasks = getTasksFromStorage();
+  const taskIndex = tasks.findIndex((t) => t.id === taskId);
+  if (taskIndex !== -1) {
+    tasks[taskIndex].status = newStatus;
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }
+}
+
 // Preloads task information into form for manipulation
 function showEditTaskForm(taskId) {
   closeModal();
@@ -460,7 +593,13 @@ function showEditTaskForm(taskId) {
   // Retrieve task details
   const currentTask = getTaskById(taskId);
   if (!currentTask) {
-    showToast("Task not found!", "danger", 4000, lastFocusedEl, taskListContainer);
+    showToast(
+      "Task not found!",
+      "danger",
+      4000,
+      lastFocusedEl,
+      taskListContainer
+    );
     return;
   }
 
@@ -591,10 +730,22 @@ function editTask(event, taskId) {
       tasks[taskIndex].description = description;
 
       localStorage.setItem("tasks", JSON.stringify(tasks));
-      showToast("Task edited successfully!", "success", 4000, lastFocusedEl, taskListContainer);
+      showToast(
+        "Task edited successfully!",
+        "success",
+        4000,
+        lastFocusedEl,
+        taskListContainer
+      );
       loadTasks();
     } else {
-      showToast("No changes made.", "info", 4000, lastFocusedEl, taskListContainer);
+      showToast(
+        "No changes made.",
+        "info",
+        4000,
+        lastFocusedEl,
+        taskListContainer
+      );
     }
 
     closeModal();
@@ -603,7 +754,13 @@ function editTask(event, taskId) {
     loadTasks();
   } catch (error) {
     // Handle storage errors
-    showToast("Failed to edit task. Please try again.", "danger", 4000, lastFocusedEl, taskListContainer);
+    showToast(
+      "Failed to edit task. Please try again.",
+      "danger",
+      4000,
+      lastFocusedEl,
+      taskListContainer
+    );
   }
 }
 
@@ -695,7 +852,13 @@ function addConfirmDeleteEventListeners(taskId) {
 function deleteTask(taskId) {
   // alert for taskID null or undefined
   if (!taskId) {
-    showToast("Error: Invalid task ID.", "danger", 4000, lastFocusedEl, taskListContainer);
+    showToast(
+      "Error: Invalid task ID.",
+      "danger",
+      4000,
+      lastFocusedEl,
+      taskListContainer
+    );
     return;
   }
   try {
@@ -707,11 +870,23 @@ function deleteTask(taskId) {
     // save updated task lists to localStorage
     localStorage.setItem("tasks", JSON.stringify(tasks));
     // Feedback to user
-    showToast("Task deleted successfully!", "success", 4000, lastFocusedEl, taskListContainer);
+    showToast(
+      "Task deleted successfully!",
+      "success",
+      4000,
+      lastFocusedEl,
+      taskListContainer
+    );
     // Refresh task list on page
     loadTasks();
   } catch (error) {
-    showToast("Failed to delete task. Please try again.", "danger", 4000, lastFocusedEl, taskListContainer);
+    showToast(
+      "Failed to delete task. Please try again.",
+      "danger",
+      4000,
+      lastFocusedEl,
+      taskListContainer
+    );
   }
 }
 
@@ -727,14 +902,26 @@ function isFormValid(titleId, dateId) {
 
   // Ensure title is provided
   if (!title) {
-    showToast("Title is a required field.", "warning", 4000, lastFocusedEl, titleInput);
+    showToast(
+      "Title is a required field.",
+      "warning",
+      4000,
+      lastFocusedEl,
+      titleInput
+    );
     markField(titleId, "This field is required.");
     return false;
   }
 
   // Ensure dueDate is not before configured earliest date
   if (new Date(dueDate) < new Date(minDate)) {
-    showToast("The due date cannot be in the past.", "warning", 4000, lastFocusedEl, dueDateInput);
+    showToast(
+      "The due date cannot be in the past.",
+      "warning",
+      4000,
+      lastFocusedEl,
+      dueDateInput
+    );
     markField(dateId, `Date cannot be before ${formatDate(minDate)}`);
     return false;
   }
@@ -788,10 +975,10 @@ function closeModal() {
   document.removeEventListener("keydown", trapFocus);
 
   if (!document.activeElement || document.activeElement === document.body) {
-     if (lastFocusedEl && document.contains(lastFocusedEl)){
-       lastFocusedEl.focus();
-     } else {
+    if (lastFocusedEl && document.contains(lastFocusedEl)) {
+      lastFocusedEl.focus();
+    } else {
       taskListContainer.focus();
-     }
+    }
   }
 }
