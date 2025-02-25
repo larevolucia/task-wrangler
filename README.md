@@ -298,7 +298,7 @@ Displays all tasks in **card format**, each showing **status, due date, and acti
   - A **toast notification** confirms successful status updates.  
 
 <div align="center">
-  <img width="307" src="https://github.com/user-attachments/assets/910e5bc0-8d1d-416b-96e1-a46dc8da0d63" alt="change-status">
+  <img width="407" src="https://github.com/user-attachments/assets/910e5bc0-8d1d-416b-96e1-a46dc8da0d63" alt="change-status">
 </div>
 
 #### **3.4 Edit Task**
