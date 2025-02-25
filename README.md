@@ -22,8 +22,9 @@
   - [3. Task Management (CRUD)](#3-task-management-crud)
     - [3.1 Task List View](#31-task-list-view)
     - [3.2 Read Task Details](#32-read-task-details)
-    - [3.3 Edit Task](#33-edit-task)
-    - [3.4 Delete Task](#34-delete-task)
+    - [3.3 Edit Task Status](#33-edit-task-status)
+    - [3.3 Edit Task](#34-edit-task)
+    - [3.4 Delete Task](#35-delete-task)
   - [4. Smart Toast Notifications](#4-smart-toast-notifications)
   - [5. Advanced Keyboard Navigation](#5-advanced-keyboard-navigation)
   - [6. Insights & Analytics (Task Progress Charts)](#6-insights--analytics-task-progress-charts)
@@ -284,7 +285,7 @@ Displays all tasks in **card format**, each showing **status, due date, and acti
 
 **Reference:** [Codepen](https://codepen.io/patrickhlauke/pen/vpQNgJ), [StackOverflow](https://stackoverflow.com/questions/70068954/make-entire-card-clickable-by-targeting-a-inside-of-it) and [More](https://github.com/larevolucia/task-wrangler/issues/16)
 
-#### **3.4 Edit Status**
+#### **3.3 Edit Task Status**
 
 - Users can change a task’s status (**To-Do → In Progress → Done**) directly from the list view.
 - **Dropdown Selection:** A simple **dropdown menu** is provided for easy status selection.
@@ -296,8 +297,8 @@ Displays all tasks in **card format**, each showing **status, due date, and acti
   - **Color-coded indicators** adjust automatically to reflect the new status.  
   - A **toast notification** confirms successful status updates.  
 
-
 <div align="center">
+  <img width="307" src="https://github.com/user-attachments/assets/910e5bc0-8d1d-416b-96e1-a46dc8da0d63" alt="change-status">
 </div>
 
 #### **3.4 Edit Task**
@@ -310,7 +311,7 @@ Displays all tasks in **card format**, each showing **status, due date, and acti
 - **Auto-save on Submit:** Updates **localStorage** and **UI** without page reload.
 
 <div align="center">
-<img width="573" alt="image" src="https://github.com/user-attachments/assets/91597b1c-dabd-4389-905d-1febb0fb1630" />
+<img width="307" alt="image" src="https://github.com/user-attachments/assets/91597b1c-dabd-4389-905d-1febb0fb1630" />
 </div>
 
 #### **3.5 Delete Task**
