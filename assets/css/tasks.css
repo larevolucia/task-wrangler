@@ -57,6 +57,9 @@ TASKS CARD
   padding:  0.35rem 0.75rem;
   border-radius: 0.75rem;
   display: inline-block;
+  /* mitigate iOS default design */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .select-status {
