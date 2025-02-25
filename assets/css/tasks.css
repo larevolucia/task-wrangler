@@ -227,7 +227,9 @@ MODALS
   flex-direction: column;
 }
 
-
+#details-modal-content h2 {
+  margin-right: 1rem;
+}
 /* Form input styles */
 
 input, select, textarea {
