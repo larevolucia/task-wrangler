@@ -38,10 +38,6 @@
     font-size: large;
     line-height: 1.5;
     letter-spacing: 0.1rem;
-    /* mitigate iOS default design */
-    font-weight: 500;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
   
   p {
