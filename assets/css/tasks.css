@@ -11,7 +11,15 @@ TASKS HEADING
   width: 100%;
   padding: 1rem;
   margin-top: 1.5rem;
+  /* make sticky */
+  position: sticky;
+  top: 60px; 
+  background-color: white; 
+  z-index: 10; 
 }
+
+
+
 
 /* -------------------------------
 TASKS CARD
@@ -22,7 +30,11 @@ TASKS CARD
   justify-content: center;
   flex-direction: column;
   align-items: center;
+  /* Add scrolling */
+  overflow-y: auto; 
+  scroll-padding-top: 5rem; 
 }
+
 
 .flex-tasks-container {
   min-height: 60vh;
