@@ -15,7 +15,7 @@ TASKS HEADING
   position: sticky;
   top: 60px; 
   background-color: white; 
-  z-index: 10; 
+  z-index: 1; 
 }
 
 
@@ -58,8 +58,8 @@ TASKS CARD
 }
 
 .task-card:focus-visible, #tasks-container:focus-visible {
-    outline: 3px dashed var(--attention-color); 
-    outline-offset: 3px; 
+  outline: 3px dashed var(--attention-color); 
+  outline-offset: 3px; 
 }
 
 .task-status {
@@ -215,7 +215,7 @@ MODALS
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1;
+  z-index: 2;
   transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
   /* initially hidden */
   opacity: 0;
