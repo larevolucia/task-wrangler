@@ -9,8 +9,8 @@
   --danger-color: #CE2F2F; /* Persian red */
   --background-color: #F5F5F5; /* White Smoke */
   --text-color: #212121;  /* Eerie Black */
-  --primary-font: "Inter", serif;
-  --secondary-font: "Roboto", serif;
+  --primary-font: "Inter", sans-serif;
+  --secondary-font: "Roboto", sans-serif;
 }
 
 
