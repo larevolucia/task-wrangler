@@ -451,16 +451,16 @@ function createTaskDetailsContainer(task) {
   }    
       </div>
       <div class="modal-footer">
-      <button class="btn-primary" id="edit-task-${
-        task.id
-      }" title="Edit Task" data-id="${
-    task.id
-  }" aria-label="Edit "><i class="fa-solid fa-pen" aria-hidden="true"></i> Edit Task</button>
       <button class="btn-danger" id="delete-task-${
         task.id
       }" title="Delete Task" data-id="${task.id}" aria-label="Delete ${
     task.title
-  }"><i class="fa-solid fa-trash" aria-hidden="true"></i> Delete Task</button>
+  }">Delete Task</button>
+      <button class="btn-primary" id="edit-task-${
+        task.id
+      }" title="Edit Task" data-id="${
+    task.id
+  }" aria-label="Edit ">Edit Task</button>
       </div>
       </div>
       `;
