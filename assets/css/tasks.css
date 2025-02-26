@@ -64,9 +64,12 @@ TASKS CARD
   outline-offset: 3px; 
 }
 
+.task-status, .select-status  {
+  font-size: 1rem;
+}
+
 .task-status {
   text-transform: uppercase;
-  font-size: 0.645rem;
   font-weight: 700;
   padding:  0.35rem 0.75rem;
   border-radius: 0.75rem;
@@ -408,10 +411,6 @@ CONFIRMATION MODAL
   .task-card {
     grid-template-columns: 3fr 1fr 1fr;
   }
-  
-  .task-status, .select-status  {
-    font-size: 0.8rem;
-  }
 
 
 }
@@ -434,9 +433,7 @@ MEDIA QUERY - LARGE SCREEN (min-width: 992px)
     grid-template-columns: 4fr 1fr 1fr;
   }
  
-  .task-status, .select-status  {
-    font-size: 1rem;
-  }
+  
   
   .date-box {
     min-width: 110px;
