@@ -48,6 +48,8 @@ TASKS CARD
   border-radius: 0.75rem;
   margin: 0.5rem;
   cursor: pointer;
+  min-height: 100px;
+  min-width: 300px;
   /* grid style */
   width: 90%;
   display: grid;
@@ -391,6 +393,7 @@ CONFIRMATION MODAL
   #content-container {
     width: 700px;
     height: 100vh;
+    min-height: 500px;
     margin: 0 auto;
   }
 
