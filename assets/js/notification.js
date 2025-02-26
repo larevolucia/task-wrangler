@@ -4,7 +4,7 @@
 // Toast icons
 let toastIcon = {
     success: '<i class="fa-solid fa-check"></i>',
-    danger: '<i class="fa-solid fa-xmark"></i>',
+    danger: '<i class="fa-solid fa-circle-xmark"></i>',
     info: '<i class="fa-solid fa-info"></i>',
     warning: '<i class="fa-solid fa-triangle-exclamation"></i>',
   };

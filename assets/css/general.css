@@ -406,6 +406,10 @@ Code from: https://www.geeksforgeeks.org/how-to-make-a-toast-notification-in-htm
   cursor: pointer;
   box-shadow: none;
 }
+.toast-close:hover {
+  color: #000;
+  box-shadow: none;
+}
 
 @keyframes slideInRight {
   0% {
