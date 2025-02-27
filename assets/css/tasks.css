@@ -65,7 +65,7 @@ TASKS CARD
 }
 
 .task-status, .select-status  {
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 .task-status {
@@ -410,8 +410,10 @@ CONFIRMATION MODAL
   .task-card {
     grid-template-columns: 3fr 1fr 1fr;
   }
-
-
+  .task-status, .select-status  {
+    font-size: 1rem;
+  }
+  
 }
 
 /* -------------------------------
