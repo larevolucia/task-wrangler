@@ -13,7 +13,7 @@ TASKS HEADING
   margin-top: 1.5rem;
   /* make sticky */
   position: sticky;
-  top: 60px; 
+  top: 58px; 
   background-color: white; 
   z-index: 1; 
 }
