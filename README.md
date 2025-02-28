@@ -280,7 +280,7 @@ Displays all tasks in **card format**, each showing **status, due date, and acti
 - Uses **`trapFocus()` function** to lock focus within the modal.
 
 <div align="center">
-<img width="290" alt="image" src="https://github.com/user-attachments/assets/2274d8a8-264a-4352-9659-c424d18ae14a" />
+  <img width="290" alt="image" src="https://github.com/user-attachments/assets/b692bd94-713f-452a-bb15-3c1018127a32" />
 </div>
 
 **Reference:** [Codepen](https://codepen.io/patrickhlauke/pen/vpQNgJ), [StackOverflow](https://stackoverflow.com/questions/70068954/make-entire-card-clickable-by-targeting-a-inside-of-it) and [More](https://github.com/larevolucia/task-wrangler/issues/16)
