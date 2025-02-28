@@ -525,13 +525,6 @@ function enableInlineStatusEdit(task, taskElement) {
     mouseInteraction = true;
   });
 
-  // Handle mobile touch interaction
-  select.addEventListener("mousedown", () => mouseInteraction = true);
-  select.addEventListener("touchstart", (event) => {
-      event.preventDefault(); 
-      mouseInteraction = true;
-  });
-
   // Handle status change for mouse users
   select.addEventListener("change", () => {
     if (mouseInteraction) {
@@ -548,7 +541,7 @@ function enableInlineStatusEdit(task, taskElement) {
       loadTasks();
     }
   });
-  
+
   //Handle input event for better mobile compatibility
   select.addEventListener("input", () => {
     updateTaskStatus(task.id, select.value);
