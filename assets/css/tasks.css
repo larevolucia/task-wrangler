@@ -65,7 +65,8 @@ TASKS CARD
 }
 
 .task-status, .select-status  {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
+  max-width: 180px;
 }
 
 .task-status {
@@ -86,7 +87,6 @@ TASKS CARD
   background-color: var(--background-color);
   color: var(--text-color);  
   cursor: pointer;
-
 }
 
 .task-status:focus-visible, .select-status:focus-visible {
@@ -115,6 +115,9 @@ TASKS CARD
   justify-content: center; 
 }
 
+.task-due-date-text {
+  font-size: 0.75rem;
+}
 
 .edit-task, .delete-task {
   font-size: smaller;
@@ -410,10 +413,10 @@ CONFIRMATION MODAL
   .task-card {
     grid-template-columns: 3fr 1fr 1fr;
   }
-  .task-status, .select-status  {
+  .task-status, .select-status, .task-due-date-text   {
     font-size: 1rem;
   }
-  
+
 }
 
 /* -------------------------------
