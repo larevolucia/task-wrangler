@@ -548,6 +548,14 @@ function enableInlineStatusEdit(task, taskElement) {
       loadTasks();
     }
   });
+  
+  //Handle input event for better mobile compatibility
+  select.addEventListener("input", () => {
+    updateTaskStatus(task.id, select.value);
+    showToast("Status updated successfully!", "success", 4000, lastFocusedEl, taskElement);
+    committed = true;
+    loadTasks();
+  });
 
   // Handle status change for keyboard users
   select.addEventListener("keydown", (event) => {
@@ -567,6 +575,8 @@ function enableInlineStatusEdit(task, taskElement) {
       loadTasks();
     }
   });
+
+
 
   select.addEventListener("blur", () => {
     if (!committed) {
