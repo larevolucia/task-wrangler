@@ -39,9 +39,9 @@ function drawCharts() {
     if (emptyTaskListMessage) {
       emptyTaskListMessage.remove();
     }
-
-     drawOverdueChart(tasks);
-     drawStatusChart(tasks);
+    const taskStats = computeTaskStats(tasks);
+    drawOverdueChart(taskStats.overdueStats);
+    drawStatusChart(taskStats.statusCounts);
  }
     
 }
@@ -52,9 +52,7 @@ window.addEventListener("resize", () => {
 });
 
 // Draw pie chart with tasks by their statuses
-function drawStatusChart() {
-  let taskList = getTasksByStatus();
-
+function drawStatusChart(taskList) {
   try {
     // Create the data table
     const data = new google.visualization.DataTable();
@@ -84,8 +82,7 @@ function drawStatusChart() {
 }
 
 // Draw pie chart with overdue vs on time tasks
-function drawOverdueChart() {
-  let taskList = getOverdueTasks();
+function drawOverdueChart(taskList) {
   let totalOverdue =  taskList[1][1];
   try {
     // Create the data table.
@@ -119,16 +116,19 @@ function drawOverdueChart() {
 }
 
 // Get the count of tasks for each status category (to-do, in-progress, done)
-// Uses `.reduce()` to accumulate counts for each status type
-// Reference: https://stackoverflow.com/questions/45547504/counting-occurrences-of-particular-property-value-in-array-of-objects
-function getTasksByStatus(tasks) {
-
-  const statusCounts = {
+// Categorize tasks based on due date
+// - "Overdue" = Tasks with a past due date and not marked as "done"
+// - "On Time" = Tasks with future due dates or no due date at all (assumed to be flexible)
+function computeTaskStats(tasks){
+  let statusCounts = {
     toDo: 0,
     inProgress: 0,
     done: 0
   };
-
+  let overdueTasks = 0;
+  let notOverdueTasks = 0;
+  const today = getTodayDate();
+  
   tasks.forEach(task => {
     // Map the task.status string to the appropriate key
     if (task.status === "to-do") {
@@ -138,27 +138,6 @@ function getTasksByStatus(tasks) {
     } else if (task.status === "done") {
       statusCounts.done++;
     }
-  });
-
-  const taskList = [
-    ["To-Do", statusCounts.toDo],
-    ["In Progress", statusCounts.inProgress],
-    ["Done", statusCounts.done]
-  ];
-
-  return taskList;
-}
-
-// Categorize tasks based on due date
-// - "Overdue" = Tasks with a past due date and not marked as "done"
-// - "On Time" = Tasks with future due dates or no due date at all (assumed to be flexible)
-function getOverdueTasks(tasks) {
-  const today = getTodayDate();
-
-  let overdueTasks = 0;
-  let notOverdueTasks = 0;
-
-  tasks.forEach((task) => {  
     if (task.dueDate && task.dueDate < today && task.status !== "done") { 
       overdueTasks++;
     } else {
@@ -166,8 +145,13 @@ function getOverdueTasks(tasks) {
     }
   });
   
-  return [
+  return {statusCounts: [
+    ["To-Do", statusCounts.toDo],
+    ["In Progress", statusCounts.inProgress],
+    ["Done", statusCounts.done]
+  ], overdueStats: [
     ["On Time", notOverdueTasks],
     ["Overdue", overdueTasks],
-  ];
+  ]};
+
 }
