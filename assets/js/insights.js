@@ -40,8 +40,8 @@ function drawCharts() {
       emptyTaskListMessage.remove();
     }
     const taskStats = computeTaskStats(tasks);
-    drawOverdueChart(taskStats.overdueStats);
     drawStatusChart(taskStats.statusCounts);
+    drawOverdueChart(taskStats.overdueStats);
  }
     
 }
