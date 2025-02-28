@@ -538,6 +538,11 @@ This document contains a list of bugs and their corresponding fixes, organized b
 - **Summary of Fix:** Added conditional to `handleEmptyInsights` to only append message if the message doesn't already exists.
 - **Commit:** [03716e9](https://github.com/larevolucia/task-wrangler/commit/03716e99e5868b31425faaf4ef9ae0d251769bc1)
 
+### 15. MChange Status on Mobile not working
+- **Issue:** [#40](https://github.com/larevolucia/task-wrangler/issues/40)
+- **Summary of Fix:** Created `addEventListener` for `input` as `change` event was not triggering `updateTaskStatus()` on iOS
+- **Commit:** [2a24fbc](https://github.com/larevolucia/task-wrangler/commit/2a24fbc96ef24e11636fa1b5050565e721bbe6ec)
+
 ## Unfixed issues
 
  ### 1. Jigsaw warnings: Font Imports and variables
