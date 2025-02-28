@@ -29,7 +29,7 @@ function handleEmptyInsights(container){
 
 // Trigger specific functions to draw charts if data is available or displays empty state message
 function drawCharts() {
- const tasks = JSON.parse(localStorage.getItem("tasks"));
+ const tasks = getTasksFromStorage();
  let emptyTaskListMessage = document.getElementById("empty-state-insights");
 
  if(!tasks || tasks.length === 0) {
@@ -40,8 +40,8 @@ function drawCharts() {
       emptyTaskListMessage.remove();
     }
 
-     drawOverdueChart();
-     drawStatusChart();
+     drawOverdueChart(tasks);
+     drawStatusChart(tasks);
  }
     
 }
@@ -121,8 +121,7 @@ function drawOverdueChart() {
 // Get the count of tasks for each status category (to-do, in-progress, done)
 // Uses `.reduce()` to accumulate counts for each status type
 // Reference: https://stackoverflow.com/questions/45547504/counting-occurrences-of-particular-property-value-in-array-of-objects
-function getTasksByStatus() {
-  const tasks = getTasksFromStorage();
+function getTasksByStatus(tasks) {
 
   const statusCounts = {
     toDo: 0,
@@ -153,8 +152,7 @@ function getTasksByStatus() {
 // Categorize tasks based on due date
 // - "Overdue" = Tasks with a past due date and not marked as "done"
 // - "On Time" = Tasks with future due dates or no due date at all (assumed to be flexible)
-function getOverdueTasks() {
-  const tasks = getTasksFromStorage();
+function getOverdueTasks(tasks) {
   const today = getTodayDate();
 
   let overdueTasks = 0;
