@@ -247,7 +247,8 @@ MODALS
 }
 
 #details-modal-content h2 {
-  margin-right: 1rem;
+  /* margin-right: 1rem; */
+  width: 85%;
 }
 /* Form input styles */
 
@@ -322,7 +323,7 @@ input:focus, select:focus, textarea:focus {
 
 #close-details-modal {
   position: absolute;
-  top: 15px;
+  top: 5px;
   right: 15px;
   background: none;
   border: none;
