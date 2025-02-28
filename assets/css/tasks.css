@@ -152,7 +152,7 @@ TASKS CARD
   background-color: var(--text-color) !important; 
   color: var(--danger-color) !important; 
 }
-.overdue .delete-task:focus {
+.overdue .delete-task:focus-visible {
   outline: 3px dashed var(--text-color);
   box-shadow: 0 0 10px rgba(211, 47, 47, 0.5);
 }
