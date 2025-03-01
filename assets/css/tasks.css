@@ -94,10 +94,6 @@ TASKS CARD
   outline-offset: 3px;
 }
 
-.select-status:focus, .task-status:focus {
-  outline: none;
-}
-
 .task-title {
   margin-left: 0.5rem;
 }
