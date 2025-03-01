@@ -513,12 +513,14 @@ function enableInlineStatusEdit(task, taskElement) {
   // Replace span with select
   statusBox.innerHTML = "";
   statusBox.appendChild(select);
-
-  //Store focus
   select.focus();
+
+  //Store initial status for non-commited changes
+  const initialStatus = task.status;
 
   // Track changes for committed status
   let mouseInteraction = false;
+  let keyboardInteraction = false;
   let committed = false;
 
   select.addEventListener("mousedown", () => {
@@ -544,40 +546,42 @@ function enableInlineStatusEdit(task, taskElement) {
 
   //Handle input event for better mobile compatibility
   select.addEventListener("input", () => {
-    updateTaskStatus(task.id, select.value);
-    showToast("Status updated successfully!", "success", 4000, lastFocusedEl, taskElement);
-    committed = true;
-    loadTasks();
-  });
-
-  // Handle status change for keyboard users
-  select.addEventListener("keydown", (event) => {
-  // When user presses Enter, commit the change
-  if (event.key === "Enter") {
-      event.preventDefault();
-      const newStatus = select.value;
-      updateTaskStatus(task.id, newStatus);
-      showToast(
-        "Status updated successfully!",
-        "success",
-        4000,
-        taskElement,
-        taskListContainer
-      );
+    if (!keyboardInteraction) { 
+      updateTaskStatus(task.id, select.value);
+      showToast("Status updated successfully!", "success", 4000, lastFocusedEl, taskElement);
       committed = true;
       loadTasks();
     }
   });
 
 
+  // Handle status change for keyboard users
+  select.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowUp" || event.key === "ArrowDown") {
+      keyboardInteraction = true;
+    }
 
+    if (event.key === "Enter") {
+      event.preventDefault();
+      updateTaskStatus(task.id, select.value);
+      showToast("Status updated successfully!", "success", 4000, taskElement, taskListContainer);
+      committed = true;
+      loadTasks();
+    } else if (event.key === "Escape") {
+      event.preventDefault();
+      select.value = initialStatus; // Restore the original status
+      loadTasks();
+    }
+  });
+
+   // Handle focus lost
   select.addEventListener("blur", () => {
     if (!committed) {
       loadTasks();
     }
   });
 
-  // Handle Escape key 
+  // Handle global Escape key 
   select.addEventListener("keydown", createEscapeKeyHandler(() => {
     loadTasks();
   }));
