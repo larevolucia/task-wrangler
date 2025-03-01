@@ -314,6 +314,10 @@ input:focus, select:focus, textarea:focus {
 }
 
 #close-create-form:focus, #close-edit-form:focus, #close-details-modal:focus, #close-confirm-modal:focus{
+  transform: translateY(-2px);
+}
+
+#close-create-form:focus-visible, #close-edit-form:focus-visible, #close-details-modal:focus-visible, #close-confirm-modal:focus-visible{
   outline: 3px dashed var(--attention-color); 
   outline-offset: 3px; 
 }
