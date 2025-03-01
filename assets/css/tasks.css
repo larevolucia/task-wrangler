@@ -18,9 +18,6 @@ TASKS HEADING
   z-index: 1; 
 }
 
-
-
-
 /* -------------------------------
 TASKS CARD
 ---------------------------------- */
@@ -90,13 +87,12 @@ TASKS CARD
 }
 
 .task-status:focus-visible, .select-status:focus-visible {
-  outline: 3px dashed var(--attention-color);
+  outline: 3px solid var(--attention-color);
   outline-offset: 3px;
 }
 
-.task-status:focus-visible, .select-status:focus-visible {
-  outline: none;
-  outline-offset: 0;
+select.select-status:focus-visible {
+  border: none; 
 }
 
 .task-title {
