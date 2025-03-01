@@ -94,9 +94,8 @@ TASKS CARD
   outline-offset: 3px;
 }
 
-.select-status:focus {
-  outline: 3px solid var(--attention-color);
-  outline-offset: 3px;
+.select-status:focus, .task-status:focus {
+  outline: none;
 }
 
 .task-title {
@@ -271,12 +270,6 @@ textarea {
 .form-item, .details-item {
   padding: 0.3rem 1rem;
 }
-
-
-input:focus, select:focus, textarea:focus {
-  border-color: var(--attention-color);
-}
-
 
 /* Error border for required fields */
 .error-border {
