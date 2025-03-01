@@ -94,6 +94,11 @@ TASKS CARD
   outline-offset: 3px;
 }
 
+.task-status:focus-visible, .select-status:focus-visible {
+  outline: none;
+  outline-offset: 0;
+}
+
 .task-title {
   margin-left: 0.5rem;
 }
@@ -253,6 +258,11 @@ input, select, textarea {
   border-radius: 4px;
   font-size: 16px;
 }
+
+input:focus, select:focus, textarea:focus {
+ outline: none; 
+ border: 2px solid var(--primary-color); 
+} 
 
 
 label {
